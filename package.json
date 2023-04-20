@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --detectOpenHandles --forceExit",
     "devstart": "nodemon app.js",
     "start": "node app.js"
   },
@@ -17,7 +17,9 @@
     "mongoose": "^7.0.3"
   },
   "devDependencies": {
+    "jest": "^29.5.0",
     "nodemon": "^2.0.22",
+    "supertest": "^6.3.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.2"
   }
