@@ -13,10 +13,14 @@ GET http://localhost:4000/post/643ef7b9d73feddefacccf60
 
 ###
 
+GET http://localhost:4000/post?sender=Dan
+
+###
+
 POST http://localhost:4000/post
 Content-Type: application/json
 
 {
     "message": "this is my new message",
-    "sender": "Idan"
+    "sender": "Dan"
 }
