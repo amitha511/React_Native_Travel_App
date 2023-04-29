@@ -24,3 +24,33 @@ Content-Type: application/json
     "message": "this is my new message",
     "sender": "Dan"
 }
+
+###
+
+POST http://localhost:4000/auth/register
+Content-Type: application/json
+
+{
+    "email": "idan@gmail.com",
+    "password": "12345"
+}
+
+###
+
+POST http://localhost:4000/auth/login
+Content-Type: application/json
+
+{
+    "email": "idan@gmail.com",
+    "password": "12345"
+}
+
+###
+
+POST http://localhost:4000/auth/logout
+Content-Type: application/json
+
+{
+    "message": "this is my new message",
+    "sender": "Dan"
+}
