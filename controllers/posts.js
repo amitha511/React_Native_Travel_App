@@ -31,10 +31,12 @@ const getPostById = async (req, res, next) => {
 
 const addNewPost = async (req, res, next) => {
     try {
-        console.log('addNewPost ' + req.body.message);
+        console.log('addNewPost ' + req.body.message)
+        sender = req.user.id
+
         const post = new Post({
             message: req.body.message,
-            sender: req.body.sender
+            sender: sender
         });
         const newPost = await post.save();
         res.status(200).send({
@@ -42,7 +44,7 @@ const addNewPost = async (req, res, next) => {
             'post': newPost
         });
     } catch (error) {
-        next(error);
+        next(error)
     }
 };
 

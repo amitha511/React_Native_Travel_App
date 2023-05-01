@@ -6,7 +6,7 @@ GET http://localhost:4000/
 ###
 
 GET http://localhost:4000/post
-
+Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU5NTM0MTJkYTRjYTM3YWU3NmRiYyIsImlhdCI6MTY4Mjk1Nzc5MywiZXhwIjoxNjgyOTYxMzkzfQ.VbeLaBsqB7CucaRExppVoU7pg_7KPdK_1kSeArMbJOY
 ###
 
 GET http://localhost:4000/post/643ef7b9d73feddefacccf60
@@ -18,10 +18,11 @@ GET http://localhost:4000/post?sender=Dan
 ###
 
 POST http://localhost:4000/post
+Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU5NTM0MTJkYTRjYTM3YWU3NmRiYyIsImlhdCI6MTY4Mjk1Nzc5MywiZXhwIjoxNjgyOTYxMzkzfQ.VbeLaBsqB7CucaRExppVoU7pg_7KPdK_1kSeArMbJOY
 Content-Type: application/json
 
 {
-    "message": "this is my new message",
+    "message": "this is my authorized new post",
     "sender": "Dan"
 }
 
