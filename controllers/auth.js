@@ -13,6 +13,7 @@ const sendError = (res, code, msg) => {
 const register = async (req, res, next) => {
     const email = req.body.email
     const password = req.body.password
+
     if (email == null || password == null) {
         return res.status(400).send({
             'status': 'fail',
@@ -53,6 +54,7 @@ const login = async (req, res, next) => {
     try {
         const user = await User.findOne({ 'email': email })
         if (user == null) return sendError(res, 400, 'incorrect email or password')
+
         const match = await bcrypt.compare(password, user.password)
         if (!match) return sendError(res, 400, 'incorrect email or password')
 
