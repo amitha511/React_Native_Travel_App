@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
 import { UserContext } from "../App";
-import Api from '../api-calls'
+import { register } from '../api-calls';
 
 function LoginScreen() {
   const { userConnect, setUserConnect } = useContext(UserContext);
@@ -34,11 +34,11 @@ function LoginScreen() {
     } else if (!validatePassword(password)) {
       setMessage("Password should include numbers");
     } else {
-      setMessage("");
-      setPassword("");
-      setEmail("");
-      setUserConnect(email);
-      await login(email, password)
+      // setMessage("");
+      // setPassword("");
+      // setEmail("");
+      // setUserConnect(email);
+      await register(email, password)
     }
   };
 
