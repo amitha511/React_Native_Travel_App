@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
 import { UserContext } from "../App";
+import Api from '../api-calls'
 
 function LoginScreen() {
   const { userConnect, setUserConnect } = useContext(UserContext);
@@ -23,7 +24,7 @@ function LoginScreen() {
     return re.test(password);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (email === "" || password === "") {
       setMessage("Fill in all fields");
     } else if (!validateEmail(email)) {
@@ -38,6 +39,7 @@ function LoginScreen() {
       setEmail("");
       // navigation.navigate("Home");
       setUserConnect(email);
+      await login(email, password)
     }
   };
 
