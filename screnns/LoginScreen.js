@@ -9,17 +9,17 @@ function LoginScreen() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-
   // const handleLogin = () => {
   //   setUserConnect(email);
   // };
 
-  const validateEmail = email => {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const validateEmail = (email) => {
+    var re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
   };
 
-  const validatePassword = password => {
+  const validatePassword = (password) => {
     let re = /[0-9]+/;
     return re.test(password);
   };
@@ -37,7 +37,6 @@ function LoginScreen() {
       setMessage("");
       setPassword("");
       setEmail("");
-      // navigation.navigate("Home");
       setUserConnect(email);
       await login(email, password)
     }
@@ -51,7 +50,7 @@ function LoginScreen() {
         <TextInput
           style={styles.TextInput}
           value={email}
-          placeholder="Enter your name"
+          placeholder="Enter your email"
           placeholderTextColor="#003f5c"
           onChangeText={setEmail}
         />
