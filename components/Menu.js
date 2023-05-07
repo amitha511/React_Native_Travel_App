@@ -89,9 +89,21 @@ const Menu = ({ onValueSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOptionSelect = (option) => {
+    setIsMenuOpen(false);
     setSelectedOption(option);
-    setIsMenuOpen(true);
+
     onValueSelect(option);
+  };
+
+  const handleCloseMenu = () => {
+    setIsMenuOpen(false);
+    setSelectedOption(null);
+  };
+
+  const handleMenuClose = () => {
+    if (selectedOption) {
+      handleCloseMenu();
+    }
   };
 
   return (
@@ -99,12 +111,14 @@ const Menu = ({ onValueSelect }) => {
       {!isMenuOpen ? (
         <TouchableOpacity onPress={() => setIsMenuOpen(true)}>
           <Text>Select an option:</Text>
-          <Text>{selectedOption || "Click to open menu"}</Text>
+          <Text style={{ fontWeight: "bold" }}>
+            {selectedOption || "Click to open menu"}
+          </Text>
         </TouchableOpacity>
       ) : (
         <View style={{ maxHeight: 200 }}>
           <ScrollView>
-            <TouchableOpacity onPress={() => setIsMenuOpen(false)}>
+            <TouchableOpacity onPress={handleCloseMenu}>
               <Text>Close menu</Text>
             </TouchableOpacity>
             {options.map((option) => (
@@ -124,10 +138,9 @@ const Menu = ({ onValueSelect }) => {
         </View>
       )}
       {selectedOption && (
-        <Text>
-          Selected option:{" "}
-          <Text style={{ fontWeight: "bold" }}>{selectedOption}</Text>
-        </Text>
+        <TouchableOpacity onPress={handleCloseMenu}>
+          <Text>Close menu</Text>
+        </TouchableOpacity>
       )}
     </View>
   );

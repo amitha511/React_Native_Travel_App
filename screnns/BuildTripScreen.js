@@ -11,7 +11,7 @@ export default function BuildTripScreen() {
   const [location, setLocation] = useState(""); //hotel coordinates
   const [attractions, setAttractions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [selectedType, setSelectedType] = useState(null);
+  const [selectedType, setSelectedType] = useState("");
 
   //---------------------Api By Text To get Coordinates-----------
   function TextAPI(hotel) {
@@ -44,14 +44,14 @@ export default function BuildTripScreen() {
       return;
     } else {
       let userRaduis;
-      if (option == "walking") {
-        userRaduis = 1000;
+      if (option === "walking") {
+        userRaduis = 100;
         const options = {
           method: "GET",
           url: "https://trueway-places.p.rapidapi.com/FindPlacesNearby",
           params: {
             location: location,
-            type: { selectedType },
+            type: selectedType,
             radius: userRaduis,
             language: "en",
           },
@@ -71,14 +71,14 @@ export default function BuildTripScreen() {
           .catch(function (error) {
             console.error(error);
           });
-      } else if (option == "public") {
+      } else if (option === "public") {
         userRaduis = 2500;
         const options = {
           method: "GET",
           url: "https://trueway-places.p.rapidapi.com/FindPlacesNearby",
           params: {
             location: location,
-            type: { selectedType },
+            type: selectedType,
             radius: userRaduis,
             language: "en",
           },
@@ -105,7 +105,7 @@ export default function BuildTripScreen() {
           url: "https://trueway-places.p.rapidapi.com/FindPlacesNearby",
           params: {
             location: location,
-            type: { selectedType },
+            type: selectedType,
             radius: userRaduis,
             language: "en",
           },
@@ -119,8 +119,9 @@ export default function BuildTripScreen() {
         axios
           .request(options)
           .then(function (response) {
-            console.log(response.data.results);
             setAttractions(response.data.results);
+            //console.log(response.data.results); // log result of the search
+            console.log(response.data.results);
           })
           .catch(function (error) {
             console.error(error);
@@ -147,10 +148,12 @@ export default function BuildTripScreen() {
     const newSelectedValue = selected.find(
       (item) => item.selected === true
     ).value;
+    console.log(selectedOption);
     setSelectedOption(newSelectedValue);
   }
   const handleMenuOptionType = (option) => {
-    setSelectedOption(option);
+    setSelectedType(option);
+    console.log("selectedOption " + selectedType);
   };
 
   return (
@@ -189,9 +192,25 @@ export default function BuildTripScreen() {
         {attractions.map((attraction, index) => (
           <Text
             key={index}
-            style={selectedOption == null ? styles.errorText : null}
+            style={[
+              styles.attractionText,
+              selectedOption == null ? styles.errorText : null,
+            ]}
           >
-            {attraction.name}
+            <View>
+              <Text
+                style={styles.text}
+              >{`attraction name-${attraction.name} attraction address-${attraction.address} attraction phone_number-${attraction.phone_number} attraction website-${attraction.website}`}</Text>
+              {/* <Text
+                style={styles.text}
+              >{`attraction address-${attraction.address}`}</Text>
+              <Text
+                style={styles.text}
+              >{`attraction phone_number-${attraction.phone_number}`}</Text>
+              <Text
+                style={styles.text}
+              >{`attraction website-${attraction.website}`}</Text> */}
+            </View>
           </Text>
         ))}
       </ScrollView>
@@ -228,3 +247,12 @@ const styles = StyleSheet.create({
     color: "red",
   },
 });
+/*
+name,
+address,
+phone_number,
+website,
+
+
+
+*/
