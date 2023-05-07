@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, TextInput, View, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Button,
+  ImageBackground,
+} from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
@@ -157,94 +164,134 @@ export default function BuildTripScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.textHeader}>App Travel</Text>
-      <View style={styles.hotelChoose}>
-        <Text style={styles.text}>Inset Hotel:</Text>
-        <TextInput
-          placeholder=""
-          style={styles.textInput}
-          value={hotel}
-          onChangeText={setHotel}
-        ></TextInput>
-        <Button title="Find Hotel" onPress={() => TextAPI(hotel)}></Button>
-      </View>
-      <Menu onValueSelect={handleMenuOptionType} />
-      <View style={{ flexDirection: "column" }}>
-        {data.map((item) => (
-          <View style={{ flexDirection: "row", marginVertical: 5 }}>
-            <RadioGroup
-              radioButtons={[item]}
-              onPress={handleOptionSelect}
-              selectedButton={selectedOption === item.value}
-              layout="row"
-            />
-          </View>
-        ))}
-      </View>
-      <View></View>
-      <Button
-        title="Search"
-        onPress={() => NearByAPI(location, selectedOption)}
-      ></Button>
-
-      <ScrollView>
-        {attractions.map((attraction, index) => (
-          <Text
-            key={index}
-            style={[
-              styles.attractionText,
-              selectedOption == null ? styles.errorText : null,
-            ]}
-          >
-            <View>
-              <Text
-                style={styles.text}
-              >{`attraction name-${attraction.name} attraction address-${attraction.address} attraction phone_number-${attraction.phone_number} attraction website-${attraction.website}`}</Text>
-              {/* <Text
-                style={styles.text}
-              >{`attraction address-${attraction.address}`}</Text>
-              <Text
-                style={styles.text}
-              >{`attraction phone_number-${attraction.phone_number}`}</Text>
-              <Text
-                style={styles.text}
-              >{`attraction website-${attraction.website}`}</Text> */}
+    <ImageBackground
+      source={require("../assets/background6.jpg")}
+      style={styles.backgroundImage}
+    >
+      <View style={styles.container}>
+        <Text style={styles.textHeader}>App Travel</Text>
+        <View style={styles.hotelChoose}>
+          <Text style={styles.text}>Inset Hotel:</Text>
+          <TextInput
+            placeholder=""
+            style={styles.textInput}
+            value={hotel}
+            onChangeText={setHotel}
+          />
+          <Button
+            title="Find Hotel"
+            onPress={() => TextAPI(hotel)}
+            style={styles.emphasizedButton}
+            color="black"
+            titleStyle={styles.buttonTitle}
+          />
+        </View>
+        <Menu onValueSelect={handleMenuOptionType} />
+        <View style={styles.radioGroupContainer}>
+          {data.map((item) => (
+            <View key={item.value} style={styles.radioButtonContainer}>
+              <RadioGroup
+                radioButtons={[item]}
+                onPress={handleOptionSelect}
+                selectedButton={selectedOption === item.value}
+                layout="row"
+              />
             </View>
-          </Text>
-        ))}
-      </ScrollView>
-      <StatusBar style="auto" />
-    </View>
+          ))}
+        </View>
+        <Button
+          style={styles.emphasizedButton}
+          color="black"
+          titleStyle={styles.buttonTitle}
+          title="Search"
+          onPress={() => NearByAPI(location, selectedOption)}
+        />
+
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          {attractions.map((attraction, index) => (
+            <View key={index} style={styles.attractionCard}>
+              <Text style={styles.attractionName}>{attraction.name}</Text>
+              <Text style={styles.attractionDetails}>
+                Address: {attraction.address ? attraction.address : "NONE"}
+              </Text>
+              <Text style={styles.attractionDetails}>
+                Phone Number:
+                {attraction.phone_number ? attraction.phone_number : "NONE"}
+              </Text>
+              <Text style={styles.attractionDetails}>
+                Website:
+                {attraction.website ? attraction.website : "NONE"}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
+
+        <StatusBar style="auto" />
+      </View>
+    </ImageBackground>
   );
 }
-
 const styles = StyleSheet.create({
+  emphasizedButton: {
+    backgroundColor: "black",
+    borderColor: "black",
+    borderWidth: 2,
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+  },
   container: {
     flex: 1,
-    alignItems: "center",
-    padding: 100,
-  },
-  hotelChoose: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    fontSize: 20,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "#cccccc",
-    width: "80%",
-  },
-  text: {
-    fontSize: 20,
+    // backgroundColor: "#C8FACD",
+    paddingVertical: 20,
+    paddingHorizontal: 16,
   },
   textHeader: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 40,
+    marginBottom: 16,
   },
-  errorText: {
-    color: "red",
+  hotelChoose: {
+    marginBottom: 16,
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 8,
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 8,
+  },
+  radioGroupContainer: {
+    flexDirection: "column",
+    marginBottom: 16,
+  },
+  radioButtonContainer: {
+    flexDirection: "row",
+    marginVertical: 5,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  attractionCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+    elevation: 4,
+  },
+  attractionName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  attractionDetails: {
+    fontSize: 16,
+    marginBottom: 4,
   },
 });
 /*
@@ -252,7 +299,5 @@ name,
 address,
 phone_number,
 website,
-
-
 
 */

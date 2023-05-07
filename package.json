@@ -25,10 +25,10 @@
     "react": "18.0.0",
     "react-bootstrap": "^2.7.4",
     "react-native": "0.69.9",
+    "react-native-fast-image": "^8.6.3",
     "react-native-paper": "^5.7.2",
     "react-native-radio-buttons-group": "^2.3.2",
     "react-native-web": "~0.18.10"
-    
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
