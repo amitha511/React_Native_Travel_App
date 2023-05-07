@@ -1,25 +1,19 @@
-const User = require('../models/user_models')
+const User = require('../models/user_model')
 const bcrypt = require('bcrypt')
 const { use } = require('../routes')
 const jwt = require('jsonwebtoken')
 
+
 const sendError = (res, code, msg) => {
-    return res.status(400).send({
+    return res.status(code).send({
         'status': 'fail',
         'error': msg
     })
 }
 
-const register = async (req, res, next) => {
+const register = async (req, res) => {
     const email = req.body.email
     const password = req.body.password
-
-    if (email == null || password == null) {
-        return res.status(400).send({
-            'status': 'fail',
-            'error': 'user or password is null'
-        })
-    }
     try {
         const exists = await User.findOne({ 'email': email })
         if (exists != null) {
@@ -35,7 +29,7 @@ const register = async (req, res, next) => {
             'email': email,
             'password': hashPwd
         })
-        newUser = await user.save()
+        newUser = await user.save();
         res.status(200).send(newUser)
 
     } catch (error) {
@@ -46,33 +40,33 @@ const register = async (req, res, next) => {
     }
 }
 
-const login = async (req, res, next) => {
+
+const login = async (req, res) => {
     const email = req.body.email
     const password = req.body.password
-    if (email == null || password == null)
-        return sendError(res, 400, 'incorrect email or password')
+    if (email == null || password == null) return sendError(res, 400, 'wrong email or password')
+
     try {
         const user = await User.findOne({ 'email': email })
-        if (user == null) return sendError(res, 400, 'incorrect email or password')
+        if (user == null) return sendError(res, 400, 'wrong email or password')
 
         const match = await bcrypt.compare(password, user.password)
-        if (!match) return sendError(res, 400, 'incorrect email or password')
+        if (!match) return sendError(res, 400, 'wrong email or password')
 
-        const accessToken = await jwt.sign({
-            'id': user._id
-        },
+        const accessToken = await jwt.sign(
+            { 'id': user._id },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: process.env.JWT_TOKEN_EXPIRATION }
         )
-        res.status(200).send({ 'acessToken': accessToken })
-
+        res.status(200).send({ 'accessToken': accessToken })
 
     } catch (error) {
         return sendError(res, 400, error.message)
     }
+
 }
 
-const logout = async (req, res, next) => {
+const logout = async (req, res) => {
     res.status(400).send({
         'status': 'fail',
         'error': 'not implemented'

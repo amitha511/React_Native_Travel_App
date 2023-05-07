@@ -6,7 +6,7 @@ GET http://localhost:4000/
 ###
 
 GET http://localhost:4000/post
-Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU5NTM0MTJkYTRjYTM3YWU3NmRiYyIsImlhdCI6MTY4Mjk3Nzk5OSwiZXhwIjoxNjgyOTgxNTk5fQ.dkzKZLLHqpot_MWUkyy4JqkBgvOt3XyoeoAxlWKLePA
+Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU5NTM0MTJkYTRjYTM3YWU3NmRiYyIsImlhdCI6MTY4MzIwODUyNiwiZXhwIjoxNjgzMjEyMTI2fQ.yV_frJZFwHhuuxF7JQuclb51NrpWhhXWvtigXapPzLA
 ###
 
 GET http://localhost:4000/post/643ef7b9d73feddefacccf60
@@ -14,7 +14,7 @@ GET http://localhost:4000/post/643ef7b9d73feddefacccf60
 ###
 
 POST http://localhost:4000/post
-Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU5NTM0MTJkYTRjYTM3YWU3NmRiYyIsImlhdCI6MTY4Mjk3Nzk5OSwiZXhwIjoxNjgyOTgxNTk5fQ.dkzKZLLHqpot_MWUkyy4JqkBgvOt3XyoeoAxlWKLePA
+Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU5NTM0MTJkYTRjYTM3YWU3NmRiYyIsImlhdCI6MTY4MzIwODUyNiwiZXhwIjoxNjgzMjEyMTI2fQ.yV_frJZFwHhuuxF7JQuclb51NrpWhhXWvtigXapPzLA
 Content-Type: application/json
 
 {

@@ -2,20 +2,20 @@ const app = require('../server')
 const request = require('supertest')
 const mongoose = require('mongoose')
 const { response } = require('../server')
-const User = require('../models/user_models')
+const User = require('../models/user_model')
 
 const email = 'test@a.com'
 const password = '123456'
 
 beforeAll(done => {
-    User.remove({ 'email': email }, (error) => {
+    User.remove({ 'email': email }, (err) => {
         done()
     })
 })
 
 afterAll(done => {
-    User.remove({ 'email': email }, (error) => {
-        mongoose.connection.close()
+    User.remove({ 'email': email }, (err) => {
+        mongoosse.connection.close()
         done()
     })
 })
