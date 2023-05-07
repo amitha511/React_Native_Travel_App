@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
 import { UserContext } from "../App";
-import { register } from '../api-calls';
+import { register } from "../api-calls";
 
 function LoginScreen() {
   const { userConnect, setUserConnect } = useContext(UserContext);
@@ -38,7 +38,7 @@ function LoginScreen() {
       // setPassword("");
       // setEmail("");
       // setUserConnect(email);
-      await register(email, password)
+      await register(email, password);
     }
   };
 

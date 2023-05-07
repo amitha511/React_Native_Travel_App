@@ -5,24 +5,32 @@ import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "./screnns/LoginScreen";
 import React, { createContext, useState } from "react";
 import HomeScreen from "./screnns/HomeScreen";
+import Tabs from "./navigation/tabs";
 
 const Stack = createStackNavigator();
 export const UserContext = createContext();
 
 export default function App() {
   const [userConnect, setUserConnect] = useState(null);
-
-  let content = <Stack.Screen name="home" component={HomeScreen} />;
-  if (userConnect != null) {
-    content = <Stack.Screen name="home" component={HomeScreen} />;
-  } else {
-    content = <Stack.Screen name="Login" component={LoginScreen} />;
-  }
+  // let content;
+  // if (userConnect != null) {
+  //   content = <Stack.Screen name="home" component={HomeScreen} />;
+  // } else {
+  //   content = <Stack.Screen name="Login" component={LoginScreen} />;
+  // }
+  // return (
+  //   <UserContext.Provider value={{ userConnect, setUserConnect }}>
+  //     <NavigationContainer>
+  //       <Stack.Navigator>{content}</Stack.Navigator>
+  //       <Tabs />
+  //     </NavigationContainer>
+  //   </UserContext.Provider>
+  // );
 
   return (
     <UserContext.Provider value={{ userConnect, setUserConnect }}>
       <NavigationContainer>
-        <Stack.Navigator>{content}</Stack.Navigator>
+        <Tabs />
       </NavigationContainer>
     </UserContext.Provider>
   );

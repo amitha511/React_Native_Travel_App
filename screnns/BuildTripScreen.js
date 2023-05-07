@@ -4,12 +4,14 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
 import { ScrollView } from "react-native";
+import Menu from "../components/Menu";
 
-export function HomeTwoScreen() {
+export default function BuildTripScreen() {
   const [hotel, setHotel] = useState(""); //hotel name
   const [location, setLocation] = useState(""); //hotel coordinates
   const [attractions, setAttractions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedType, setSelectedType] = useState(null);
 
   //---------------------Api By Text To get Coordinates-----------
   function TextAPI(hotel) {
@@ -36,7 +38,6 @@ export function HomeTwoScreen() {
         console.error(error);
       });
   }
-
   //--------API By Coordinates---------------
   function NearByAPI(location, option) {
     if (option == null) {
@@ -50,7 +51,7 @@ export function HomeTwoScreen() {
           url: "https://trueway-places.p.rapidapi.com/FindPlacesNearby",
           params: {
             location: location,
-            type: "tourist_attraction",
+            type: { selectedType },
             radius: userRaduis,
             language: "en",
           },
@@ -77,7 +78,7 @@ export function HomeTwoScreen() {
           url: "https://trueway-places.p.rapidapi.com/FindPlacesNearby",
           params: {
             location: location,
-            type: "tourist_attraction",
+            type: { selectedType },
             radius: userRaduis,
             language: "en",
           },
@@ -104,7 +105,7 @@ export function HomeTwoScreen() {
           url: "https://trueway-places.p.rapidapi.com/FindPlacesNearby",
           params: {
             location: location,
-            type: "tourist_attraction",
+            type: { selectedType },
             radius: userRaduis,
             language: "en",
           },
@@ -127,7 +128,7 @@ export function HomeTwoScreen() {
       }
     }
   }
-
+  //--------------------
   const data = [
     {
       label: "Walking",
@@ -148,6 +149,9 @@ export function HomeTwoScreen() {
     ).value;
     setSelectedOption(newSelectedValue);
   }
+  const handleMenuOptionType = (option) => {
+    setSelectedOption(option);
+  };
 
   return (
     <View style={styles.container}>
@@ -162,6 +166,7 @@ export function HomeTwoScreen() {
         ></TextInput>
         <Button title="Find Hotel" onPress={() => TextAPI(hotel)}></Button>
       </View>
+      <Menu onValueSelect={handleMenuOptionType} />
       <View style={{ flexDirection: "column" }}>
         {data.map((item) => (
           <View style={{ flexDirection: "row", marginVertical: 5 }}>
@@ -174,6 +179,7 @@ export function HomeTwoScreen() {
           </View>
         ))}
       </View>
+      <View></View>
       <Button
         title="Search"
         onPress={() => NearByAPI(location, selectedOption)}
@@ -193,7 +199,7 @@ export function HomeTwoScreen() {
     </View>
   );
 }
-export default HomeTwoScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
