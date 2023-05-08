@@ -12,17 +12,16 @@ import { useState, useEffect } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
 import { ScrollView } from "react-native";
 import Menu from "../components/Menu";
-import DetailsList from "../components/Ui/DetailsList";
 import { useNavigation } from "@react-navigation/native";
 
 export default function BuildTripScreen() {
-  const navigation = useNavigation();
-
   const [hotel, setHotel] = useState(""); //hotel name
   const [location, setLocation] = useState(""); //hotel coordinates
   const [attractions, setAttractions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedType, setSelectedType] = useState("");
+  const [selectedAttractions, setSelectedAttractions] = useState([]);
+  const navigation = useNavigation();
 
   //---------------------Api By Text To get Coordinates-----------
   async function TextAPI(hotel) {
@@ -85,8 +84,6 @@ export default function BuildTripScreen() {
       } catch (error) {
         console.log(error.message);
       }
-
-      handleSearch(); //navigate to results screen
     }
   }
   //--------------------
@@ -111,20 +108,24 @@ export default function BuildTripScreen() {
     console.log(selectedOption);
     setSelectedOption(newSelectedValue);
   }
+  function handleAttractionSelect(attraction) {
+    setSelectedAttractions((prevSelectedAttractions) => [
+      ...prevSelectedAttractions,
+      attraction,
+    ]);
+    console.log(selectedAttractions);
+    navigation.navigate("SelectedAttractionsScreen", {
+      selectedAttractions: [...selectedAttractions, attraction],
+    });
+  }
   const handleMenuOptionType = (option) => {
     setSelectedType(option);
     console.log("selectedOption " + selectedType);
   };
 
-  const handleSearch = () => {
-    // Send params to Results screen
-    navigation.navigate("Details", attractions);
-    // navigation.navigate("Results", );
-  };
-
   return (
     <ImageBackground
-      source={require("../assets/background6.jpg")}
+      source={require("../assets/background5.jpg")}
       style={styles.backgroundImage}
     >
       <View style={styles.container}>
@@ -167,23 +168,30 @@ export default function BuildTripScreen() {
         />
 
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          {/* <DetailsList list={attractions}></DetailsList> */}
-          {/* {attractions.map((attraction, index) => (
-            <View key={index} style={styles.attractionCard}>
-              <Text style={styles.attractionName}>{attraction.name}</Text>
-              <Text style={styles.attractionDetails}>
-                Address: {attraction.address ? attraction.address : "NONE"}
-              </Text>
-              <Text style={styles.attractionDetails}>
-                Phone Number:
-                {attraction.phone_number ? attraction.phone_number : "NONE"}
-              </Text>
-              <Text style={styles.attractionDetails}>
-                Website:
-                {attraction.website ? attraction.website : "NONE"}
-              </Text>
-            </View>
-          ))} */}
+          {/* {attractions.length > 0 ? (
+            attractions.map((attraction, index) => (
+              <View key={index} style={styles.attractionCard}>
+                <Text style={styles.attractionName}>{attraction.name}</Text>
+                <Text style={styles.attractionDetails}>
+                  Address: {attraction.address ? attraction.address : "NONE"}
+                </Text>
+                <Text style={styles.attractionDetails}>
+                  Phone Number:{" "}
+                  {attraction.phone_number ? attraction.phone_number : "NONE"}
+                </Text>
+                <Text style={styles.attractionDetails}>
+                  Website: {attraction.website ? attraction.website : "NONE"}
+                </Text>
+                <Button
+                  title="Select"
+                  onPress={() => handleAttractionSelect(attraction)}
+                  style={styles.selectButton}
+                />
+              </View>
+            ))
+          ) : (
+            <Text style={styles.noResultsText}>No results found.</Text>
+          )} */}
         </ScrollView>
 
         <StatusBar style="auto" />
@@ -253,11 +261,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 4,
   },
+  noResultsText: {
+    fontSize: 18,
+    fontStyle: "italic",
+    textAlign: "center",
+    marginTop: 20,
+    color: "gray",
+  },
 });
-/*
-name,
-address,
-phone_number,
-website,
-
-*/
