@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Text,
   View,
@@ -11,7 +12,9 @@ function Row(props) {
   //props - image, title , phone, website
 
   const handlePress = () => {
-    Linking.openURL(props.website);
+    if (props.website) {
+      Linking.openURL(props.website);
+    }
   };
 
   return (
@@ -20,11 +23,27 @@ function Row(props) {
         <Image key={"nickname"} style={styles.img} source={props.image} />
         <View style={styles.text}>
           <Text style={styles.text.title}>{props.title}</Text>
-          <Text>{props.address}</Text>
-          <Text>{props.phone}</Text>
+          <Text>
+            {props.address ? (
+              props.address
+            ) : (
+              <Text style={{ color: "red" }}>No Address Available</Text>
+            )}
+          </Text>
+          <Text>
+            {props.phone ? (
+              props.phone
+            ) : (
+              <Text style={{ color: "red" }}>No Phone Available</Text>
+            )}
+          </Text>
           <View>
             <TouchableOpacity onPress={handlePress}>
-              <Text style={{ color: "blue" }}>click here to the website</Text>
+              {props.website ? (
+                <Text style={{ color: "blue" }}>click here to the website</Text>
+              ) : (
+                <Text style={{ color: "red" }}>No Website Available</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
