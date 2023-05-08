@@ -4,6 +4,7 @@ import HomeScreen from "../screnns/HomeScreen";
 import LoginScreen from "../screnns/LoginScreen";
 import { StyleSheet, Text, View, Image } from "react-native";
 import RegisterScreen from "../screnns/RegisterScreen";
+import SelectedAttractionsScreen from "../screnns/SelectedAttractionsScreen";
 
 const Tab = createBottomTabNavigator();
 const Tabs = () => {
@@ -108,7 +109,37 @@ const Tabs = () => {
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
               >
-                DEFAULT
+                SELECT TRIP
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="SelectedAttractionsScreen"
+        component={SelectedAttractionsScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                top: 10,
+              }}
+            >
+              <Image
+                source={require("../assets/icons/home.png")}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? "#e32f45" : "#748c94",
+                }}
+              />
+              <Text
+                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
+              >
+                SELECTED
               </Text>
             </View>
           ),
@@ -127,7 +158,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/login.png")}
+                source={require("../assets/icons/black-settings-button.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,
@@ -138,7 +169,7 @@ const Tabs = () => {
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
               >
-                LOGIN
+                DEFAULT
               </Text>
             </View>
           ),
