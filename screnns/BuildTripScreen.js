@@ -15,13 +15,14 @@ import Menu from "../components/Menu";
 import { useNavigation } from "@react-navigation/native";
 
 export default function BuildTripScreen() {
+  const navigation = useNavigation();
+
   const [hotel, setHotel] = useState(""); //hotel name
   const [location, setLocation] = useState(""); //hotel coordinates
   const [attractions, setAttractions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedType, setSelectedType] = useState("");
   const [selectedAttractions, setSelectedAttractions] = useState([]);
-  const navigation = useNavigation();
 
   //---------------------Api By Text To get Coordinates-----------
   async function TextAPI(hotel) {
@@ -81,6 +82,7 @@ export default function BuildTripScreen() {
         const data = response.data.results;
         setAttractions(data);
         console.log(data);
+        clickSearchHandel(data);
       } catch (error) {
         console.log(error.message);
       }
@@ -122,6 +124,9 @@ export default function BuildTripScreen() {
     setSelectedType(option);
     console.log("selectedOption " + selectedType);
   };
+  function clickSearchHandel(params) {
+    navigation.navigate("Details", params);
+  }
 
   return (
     <ImageBackground
