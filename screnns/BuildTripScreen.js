@@ -21,118 +21,65 @@ export default function BuildTripScreen() {
   const [selectedType, setSelectedType] = useState("");
 
   //---------------------Api By Text To get Coordinates-----------
-  function TextAPI(hotel) {
+  async function TextAPI(hotel) {
     console.log(hotel);
+    const url = "https://trueway-places.p.rapidapi.com/FindPlaceByText";
     const options = {
-      method: "GET",
-      url: "https://trueway-places.p.rapidapi.com/FindPlaceByText",
-      params: { text: hotel, language: "en" },
+      params: {
+        text: hotel,
+        language: "en",
+      },
       headers: {
         "X-RapidAPI-Key": "eaf73400d8msh6eb8f4919f0ef40p15e7a9jsnd2bdd10405dd",
         "X-RapidAPI-Host": "trueway-places.p.rapidapi.com",
       },
     };
 
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log(response.data.results[0].location);
-        var cordinates = response.data.results[0].location;
-        console.log(cordinates);
-        setLocation(cordinates.lat + "," + cordinates.lng);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+    try {
+      const response = await axios.get(url, options);
+      var cordinates = response.data.results[0].location;
+      console.log(cordinates);
+      setLocation(cordinates.lat + "," + cordinates.lng);
+    } catch (error) {
+      console.log(error.message);
+    }
   }
+
   //--------API By Coordinates---------------
-  function NearByAPI(location, option) {
-    if (option == null) {
-      return;
-    } else {
-      let userRaduis;
-      if (option === "walking") {
-        userRaduis = 100;
-        const options = {
-          method: "GET",
-          url: "https://trueway-places.p.rapidapi.com/FindPlacesNearby",
-          params: {
-            location: location,
-            type: selectedType,
-            radius: userRaduis,
-            language: "en",
-          },
-          headers: {
-            "X-RapidAPI-Key":
-              "eaf73400d8msh6eb8f4919f0ef40p15e7a9jsnd2bdd10405dd",
-            "X-RapidAPI-Host": "trueway-places.p.rapidapi.com",
-          },
-        };
-
-        axios
-          .request(options)
-          .then(function (response) {
-            console.log(response.data.results);
-            setAttractions(response.data.results);
-          })
-          .catch(function (error) {
-            console.error(error);
-          });
-      } else if (option === "public") {
+  async function NearByAPI() {
+    console.log(selectedType);
+    console.log(selectedOption);
+    setAttractions([]);
+    const url = "https://trueway-places.p.rapidapi.com/FindPlacesNearby";
+    let userRaduis = 100;
+    if (selectedOption != null) {
+      if (selectedOption === "walking") {
+        userRaduis = 1000;
+      } else if (selectedOption === "public") {
         userRaduis = 2500;
-        const options = {
-          method: "GET",
-          url: "https://trueway-places.p.rapidapi.com/FindPlacesNearby",
-          params: {
-            location: location,
-            type: selectedType,
-            radius: userRaduis,
-            language: "en",
-          },
-          headers: {
-            "X-RapidAPI-Key":
-              "eaf73400d8msh6eb8f4919f0ef40p15e7a9jsnd2bdd10405dd",
-            "X-RapidAPI-Host": "trueway-places.p.rapidapi.com",
-          },
-        };
+      }
 
-        axios
-          .request(options)
-          .then(function (response) {
-            console.log(response.data.results);
-            setAttractions(response.data.results);
-          })
-          .catch(function (error) {
-            console.error(error);
-          });
-      } else {
-        userRaduis = 5000;
-        const options = {
-          method: "GET",
-          url: "https://trueway-places.p.rapidapi.com/FindPlacesNearby",
-          params: {
-            location: location,
-            type: selectedType,
-            radius: userRaduis,
-            language: "en",
-          },
-          headers: {
-            "X-RapidAPI-Key":
-              "eaf73400d8msh6eb8f4919f0ef40p15e7a9jsnd2bdd10405dd",
-            "X-RapidAPI-Host": "trueway-places.p.rapidapi.com",
-          },
-        };
+      const options = {
+        params: {
+          location: location,
+          type: selectedType,
+          radius: userRaduis,
+          language: "en",
+        },
+        headers: {
+          "X-RapidAPI-Key":
+            "eaf73400d8msh6eb8f4919f0ef40p15e7a9jsnd2bdd10405dd",
+          "X-RapidAPI-Host": "trueway-places.p.rapidapi.com",
+        },
+      };
 
-        axios
-          .request(options)
-          .then(function (response) {
-            setAttractions(response.data.results);
-            //console.log(response.data.results); // log result of the search
-            console.log(response.data.results);
-          })
-          .catch(function (error) {
-            console.error(error);
-          });
+      try {
+        const response = await axios.get(url, options);
+        const data = response.data.results;
+        setAttractions(data);
+        console.log(data);
+      } catch (error) {
+        console.log(error.message);
       }
     }
   }

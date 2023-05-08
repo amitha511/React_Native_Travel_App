@@ -1,17 +1,28 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  Image,
+  ImageBackground,
+  ScrollView,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { UserContext } from "../App";
 import { register } from "../api-calls";
+import { useNavigation } from "@react-navigation/native";
 
 function LoginScreen() {
+  const navigation = useNavigation();
+
   const { userConnect, setUserConnect } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
-  // const handleLogin = () => {
-  //   setUserConnect(email);
-  // };
 
   const validateEmail = (email) => {
     var re =
@@ -34,86 +45,115 @@ function LoginScreen() {
     } else if (!validatePassword(password)) {
       setMessage("Password should include numbers");
     } else {
-      // setMessage("");
-      // setPassword("");
-      // setEmail("");
-      // setUserConnect(email);
       await register(email, password);
     }
+    // setMessage("");
+    // setPassword("");
+    // setEmail("");
+    // setUserConnect(email);
   };
 
-  return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={require("../assets/logo.png")} />
-      {/* <Text style={form.message}>{message}</Text> */}
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          value={email}
-          placeholder="Enter your email"
-          placeholderTextColor="#003f5c"
-          onChangeText={setEmail}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Enter your password"
-          placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="msg test"
-          placeholderTextColor="#003f5c"
-          value={message}
-          onChangeText={setMessage}
-        />
-      </View>
+  function clickRegisterHandler() {
+    navigation.navigate("Register");
+  }
 
-      <Button style={styles.loginBtn} title="Login" onPress={handleSubmit} />
-    </View>
+  return (
+    <ImageBackground
+      source={require("../assets/background/login.png")}
+      resizeMode="cover"
+      style={styles.image}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView style={styles.scroll}>
+            <View style={styles.container}>
+              <Text style={styles.title}>Welcome</Text>
+              <Text style={styles.errorMessage}>{message}</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={email}
+                  placeholder="Enter your email"
+                  placeholderTextColor="#003f5c"
+                  onChangeText={setEmail}
+                />
+              </View>
+
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#003f5c"
+                  secureTextEntry={true}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+              </View>
+
+              <Button
+                style={styles.loginBtn}
+                title="Login"
+                onPress={handleSubmit}
+              />
+
+              <View style={styles.separator} />
+              <Text style={styles.text}>Need an account?</Text>
+
+              <Button
+                style={styles.loginBtn}
+                title="Register now"
+                onPress={clickRegisterHandler}
+              />
+              <Text style={styles.end}></Text>
+            </View>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  scroll: {
+    marginTop: "20%",
+  },
   container: {
+    paddingTop: "15%",
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
   image: {
-    marginBottom: 40,
-    width: 300,
-    height: 210,
+    flex: 1,
+    justifyContent: "center",
   },
   title: {
     fontSize: 32,
-    fontWeight: "bold",
     color: "black",
     textAlign: "center",
-    // margin: 100,
+    paddingBottom: "5%",
+  },
+  errorMessage: {
+    color: "red",
+    textAlign: "center",
+    paddingBottom: "5%",
   },
   inputView: {
     alignItems: "center",
+    marginStart: "15%",
     backgroundColor: "#F0EDED",
     borderRadius: 30,
     width: "70%",
-    height: 45,
+    height: 55,
     marginBottom: 20,
-    alignItems: "center",
   },
   TextInput: {
-    height: 50,
+    height: "50%",
     flex: 1,
-    padding: 10,
+    padding: "2%",
     marginLeft: 20,
   },
   loginBtn: {
@@ -124,5 +164,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 40,
     backgroundColor: "#FF1493",
+  },
+  separator: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: 30,
+    margin: 30,
+  },
+  text: {
+    textAlign: "center",
+    color: "#858282",
+  },
+  end: {
+    paddingBottom: "35%",
   },
 });

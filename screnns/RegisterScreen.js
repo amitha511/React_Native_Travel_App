@@ -1,10 +1,23 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  Image,
+  ImageBackground,
+  ScrollView,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { UserContext } from "../App";
 import { register } from "../api-calls";
 
 function RegisterScreen() {
   const { userConnect, setUserConnect } = useContext(UserContext);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -43,77 +56,111 @@ function RegisterScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={require("../assets/logo.png")} />
-      {/* <Text style={form.message}>{message}</Text> */}
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          value={email}
-          placeholder="Enter your email"
-          placeholderTextColor="#003f5c"
-          onChangeText={setEmail}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Enter your password"
-          placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="msg test"
-          placeholderTextColor="#003f5c"
-          value={message}
-          onChangeText={setMessage}
-        />
-      </View>
+    <ImageBackground
+      source={require("../assets/background/register.png")}
+      resizeMode="cover"
+      style={styles.image}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView style={styles.scroll}>
+            <View style={styles.container}>
+              <Text style={styles.title}>Register</Text>
+              <Text style={styles.errorMessage}>{message}</Text>
 
-      <Button style={styles.loginBtn} title="Register" onPress={handleSubmit} />
-    </View>
+              <Text style={styles.box}>Full name:</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={name}
+                  placeholderTextColor="#003f5c"
+                  onChangeText={setName}
+                />
+              </View>
+              <Text style={styles.box}>Email:</Text>
+
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={email}
+                  placeholderTextColor="#003f5c"
+                  onChangeText={setEmail}
+                />
+              </View>
+              <Text style={styles.box}>Password:</Text>
+
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={password}
+                  secureTextEntry={true}
+                  placeholderTextColor="#003f5c"
+                  onChangeText={setPassword}
+                />
+              </View>
+              {/* <Text style={styles.box}>Full name</Text>
+
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={email}
+                  placeholder="Enter your email"
+                  placeholderTextColor="#003f5c"
+                  onChangeText={setEmail}
+                />
+              </View> */}
+            </View>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
+  scroll: {
+    marginTop: "50%",
+  },
   container: {
+    paddingTop: "-30%",
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
   image: {
-    marginBottom: 40,
-    width: 300,
-    height: 210,
+    flex: 1,
+    justifyContent: "center",
   },
   title: {
-    fontSize: 32,
-    fontWeight: "bold",
+    fontSize: 30,
     color: "black",
     textAlign: "center",
-    // margin: 100,
+    paddingBottom: "5%",
+  },
+  errorMessage: {
+    color: "red",
+    textAlign: "center",
+    paddingBottom: "5%",
+  },
+  box: {
+    start: "15%",
   },
   inputView: {
     alignItems: "center",
+    marginStart: "15%",
     backgroundColor: "#F0EDED",
     borderRadius: 30,
     width: "70%",
-    height: 45,
+    height: 55,
     marginBottom: 20,
-    alignItems: "center",
   },
   TextInput: {
-    height: 50,
+    height: "50%",
     flex: 1,
-    padding: 10,
+    padding: "2%",
     marginLeft: 20,
   },
   loginBtn: {
@@ -124,5 +171,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 40,
     backgroundColor: "#FF1493",
+  },
+  separator: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: 30,
+    margin: 30,
+  },
+  text: {
+    textAlign: "center",
+    color: "#858282",
   },
 });
