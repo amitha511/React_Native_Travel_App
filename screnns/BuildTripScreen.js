@@ -12,8 +12,12 @@ import { useState, useEffect } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
 import { ScrollView } from "react-native";
 import Menu from "../components/Menu";
+import DetailsList from "../components/Ui/DetailsList";
+import { useNavigation } from "@react-navigation/native";
 
 export default function BuildTripScreen() {
+  const navigation = useNavigation();
+
   const [hotel, setHotel] = useState(""); //hotel name
   const [location, setLocation] = useState(""); //hotel coordinates
   const [attractions, setAttractions] = useState([]);
@@ -81,6 +85,8 @@ export default function BuildTripScreen() {
       } catch (error) {
         console.log(error.message);
       }
+
+      handleSearch(); //navigate to results screen
     }
   }
   //--------------------
@@ -108,6 +114,12 @@ export default function BuildTripScreen() {
   const handleMenuOptionType = (option) => {
     setSelectedType(option);
     console.log("selectedOption " + selectedType);
+  };
+
+  const handleSearch = () => {
+    // Send params to Results screen
+    navigation.navigate("Details", attractions);
+    // navigation.navigate("Results", );
   };
 
   return (
@@ -155,7 +167,8 @@ export default function BuildTripScreen() {
         />
 
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          {attractions.map((attraction, index) => (
+          {/* <DetailsList list={attractions}></DetailsList> */}
+          {/* {attractions.map((attraction, index) => (
             <View key={index} style={styles.attractionCard}>
               <Text style={styles.attractionName}>{attraction.name}</Text>
               <Text style={styles.attractionDetails}>
@@ -170,7 +183,7 @@ export default function BuildTripScreen() {
                 {attraction.website ? attraction.website : "NONE"}
               </Text>
             </View>
-          ))}
+          ))} */}
         </ScrollView>
 
         <StatusBar style="auto" />
@@ -191,8 +204,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: "#C8FACD",
-    paddingVertical: 20,
-    paddingHorizontal: 16,
+    // paddingVertical: 20,
+    // paddingHorizontal: 16,
   },
   textHeader: {
     fontSize: 24,

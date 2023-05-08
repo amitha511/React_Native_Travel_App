@@ -8,7 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { LoginStack } from "./LoginStack";
 import TipsScreen from "../screnns/TipsScreen";
-
+import { BuildTripStack } from "./BuildTripStack";
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
@@ -61,7 +61,7 @@ const Tabs = () => {
       />
       <Tab.Screen
         name="Build Trip"
-        component={BuildTripScreen}
+        component={BuildTripStack}
         options={{
           tabBarIcon: ({ focused }) => (
             <View
