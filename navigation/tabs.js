@@ -4,9 +4,16 @@ import HomeScreen from "../screnns/HomeScreen";
 import LoginScreen from "../screnns/LoginScreen";
 import { StyleSheet, Text, View, Image } from "react-native";
 import RegisterScreen from "../screnns/RegisterScreen";
+
 import SelectedAttractionsScreen from "../screnns/SelectedAttractionsScreen";
 
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { LoginStack } from "./LoginStack";
+import TipsScreen from "../screnns/TipsScreen";
+
 const Tab = createBottomTabNavigator();
+
 const Tabs = () => {
   return (
     <Tab.Navigator
@@ -26,37 +33,7 @@ const Tabs = () => {
       }}
     >
       <Tab.Screen
-        name="RegisterScreen"
-        component={RegisterScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                top: 10,
-              }}
-            >
-              <Image
-                source={require("../assets/icons/Register.png")}
-                resizeMode="contain"
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
-                }}
-              />
-              <Text
-                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
-              >
-                REGISTER
-              </Text>
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="HomeScreen"
+        name="Home"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -86,7 +63,7 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="BuildTripScreen"
+        name="Build Trip"
         component={BuildTripScreen}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -145,9 +122,41 @@ const Tabs = () => {
           ),
         }}
       />
+
       <Tab.Screen
-        name="LoginScreen"
-        component={LoginScreen}
+        name="Tips"
+        component={TipsScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                top: 10,
+              }}
+            >
+              <Image
+                source={require("../assets/icons/Register.png")}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? "#e32f45" : "#748c94",
+                }}
+              />
+              <Text
+                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
+              >
+                TIPS
+              </Text>
+            </View>
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="connection"
+        component={LoginStack}
         options={{
           tabBarIcon: ({ focused }) => (
             <View

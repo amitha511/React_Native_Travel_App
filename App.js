@@ -12,20 +12,6 @@ export const UserContext = createContext();
 
 export default function App() {
   const [userConnect, setUserConnect] = useState(null);
-  // let content;
-  // if (userConnect != null) {
-  //   content = <Stack.Screen name="home" component={HomeScreen} />;
-  // } else {
-  //   content = <Stack.Screen name="Login" component={LoginScreen} />;
-  // }
-  // return (
-  //   <UserContext.Provider value={{ userConnect, setUserConnect }}>
-  //     <NavigationContainer>
-  //       <Stack.Navigator>{content}</Stack.Navigator>
-  //       <Tabs />
-  //     </NavigationContainer>
-  //   </UserContext.Provider>
-  // );
 
   return (
     <UserContext.Provider value={{ userConnect, setUserConnect }}>
