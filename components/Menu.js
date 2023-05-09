@@ -1,149 +1,149 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 
 const Menu = ({ onValueSelect }) => {
   const options = [
     "bar",
-    "beauty_salon",
-    "bicycle_store",
-    "book_store",
+    // "beauty_salon",
+    // "bicycle_store",
+    // "book_store",
     "bowling",
-    "bus_station",
+    // "bus_station",
     "cafe",
-    "campground",
-    "car_dealer",
-    "car_rental",
-    "car_repair",
-    "car_wash",
+    // "campground",
+    // "car_dealer",
+    // "car_rental",
+    // "car_repair",
+    // "car_wash",
     "casino",
     "cemetery",
     "church",
     "cinema",
-    "city_hall",
+    // "city_hall",
     "clothing_store",
-    "convenience_store",
-    "courthouse",
-    "dentist",
+    // "convenience_store",
+    // "courthouse",
+    // "dentist",
     "department_store",
     "doctor",
-    "electrician",
-    "electronics_store",
-    "embassy",
-    "fire_station",
-    "flowers_store",
-    "funeral_service",
-    "furniture_store",
-    "gas_station",
-    "government_office",
-    "grocery_store",
-    "gym",
-    "hairdressing_salon",
-    "hardware_store",
-    "home_goods_store",
-    "hospital",
-    "insurance_agency",
-    "jewelry_store",
-    "laundry",
-    "lawyer",
-    "library",
-    "liquor_store",
-    "locksmith",
+    // "electrician",
+    // "electronics_store",
+    // "embassy",
+    // "fire_station",
+    // "flowers_store",
+    // "funeral_service",
+    // "furniture_store",
+    // "gas_station",
+    // "government_office",
+    // "grocery_store",
+    // "gym",
+    // "hairdressing_salon",
+    // "hardware_store",
+    // "home_goods_store",
+    // "hospital",
+    // "insurance_agency",
+    // "jewelry_store",
+    // "laundry",
+    // "lawyer",
+    // "library",
+    // "liquor_store",
+    // "locksmith",
     "lodging",
-    "mosque",
+    // "mosque",
     "museum",
     "night_club",
     "park",
-    "parking",
-    "pet_store",
+    // "parking",
+    // "pet_store",
     "pharmacy",
-    "plumber",
-    "police_station",
-    "post_office",
-    "primary_school",
-    "rail_station",
-    "real_estate_agency",
+    // "plumber",
+    // "police_station",
+    // "post_office",
+    // "primary_school",
+    // "rail_station",
+    // "real_estate_agency",
     "restaurant",
-    "rv_park",
-    "school",
-    "secondary_school",
-    "shoe_store",
+    // "rv_park",
+    // "school",
+    // "secondary_school",
+    // "shoe_store",
     "shopping_center",
     "spa",
     "stadium",
-    "storage",
+    // "storage",
     "store",
-    "subway_station",
+    // "subway_station",
     "supermarket",
     "synagogue",
-    "taxi_stand",
-    "temple",
+    // "taxi_stand",
+    // "temple",
     "tourist_attraction",
     "train_station",
     "transit_station",
-    "travel_agency",
-    "university",
-    "veterinarian",
+    // "travel_agency",
+    // "university",
+    // "veterinarian",
     "zoo",
   ];
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOptionSelect = (option) => {
-    setIsMenuOpen(false);
     setSelectedOption(option);
-
     onValueSelect(option);
-  };
-
-  const handleCloseMenu = () => {
-    setIsMenuOpen(false);
-    setSelectedOption(null);
-  };
-
-  const handleMenuClose = () => {
-    if (selectedOption) {
-      handleCloseMenu();
-    }
   };
 
   return (
     <View>
-      {!isMenuOpen ? (
-        <TouchableOpacity onPress={() => setIsMenuOpen(true)}>
-          <Text>Select an option:</Text>
-          <Text style={{ fontWeight: "bold" }}>
-            {selectedOption || "Click to open menu"}
-          </Text>
-        </TouchableOpacity>
-      ) : (
-        <View style={{ maxHeight: 200 }}>
-          <ScrollView>
-            <TouchableOpacity onPress={handleCloseMenu}>
-              <Text>Close menu</Text>
-            </TouchableOpacity>
-            {options.map((option) => (
-              <TouchableOpacity
-                key={option}
-                onPress={() => handleOptionSelect(option)}
-                style={{
-                  cursor: "pointer",
-                  marginTop: 10,
-                  paddingVertical: 5,
-                }}
-              >
-                <Text>{option}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-      )}
-      {selectedOption && (
-        <TouchableOpacity onPress={handleCloseMenu}>
-          <Text>Close menu</Text>
-        </TouchableOpacity>
-      )}
+      <ScrollView horizontal={true} style={styles.container}>
+        {options.map((option) => (
+          <TouchableOpacity
+            key={option}
+            onPress={() => handleOptionSelect(option)}
+          >
+            <View
+              style={[
+                styles.content,
+                selectedOption === option && styles.selected,
+              ]}
+            >
+              <Text style={styles.text}>{option}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 };
 
 export default Menu;
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 5,
+  },
+  content: {
+    width: 70,
+    height: 60,
+    backgroundColor: "#FEEEFF",
+    marginRight: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 100,
+    padding: 10,
+    borderWidth: 2,
+    borderColor: "#802A86",
+    cursor: "pointer",
+  },
+  text: {
+    fontSize: 10,
+  },
+  selected: {
+    backgroundColor: "#C5B1C9",
+  },
+});
