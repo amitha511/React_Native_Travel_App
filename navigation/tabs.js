@@ -12,6 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { LoginStack } from "./LoginStack";
 import TipsScreen from "../screnns/TipsScreen";
 import { BuildTripStack } from "./BuildTripStack";
+import ScheduleScreen from "../screnns/ScheduleScreen";
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
@@ -62,6 +63,38 @@ const Tabs = () => {
           ),
         }}
       />
+
+      <Tab.Screen
+        name="Schedule"
+        component={ScheduleScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                top: 10,
+              }}
+            >
+              <Image
+                source={require("../assets/icons/home.png")}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? "#e32f45" : "#748c94",
+                }}
+              />
+              <Text
+                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
+              >
+                Schedule
+              </Text>
+            </View>
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="Build Trip"
         component={BuildTripStack}
@@ -92,7 +125,7 @@ const Tabs = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="SelectedAttractionsScreen"
         component={SelectedAttractionsScreen}
         options={{
@@ -121,7 +154,7 @@ const Tabs = () => {
             </View>
           ),
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name="Tips"
