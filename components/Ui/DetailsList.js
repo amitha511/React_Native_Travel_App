@@ -14,7 +14,7 @@ export default function DetailsList() {
   const route = useRoute();
   const [list, setList] = useState(route.params);
 
-  if (!list.lenght > 0) {
+  if (!(list.length > 0)) {
     return (
       <Fragment>
         <Text style={styles.text}>
