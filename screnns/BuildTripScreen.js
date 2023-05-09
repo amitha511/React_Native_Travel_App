@@ -6,6 +6,7 @@ import {
   View,
   Button,
   ImageBackground,
+  Image,
 } from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -23,6 +24,7 @@ export default function BuildTripScreen() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedType, setSelectedType] = useState("");
   const [selectedAttractions, setSelectedAttractions] = useState([]);
+  const [icon, setIcon] = useState(require("../assets/markIcon/question.png"));
 
   //---------------------Api By Text To get Coordinates-----------
   async function TextAPI(hotel) {
@@ -44,7 +46,10 @@ export default function BuildTripScreen() {
       var cordinates = response.data.results[0].location;
       console.log(cordinates);
       setLocation(cordinates.lat + "," + cordinates.lng);
+      setIcon(require("../assets/markIcon/validationIcon.png"));
     } catch (error) {
+      setIcon(require("../assets/markIcon/error.png"));
+
       console.log(error.message);
     }
   }
@@ -130,50 +135,50 @@ export default function BuildTripScreen() {
 
   return (
     <ImageBackground
-      source={require("../assets/background5.jpg")}
+      source={require("../assets/background/vecation.png")}
       style={styles.backgroundImage}
     >
-      <View style={styles.container}>
-        <Text style={styles.textHeader}>App Travel</Text>
-        <View style={styles.hotelChoose}>
+      <ScrollView style={styles.scroll}>
+        <View style={styles.container}>
+          {/* <Text style={styles.textHeader}>App Travel</Text> */}
           <Text style={styles.text}>Inset Hotel:</Text>
-          <TextInput
-            placeholder=""
-            style={styles.textInput}
-            value={hotel}
-            onChangeText={setHotel}
-          />
-          <Button
-            title="Find Hotel"
-            onPress={() => TextAPI(hotel)}
-            style={styles.emphasizedButton}
-            color="black"
-            titleStyle={styles.buttonTitle}
-          />
-        </View>
-        <Menu onValueSelect={handleMenuOptionType} />
-        <View style={styles.radioGroupContainer}>
-          {data.map((item) => (
-            <View key={item.value} style={styles.radioButtonContainer}>
-              <RadioGroup
-                radioButtons={[item]}
-                onPress={handleOptionSelect}
-                selectedButton={selectedOption === item.value}
-                layout="row"
-              />
-            </View>
-          ))}
-        </View>
-        <Button
-          style={styles.emphasizedButton}
-          color="black"
-          titleStyle={styles.buttonTitle}
-          title="Search"
-          onPress={() => NearByAPI(location, selectedOption)}
-        />
+          <View style={styles.inputView}>
+            <TextInput
+              placeholder="Enter hotel name"
+              style={styles.TextInput}
+              value={hotel}
+              placeholderTextColor="#003f5c"
+              onChangeText={setHotel}
+            />
+            <Image key={"validation"} style={styles.img} source={icon} />
+          </View>
 
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          {/* {attractions.length > 0 ? (
+          <View style={styles.validHotel}>
+            <Button title="Find Hotel" onPress={() => TextAPI(hotel)} />
+          </View>
+          <Menu onValueSelect={handleMenuOptionType} />
+          <View style={styles.radioGroupContainer}>
+            {data.map((item) => (
+              <View key={item.value} style={styles.radioButtonContainer}>
+                <RadioGroup
+                  radioButtons={[item]}
+                  onPress={handleOptionSelect}
+                  selectedButton={selectedOption === item.value}
+                  layout="row"
+                />
+              </View>
+            ))}
+          </View>
+
+          <Button
+            style={styles.emphasizedButton}
+            titleStyle={styles.buttonTitle}
+            title="Search"
+            onPress={() => NearByAPI(location, selectedOption)}
+          />
+
+          <ScrollView contentContainerStyle={styles.scrollViewContent}>
+            {/* {attractions.length > 0 ? (
             attractions.map((attraction, index) => (
               <View key={index} style={styles.attractionCard}>
                 <Text style={styles.attractionName}>{attraction.name}</Text>
@@ -197,48 +202,65 @@ export default function BuildTripScreen() {
           ) : (
             <Text style={styles.noResultsText}>No results found.</Text>
           )} */}
-        </ScrollView>
+          </ScrollView>
 
-        <StatusBar style="auto" />
-      </View>
+          <StatusBar style="auto" />
+        </View>
+      </ScrollView>
     </ImageBackground>
   );
 }
 const styles = StyleSheet.create({
-  emphasizedButton: {
-    backgroundColor: "black",
-    borderColor: "black",
-    borderWidth: 2,
+  scroll: {
+    marginTop: "40%",
+  },
+  container: {
+    paddingTop: "-30%",
+    flex: 1,
+  },
+  inputView: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginStart: "5%",
+    backgroundColor: "#F0EDED",
+    borderRadius: 10,
+    width: "90%",
+    height: 55,
+    marginBottom: 20,
+  },
+  TextInput: {
+    flex: 1,
+    padding: "2%",
+    marginLeft: 20,
+  },
+  img: {
+    margin: 5,
+    width: 25,
+    height: 25,
+    borderRadius: 10,
   },
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
   },
-  container: {
-    flex: 1,
-    // backgroundColor: "#C8FACD",
-    // paddingVertical: 20,
-    // paddingHorizontal: 16,
-  },
+
   textHeader: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 16,
   },
-  hotelChoose: {
-    marginBottom: 16,
-  },
+
   text: {
     fontSize: 18,
     marginBottom: 8,
   },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 8,
-  },
+  // textInput: {
+  //   borderWidth: 1,
+  //   borderColor: "gray",
+  //   borderRadius: 8,
+  //   paddingHorizontal: 10,
+  //   marginBottom: 8,
+  // },
   radioGroupContainer: {
     flexDirection: "column",
     marginBottom: 16,
