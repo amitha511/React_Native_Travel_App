@@ -21,7 +21,7 @@ export default function BuildTripScreen() {
   const [hotel, setHotel] = useState(""); //hotel name
   const [location, setLocation] = useState(""); //hotel coordinates
   const [attractions, setAttractions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [selectedAttractions, setSelectedAttractions] = useState([]);
   const [icon, setIcon] = useState(require("../assets/markIcon/question.png"));
@@ -149,6 +149,7 @@ export default function BuildTripScreen() {
     setHotel(event);
     setLocation("");
     findHotel = false;
+    setIcon(require("../assets/markIcon/question.png"));
   }
 
   return (
