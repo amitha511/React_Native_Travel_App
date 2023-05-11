@@ -6,6 +6,7 @@ import {
   View,
   Button,
   ImageBackground,
+  Image,
 } from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -20,12 +21,15 @@ export default function BuildTripScreen() {
   const [hotel, setHotel] = useState(""); //hotel name
   const [location, setLocation] = useState(""); //hotel coordinates
   const [attractions, setAttractions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [selectedAttractions, setSelectedAttractions] = useState([]);
-
+  const [icon, setIcon] = useState(require("../assets/markIcon/question.png"));
+  const [message, setMessage] = useState("");
+  let findHotel = false;
   //---------------------Api By Text To get Coordinates-----------
   async function TextAPI(hotel) {
+    setMessage("");
     console.log(hotel);
     const url = "https://trueway-places.p.rapidapi.com/FindPlaceByText";
     const options = {
@@ -44,7 +48,12 @@ export default function BuildTripScreen() {
       var cordinates = response.data.results[0].location;
       console.log(cordinates);
       setLocation(cordinates.lat + "," + cordinates.lng);
+      setIcon(require("../assets/markIcon/validationIcon.png"));
+      findHotel = true;
     } catch (error) {
+      setIcon(require("../assets/markIcon/error.png"));
+      findHotel = false;
+
       console.log(error.message);
     }
   }
@@ -61,6 +70,8 @@ export default function BuildTripScreen() {
         userRaduis = 1000;
       } else if (selectedOption === "public") {
         userRaduis = 2500;
+      } else if (selectedOption === "car") {
+        userRaduis = 4000;
       }
 
       const options = {
@@ -84,6 +95,14 @@ export default function BuildTripScreen() {
         console.log(data);
         clickSearchHandel(data);
       } catch (error) {
+        if (findHotel === false) {
+          setMessage(
+            "The hotel is not found, please enter the name of the hotel or the city of the hotel"
+          );
+        } else {
+          setMessage(error.message);
+        }
+        setIcon(require("../assets/markIcon/error.png"));
         console.log(error.message);
       }
     }
@@ -122,130 +141,138 @@ export default function BuildTripScreen() {
   }
   const handleMenuOptionType = (option) => {
     setSelectedType(option);
-    console.log("selectedOption " + selectedType);
+    console.log("selectedOption: " + selectedType);
   };
   function clickSearchHandel(params) {
     navigation.navigate("Details", params);
   }
 
+  function changeHotelhandler(event) {
+    setHotel(event);
+    setLocation("");
+    findHotel = false;
+    setIcon(require("../assets/markIcon/question.png"));
+  }
+
   return (
     <ImageBackground
-      source={require("../assets/background5.jpg")}
+      source={require("../assets/background/vecation.png")}
       style={styles.backgroundImage}
     >
-      <View style={styles.container}>
-        <Text style={styles.textHeader}>App Travel</Text>
-        <View style={styles.hotelChoose}>
-          <Text style={styles.text}>Inset Hotel:</Text>
-          <TextInput
-            placeholder=""
-            style={styles.textInput}
-            value={hotel}
-            onChangeText={setHotel}
-          />
-          <Button
-            title="Find Hotel"
-            onPress={() => TextAPI(hotel)}
-            style={styles.emphasizedButton}
-            color="black"
-            titleStyle={styles.buttonTitle}
-          />
-        </View>
-        <Menu onValueSelect={handleMenuOptionType} />
-        <View style={styles.radioGroupContainer}>
-          {data.map((item) => (
-            <View key={item.value} style={styles.radioButtonContainer}>
-              <RadioGroup
-                radioButtons={[item]}
-                onPress={handleOptionSelect}
-                selectedButton={selectedOption === item.value}
-                layout="row"
+      <ScrollView style={styles.scroll}>
+        <Text style={styles.errorMessage}>{message}</Text>
+        <View style={styles.container}>
+          <Text style={styles.text}>Enter Hotel:</Text>
+          <View style={styles.validHotel}>
+            <View style={styles.inputView}>
+              <TextInput
+                placeholder="Enter hotel name"
+                style={styles.TextInput}
+                value={hotel}
+                placeholderTextColor="#003f5c"
+                onChangeText={changeHotelhandler}
               />
+              <Image key={"validation"} style={styles.img} source={icon} />
             </View>
-          ))}
-        </View>
-        <Button
-          style={styles.emphasizedButton}
-          color="black"
-          titleStyle={styles.buttonTitle}
-          title="Search"
-          onPress={() => NearByAPI(location, selectedOption)}
-        />
+            <Button title="Find Hotel" onPress={() => TextAPI(hotel)} />
+          </View>
+          <View style={styles.separator} />
+          <Text style={styles.text}>Select an option:</Text>
+          <Menu onValueSelect={handleMenuOptionType} />
+          <View style={styles.separator} />
 
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          {/* {attractions.length > 0 ? (
-            attractions.map((attraction, index) => (
-              <View key={index} style={styles.attractionCard}>
-                <Text style={styles.attractionName}>{attraction.name}</Text>
-                <Text style={styles.attractionDetails}>
-                  Address: {attraction.address ? attraction.address : "NONE"}
-                </Text>
-                <Text style={styles.attractionDetails}>
-                  Phone Number:{" "}
-                  {attraction.phone_number ? attraction.phone_number : "NONE"}
-                </Text>
-                <Text style={styles.attractionDetails}>
-                  Website: {attraction.website ? attraction.website : "NONE"}
-                </Text>
-                <Button
-                  title="Select"
-                  onPress={() => handleAttractionSelect(attraction)}
-                  style={styles.selectButton}
+          <Text style={styles.text}>mobility:</Text>
+          <View style={styles.radioGroupContainer}>
+            {data.map((item) => (
+              <View key={item.value} style={styles.radioButtonItem}>
+                <RadioGroup
+                  radioButtons={[item]}
+                  onPress={handleOptionSelect}
+                  selectedButton={selectedOption === item.value}
+                  layout="row"
                 />
               </View>
-            ))
-          ) : (
-            <Text style={styles.noResultsText}>No results found.</Text>
-          )} */}
-        </ScrollView>
+            ))}
+          </View>
 
-        <StatusBar style="auto" />
-      </View>
+          <Button
+            style={styles.emphasizedButton}
+            titleStyle={styles.buttonTitle}
+            title="Search"
+            onPress={() => NearByAPI(location, selectedOption)}
+          />
+          <ScrollView
+            contentContainerStyle={styles.scrollViewContent}
+          ></ScrollView>
+          <StatusBar style="auto" />
+        </View>
+      </ScrollView>
     </ImageBackground>
   );
 }
 const styles = StyleSheet.create({
-  emphasizedButton: {
-    backgroundColor: "black",
-    borderColor: "black",
-    borderWidth: 2,
+  scroll: {
+    marginTop: "30%",
+  },
+  container: {
+    paddingTop: "-30%",
+    flex: 1,
+  },
+  inputView: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F0EDED",
+    borderRadius: 10,
+    width: "70%",
+    height: 55,
+    marginBottom: 20,
+  },
+  TextInput: {
+    flex: 1,
+    padding: "2%",
+    marginLeft: 20,
+  },
+  img: {
+    margin: 10,
+    width: 25,
+    height: 25,
+    borderRadius: 10,
   },
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
   },
-  container: {
+  validHotel: {
+    flexDirection: "row",
     flex: 1,
-    // backgroundColor: "#C8FACD",
-    // paddingVertical: 20,
-    // paddingHorizontal: 16,
-  },
-  textHeader: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  hotelChoose: {
-    marginBottom: 16,
+    justifyContent: "center",
+    alignItems: "center",
   },
   text: {
-    fontSize: 18,
-    marginBottom: 8,
+    fontSize: 15,
+    margin: 10,
   },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 8,
+  separator: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: 15,
+    margin: 10,
   },
+  errorMessage: {
+    color: "red",
+    width: "60%",
+    margin: 10,
+    // textAlign: "center",
+    paddingBottom: "5%",
+  },
+
   radioGroupContainer: {
-    flexDirection: "column",
+    marginStart: 5,
+    flexDirection: "row",
     marginBottom: 16,
   },
-  radioButtonContainer: {
-    flexDirection: "row",
-    marginVertical: 5,
+  radioButtonItem: {
+    marginLeft: 7,
+    marginRight: 7,
   },
   scrollViewContent: {
     flexGrow: 1,
