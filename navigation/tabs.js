@@ -156,7 +156,7 @@ const Tabs = () => {
         }}
       /> */}
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Tips"
         component={TipsScreen}
         options={{
@@ -185,7 +185,7 @@ const Tabs = () => {
             </View>
           ),
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name="connection"
