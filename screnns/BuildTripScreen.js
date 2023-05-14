@@ -70,6 +70,8 @@ export default function BuildTripScreen() {
         userRaduis = 1000;
       } else if (selectedOption === "public") {
         userRaduis = 2500;
+      } else if (selectedOption === "car") {
+        userRaduis = 4000;
       }
 
       const options = {
