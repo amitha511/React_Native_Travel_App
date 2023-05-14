@@ -140,7 +140,8 @@ export default function BuildTripScreen() {
     console.log("selectedOption: " + selectedType);
   };
 
-  function clickSearchHandel(params) {
+  function clickSearchHandel(params1) {
+    const params = { list: params1, type: "people" };
     navigation.navigate("Details", params);
   }
 

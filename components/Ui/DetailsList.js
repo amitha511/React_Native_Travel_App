@@ -12,7 +12,8 @@ import { useRoute } from "@react-navigation/native";
 
 export default function DetailsList() {
   const route = useRoute();
-  const [list, setList] = useState(route.params);
+  const [list, setList] = useState(route.params.list);
+  const [type, seType] = useState(route.params.type);
   const [tripData, setTripData] = useState([]);
 
   const handleButtonClick = (item) => {
