@@ -2,18 +2,29 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  FlatList,
   Dimensions,
+  View,
+  TouchableOpacity,
 } from "react-native";
 import Row from "./Row";
 import { Fragment, useState } from "react";
 import { useRoute } from "@react-navigation/native";
-import { View } from "react-native-web";
-import { Button } from "react-native";
 
 export default function DetailsList() {
   const route = useRoute();
   const [list, setList] = useState(route.params);
+  const [tripData, setTripData] = useState([]);
+
+  const handleButtonClick = (item) => {
+    setTripData((prevData) => {
+      const itemExist = prevData.find((data) => data.id === item.id);
+      if (!itemExist) {
+        return [...prevData, item];
+      } else {
+        return prevData;
+      }
+    });
+  };
 
   if (!(list.length > 0)) {
     return (
@@ -26,25 +37,24 @@ export default function DetailsList() {
   } else {
     return (
       <Fragment>
-        {console.log(list)}
         <ScrollView>
           {list.map((item, index) => (
-            <Row
-              key={index}
-              title={item.name}
-              image={require("../../assets/background3.jpg")}
-              phone={item.phone_number}
-              address={item.address}
-              website={item.website}
-            />
+            <View key={index}>
+              <Row
+                title={item.name}
+                image={require("../../assets/background3.jpg")}
+                phone={item.phone_number}
+                address={item.address}
+                website={item.website}
+              />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => handleButtonClick(item)}
+              >
+                <Text style={styles.buttonText}>Add to trip</Text>
+              </TouchableOpacity>
+            </View>
           ))}
-          <Button
-            title="Click Me"
-            onPress={() => {
-              // Add your onPress logic here
-              console.log("Button Pressed");
-            }}
-          />
         </ScrollView>
       </Fragment>
     );
@@ -57,5 +67,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: "20%",
     width: 270,
+  },
+  button: {
+    backgroundColor: "#ADD8E6",
+    padding: 10,
+    alignItems: "center",
+    margin: 10,
+    borderRadius: 4,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
   },
 });
