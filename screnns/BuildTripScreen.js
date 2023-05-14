@@ -17,7 +17,6 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function BuildTripScreen() {
   const navigation = useNavigation();
-
   const [hotel, setHotel] = useState(""); //hotel name
   const [location, setLocation] = useState(""); //hotel coordinates
   const [attractions, setAttractions] = useState([]);
@@ -27,6 +26,7 @@ export default function BuildTripScreen() {
   const [icon, setIcon] = useState(require("../assets/markIcon/question.png"));
   const [message, setMessage] = useState("");
   let findHotel = false;
+
   //---------------------Api By Text To get Coordinates-----------
   async function TextAPI(hotel) {
     setMessage("");

@@ -1,16 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import BuildTripScreen from "../screnns/BuildTripScreen";
 import HomeScreen from "../screnns/HomeScreen";
-import LoginScreen from "../screnns/LoginScreen";
 import { StyleSheet, Text, View, Image } from "react-native";
-import RegisterScreen from "../screnns/RegisterScreen";
-
-import SelectedAttractionsScreen from "../screnns/SelectedAttractionsScreen";
-
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
 import { LoginStack } from "./LoginStack";
-import TipsScreen from "../screnns/TipsScreen";
 import { BuildTripStack } from "./BuildTripStack";
 import ScheduleScreen from "../screnns/ScheduleScreen";
 const Tab = createBottomTabNavigator();
