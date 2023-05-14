@@ -9,6 +9,7 @@ import Row from "./Row";
 import { Fragment, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { View } from "react-native-web";
+import { Button } from "react-native";
 
 export default function DetailsList() {
   const route = useRoute();
@@ -38,6 +39,13 @@ export default function DetailsList() {
               website={item.website}
             />
           ))}
+          <Button
+            title="Click Me"
+            onPress={() => {
+              // Add your onPress logic here
+              console.log("Button Pressed");
+            }}
+          />
         </ScrollView>
       </Fragment>
     );
