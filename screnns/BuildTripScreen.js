@@ -66,7 +66,7 @@ export default function BuildTripScreen() {
     const url = "https://trueway-places.p.rapidapi.com/FindPlacesNearby";
     let userRaduis = 100;
     if (selectedOption != null) {
-      if (selectedOption === "walking") {
+      if (selectedOption === "car") {
         userRaduis = 1000;
       } else if (selectedOption === "public") {
         userRaduis = 2500;
@@ -160,7 +160,7 @@ export default function BuildTripScreen() {
       <ScrollView style={styles.scroll}>
         <Text style={styles.errorMessage}>{message}</Text>
         <View style={styles.container}>
-          <Text style={styles.text}>Enter Hotel:</Text>
+          <Text style={styles.text}>Enter Hotel/location:</Text>
           <View style={styles.validHotel}>
             <View style={styles.inputView}>
               <TextInput
@@ -210,7 +210,7 @@ export default function BuildTripScreen() {
 }
 const styles = StyleSheet.create({
   scroll: {
-    marginTop: "30%",
+    marginTop: "25%",
   },
   container: {
     paddingTop: "-30%",
@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    padding: 5,
   },
   text: {
     fontSize: 15,

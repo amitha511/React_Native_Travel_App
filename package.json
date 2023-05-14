@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@atiladev/usecalendar": "^0.3.3",
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^0.17.4",
@@ -22,6 +23,7 @@
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
     "expo": "^46.0.21",
+    "expo-calendar": "~10.3.0",
     "expo-status-bar": "~1.2.0",
     "firebase": "^9.21.0",
     "install": "^0.13.0",
