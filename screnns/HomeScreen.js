@@ -12,7 +12,7 @@ function HomeScreen() {
   const { userConnect, setUserConnect } = useContext(UserContext);
   return (
     <ImageBackground
-      source={require("../assets/background/vecation.png")}
+      source={require("../assets/background/airBallon.png")}
       resizeMode="cover"
       style={styles.image}
     >

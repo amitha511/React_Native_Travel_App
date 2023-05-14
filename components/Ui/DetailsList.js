@@ -42,7 +42,7 @@ export default function DetailsList() {
             <View key={index}>
               <Row
                 title={item.name}
-                image={require("../../assets/background3.jpg")}
+                image={require("../../assets/people.jpg")}
                 phone={item.phone_number}
                 address={item.address}
                 website={item.website}

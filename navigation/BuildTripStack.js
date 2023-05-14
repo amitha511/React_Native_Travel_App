@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import BuildTripScreen from "../screnns/BuildTripScreen";
 import DetailsList from "../components/Ui/DetailsList";
 const Stack = createStackNavigator();
