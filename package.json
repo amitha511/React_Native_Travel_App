@@ -29,6 +29,7 @@
     "npm": "^9.6.6",
     "react": "18.0.0",
     "react-bootstrap": "^2.7.4",
+    "react-dom": "^18.2.0",
     "react-native": "^0.71.7",
     "react-native-calendars": "^1.1295.0",
     "react-native-draggable": "^3.3.0",

@@ -38,7 +38,7 @@ export default function BuildTripScreen() {
         language: "en",
       },
       headers: {
-        "X-RapidAPI-Key": "eaf73400d8msh6eb8f4919f0ef40p15e7a9jsnd2bdd10405dd",
+        "X-RapidAPI-Key": "1f28776a25mshce47ae80ec26e34p193099jsne9d651be391e",
         "X-RapidAPI-Host": "trueway-places.p.rapidapi.com",
       },
     };
@@ -83,7 +83,7 @@ export default function BuildTripScreen() {
         },
         headers: {
           "X-RapidAPI-Key":
-            "eaf73400d8msh6eb8f4919f0ef40p15e7a9jsnd2bdd10405dd",
+            "1f28776a25mshce47ae80ec26e34p193099jsne9d651be391e",
           "X-RapidAPI-Host": "trueway-places.p.rapidapi.com",
         },
       };
@@ -134,10 +134,6 @@ export default function BuildTripScreen() {
       ...prevSelectedAttractions,
       attraction,
     ]);
-    console.log(selectedAttractions);
-    navigation.navigate("SelectedAttractionsScreen", {
-      selectedAttractions: [...selectedAttractions, attraction],
-    });
   }
   const handleMenuOptionType = (option) => {
     setSelectedType(option);
