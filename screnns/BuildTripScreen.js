@@ -139,6 +139,7 @@ export default function BuildTripScreen() {
     setSelectedType(option);
     console.log("selectedOption: " + selectedType);
   };
+
   function clickSearchHandel(params) {
     navigation.navigate("Details", params);
   }
