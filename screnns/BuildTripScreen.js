@@ -140,7 +140,10 @@ export default function BuildTripScreen() {
     console.log("selectedOption: " + selectedType);
   };
   function clickSearchHandel(params) {
-    navigation.navigate("Details", params);
+    navigation.navigate("Details", {
+      dataList: params,
+      selectedType: selectedType,
+    });
   }
 
   function changeHotelhandler(event) {
