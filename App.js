@@ -12,7 +12,6 @@ export const UserContext = createContext();
 
 export default function App() {
   const [userConnect, setUserConnect] = useState(null);
-
   return (
     <UserContext.Provider value={{ userConnect, setUserConnect }}>
       <NavigationContainer>

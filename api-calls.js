@@ -1,51 +1,41 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { UserContext } from "./App";
 import { useContext } from "react";
+import { useState, useEffect } from "react";
+
 const API_KEY = "AIzaSyDCYasArcOwcALFhIj2szug5aD2PgUQu1E";
 
 async function authenticate(mode, email, password) {
-  const url = `http://localhost:4000/auth/${mode}`;
+  //const [userIsConnected, setUserIsConnected] = useState(false);
+  const url = `http://192.168.1.56:4000/auth/${mode}`;
   const response = await axios
     .post(url, {
       email: email,
       password: password,
       returnSecureToken: true,
     })
-    .then((response) => {
+    .then(async (response) => {
       // handle success response
       console.log(response);
-      console.log(response.data.email);
+      // console.log(response.data.newUser.email)
+      if (response.status === 200) {
+        console.log("test1");
+        await AsyncStorage.setItem("success", "true");
+      }
     })
-    .catch((error) => {
+    .catch(async (error) => {
       if (error.response && error.response.status === 400) {
-        console.log(error.response.data.error); // prints the error message sent by the server
-        // handle error response
-      } else {
-        //console.log('Network error');
-        // handle other errors
+        await AsyncStorage.setItem("success", "false");
       }
     });
 }
 
-export async function createUser(email, password) {
-  await authenticate("signUp", email, password);
+export async function login(email, password) {
+  await authenticate("login", email, password);
 }
 
 export async function register(email, password) {
   await authenticate("register", email, password);
 }
-
-// const getHeader = async (type) => {
-//     const token = await AsyncStorage.getItem('userToken');
-//     const token_json = JSON.parse(token);
-//     if (type === 'refresh') {
-//         return token_json.refreshToken;
-
-//     } else {
-//         return token_json.accessToken;
-//     }
-// }
-
-// export default axios.create({
-//     baseURL: 'http://localhost:4000'
-// })
