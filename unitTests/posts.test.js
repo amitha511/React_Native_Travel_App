@@ -4,18 +4,18 @@ const mongoose = require('mongoose')
 const { response } = require('../server')
 const User = require('../models/user_model')
 
-const email = 'test@a.com'
-const password = '123456'
+const userEmail = 'test@gmail.com'
+const userPassword = '1234567'
 
 beforeAll(done => {
-    User.remove({ 'email': email }, (err) => {
+    User.remove({ 'email': userEmail }, (err) => {
         done()
     })
 })
 
 afterAll(done => {
-    User.remove({ 'email': email }, (err) => {
-        mongoosse.connection.close()
+    User.remove({ 'email': userEmail }, (err) => {
+        mongoose.connection.close()
         done()
     })
 })
@@ -28,8 +28,8 @@ describe('Testing Post API', () => {
 
     test('test registration', async () => {
         const response = await request(app).post('/auth/register').send({
-            'email': email,
-            'password': password
+            'email': userEmail,
+            'password': userPassword
         })
         expect(response.statusCode).toEqual(200)
         userId = response.body._id
@@ -37,8 +37,8 @@ describe('Testing Post API', () => {
 
     test('test login', async () => {
         const response = await request(app).post('/auth/login').send({
-            'email': email,
-            'password': password
+            'email': userEmail,
+            'password': userPassword
         })
         expect(response.statusCode).toEqual(200)
         accessToken = response.body.accessToken

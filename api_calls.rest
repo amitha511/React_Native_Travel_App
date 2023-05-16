@@ -14,7 +14,7 @@ GET http://localhost:4000/post/643ef7b9d73feddefacccf60
 ###
 
 POST http://localhost:4000/post
-Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU5NTM0MTJkYTRjYTM3YWU3NmRiYyIsImlhdCI6MTY4MzIwODUyNiwiZXhwIjoxNjgzMjEyMTI2fQ.yV_frJZFwHhuuxF7JQuclb51NrpWhhXWvtigXapPzLA
+Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NTNjMjA2NTUwYzkyMzM0ZjQ5MmMwZCIsImlhdCI6MTY4MzY0NTYyMiwiZXhwIjoxNjgzNjQ5MjIyfQ.OfpgiqQ3NCo8zZgtwq3HCImljcXnSrkIeFhEDep0DNM
 Content-Type: application/json
 
 {
@@ -28,8 +28,8 @@ POST http://localhost:4000/auth/register
 Content-Type: application/json
 
 {
-    "email": "idan@gmail.com",
-    "password": "12345"
+    "email": "benNew3@gmail.com",
+    "password": "1234567"
 }
 
 ###
@@ -38,8 +38,8 @@ POST http://localhost:4000/auth/login
 Content-Type: application/json
 
 {
-    "email": "idan@gmail.com",
-    "password": "12345"
+    "email": "benNew3@gmail.com",
+    "password": "1234567"
 }
 
 ###
@@ -48,6 +48,6 @@ POST http://localhost:4000/auth/logout
 Content-Type: application/json
 
 {
-    "email": "idan@gmail.com",
-    "password": "12345"
+    "email": "idanNew@gmail.com",
+    "password": "1234567"
 }

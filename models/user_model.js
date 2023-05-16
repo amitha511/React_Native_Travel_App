@@ -8,6 +8,9 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    refresh_tokens: {
+        type: [String]
     }
 })
 
