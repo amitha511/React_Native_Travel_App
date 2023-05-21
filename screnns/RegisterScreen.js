@@ -57,6 +57,9 @@ function RegisterScreen({ navigation }) {
         console.log(success);
         if (success == "true") {
           console.log("test2");
+          setEmail("");
+          setPassword("");
+          setMessage("");
           navigation.navigate("Home");
         } else {
           //navigation.navigate("Login");

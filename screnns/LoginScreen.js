@@ -57,6 +57,9 @@ function LoginScreen() {
         const success = await AsyncStorage.getItem("success");
         console.log(success + " aa");
         if (success == "true") {
+          setEmail("");
+          setPassword("");
+          setMessage("");
           console.log("test2");
           navigation.navigate("Home");
         } else {

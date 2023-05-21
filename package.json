@@ -35,6 +35,7 @@
     "react-dom": "^18.2.0",
     "react-native": "^0.71.7",
     "react-native-calendars": "^1.1295.0",
+    "react-native-datepicker": "^1.7.2",
     "react-native-draggable": "^3.3.0",
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-fast-image": "^8.6.3",

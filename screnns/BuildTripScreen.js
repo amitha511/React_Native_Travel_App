@@ -1,12 +1,12 @@
-import { StatusBar } from "expo-status-bar";
 import {
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   View,
   Button,
-  ImageBackground,
   Image,
+  ImageBackground,
 } from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -14,100 +14,90 @@ import RadioGroup from "react-native-radio-buttons-group";
 import { ScrollView } from "react-native";
 import Menu from "../components/Menu";
 import { useNavigation } from "@react-navigation/native";
+import DatePicker from "react-native-datepicker";
 
 export default function BuildTripScreen() {
   const navigation = useNavigation();
-  const [hotel, setHotel] = useState(""); //hotel name
-  const [location, setLocation] = useState(""); //hotel coordinates
-  const [attractions, setAttractions] = useState([]);
+  const [hotel, setHotel] = useState("");
+  const [location, setLocation] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [selectedAttractions, setSelectedAttractions] = useState([]);
   const [icon, setIcon] = useState(require("../assets/markIcon/question.png"));
   const [message, setMessage] = useState("");
   let findHotel = false;
+  const [inboundDate, setInboundDate] = useState(null);
+  const [outboundDate, setOutboundDate] = useState(null);
+  const today = new Date().toISOString().split("T")[0];
 
-  //---------------------Api By Text To get Coordinates-----------
-  async function TextAPI(hotel) {
-    setMessage("");
-    console.log(hotel);
-    const url = "https://trueway-places.p.rapidapi.com/FindPlaceByText";
-    const options = {
-      params: {
-        text: hotel,
-        language: "en",
-      },
-      headers: {
-        "X-RapidAPI-Key": "1f28776a25mshce47ae80ec26e34p193099jsne9d651be391e",
-        "X-RapidAPI-Host": "trueway-places.p.rapidapi.com",
-      },
-    };
-
-    try {
-      const response = await axios.get(url, options);
-      var cordinates = response.data.results[0].location;
-      console.log(cordinates);
-      setLocation(cordinates.lat + "," + cordinates.lng);
-      setIcon(require("../assets/markIcon/validationIcon.png"));
-      findHotel = true;
-    } catch (error) {
-      setIcon(require("../assets/markIcon/error.png"));
-      findHotel = false;
-
-      console.log(error.message);
-    }
-  }
-
-  //--------API By Coordinates---------------
   async function NearByAPI() {
-    console.log(selectedType);
-    console.log(selectedOption);
-    setAttractions([]);
-    const url = "https://trueway-places.p.rapidapi.com/FindPlacesNearby";
     let userRaduis = 100;
     if (selectedOption != null) {
-      if (selectedOption === "car") {
+      if (selectedOption === "walking") {
         userRaduis = 1000;
       } else if (selectedOption === "public") {
         userRaduis = 2500;
       } else if (selectedOption === "car") {
         userRaduis = 4000;
       }
+      axios
+        .get("https://maps.googleapis.com/maps/api/place/nearbysearch/json", {
+          params: {
+            location: location,
+            radius: userRaduis,
+            type: selectedType,
+            key: "AIzaSyChcyF4cVEDDH2QVUYwvST7QAMughUNnhU",
+          },
+        })
+        .then(function (response) {
+          console.log(response.data);
+          const data = response.data.results;
+          console.log("--------------------------------");
+          data.forEach((item, index) => {
+            if (item.photos) {
+              console.log(`Photos for item ${index}:`, item.photos);
+            } else {
+              console.log(`No photos for item ${index}`);
+            }
+          });
 
-      const options = {
-        params: {
-          location: location,
-          type: selectedType,
-          radius: userRaduis,
-          language: "en",
-        },
-        headers: {
-          "X-RapidAPI-Key":
-            "1f28776a25mshce47ae80ec26e34p193099jsne9d651be391e",
-          "X-RapidAPI-Host": "trueway-places.p.rapidapi.com",
-        },
-      };
-
-      try {
-        const response = await axios.get(url, options);
-        const data = response.data.results;
-        setAttractions(data);
-        console.log(data);
-        clickSearchHandel(data);
-      } catch (error) {
-        if (findHotel === false) {
-          setMessage(
-            "The hotel is not found, please enter the name of the hotel or the city of the hotel"
-          );
-        } else {
-          setMessage(error.message);
-        }
-        setIcon(require("../assets/markIcon/error.png"));
-        console.log(error.message);
-      }
+          clickSearchHandel(data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
     }
   }
-  //--------------------
+
+  async function TextAPI(hotel) {
+    axios
+      .get("https://maps.googleapis.com/maps/api/geocode/json", {
+        params: {
+          address: hotel,
+          key: "AIzaSyChcyF4cVEDDH2QVUYwvST7QAMughUNnhU",
+        },
+      })
+      .then(function (response) {
+        if (
+          response.data &&
+          response.data.results &&
+          response.data.results[0]
+        ) {
+          const cordinates = response.data.results[0].geometry.location;
+          setLocation(cordinates.lat + "," + cordinates.lng);
+          setIcon(require("../assets/markIcon/validationIcon.png"));
+          findHotel = true;
+          console.log(location);
+        } else {
+          console.error("No results returned from the Geocoding API");
+        }
+      })
+      .catch(function (error) {
+        setIcon(require("../assets/markIcon/error.png"));
+        findHotel = false;
+        console.error(error);
+      });
+  }
+
   const data = [
     {
       label: "Walking",
@@ -122,22 +112,16 @@ export default function BuildTripScreen() {
       value: "car",
     },
   ];
+
   function handleOptionSelect(selected) {
     const newSelectedValue = selected.find(
       (item) => item.selected === true
     ).value;
-    console.log(selectedOption);
     setSelectedOption(newSelectedValue);
   }
-  function handleAttractionSelect(attraction) {
-    setSelectedAttractions((prevSelectedAttractions) => [
-      ...prevSelectedAttractions,
-      attraction,
-    ]);
-  }
+
   const handleMenuOptionType = (option) => {
     setSelectedType(option);
-    console.log("selectedOption: " + selectedType);
   };
 
   function clickSearchHandel(params) {
@@ -162,6 +146,28 @@ export default function BuildTripScreen() {
       <ScrollView style={styles.scroll}>
         <Text style={styles.errorMessage}>{message}</Text>
         <View style={styles.container}>
+          <Text>Inbound Date:</Text>
+          <DatePicker
+            style={styles.datePicker}
+            date={inboundDate}
+            mode="date"
+            placeholder="Select Inbound Date"
+            format="YYYY-MM-DD"
+            minDate={today}
+            maxDate="2023-12-31"
+            onDateChange={(date) => setInboundDate(date)}
+          />
+          <Text>Outbound Date:</Text>
+          <DatePicker
+            style={styles.datePicker}
+            date={outboundDate}
+            mode="date"
+            placeholder="Select Outbound Date"
+            format="YYYY-MM-DD"
+            minDate={today}
+            maxDate="2023-12-31"
+            onDateChange={(date) => setOutboundDate(date)}
+          />
           <Text style={styles.text}>Enter Hotel/location:</Text>
           <View style={styles.validHotel}>
             <View style={styles.inputView}>
@@ -199,17 +205,15 @@ export default function BuildTripScreen() {
             style={styles.emphasizedButton}
             titleStyle={styles.buttonTitle}
             title="Search"
-            onPress={() => NearByAPI(location, selectedOption)}
+            onPress={() => NearByAPI(location)}
           />
-          <ScrollView
-            contentContainerStyle={styles.scrollViewContent}
-          ></ScrollView>
           <StatusBar style="auto" />
         </View>
       </ScrollView>
     </ImageBackground>
   );
 }
+
 const styles = StyleSheet.create({
   scroll: {
     marginTop: "25%",
@@ -262,10 +266,8 @@ const styles = StyleSheet.create({
     color: "red",
     width: "60%",
     margin: 10,
-    // textAlign: "center",
     paddingBottom: "5%",
   },
-
   radioGroupContainer: {
     marginStart: 5,
     flexDirection: "row",
@@ -278,27 +280,11 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1,
   },
-  attractionCard: {
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 16,
-    elevation: 4,
-  },
-  attractionName: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  attractionDetails: {
-    fontSize: 16,
-    marginBottom: 4,
-  },
-  noResultsText: {
-    fontSize: 18,
-    fontStyle: "italic",
-    textAlign: "center",
-    marginTop: 20,
-    color: "gray",
+  datePicker: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 4,
+    padding: 10,
   },
 });

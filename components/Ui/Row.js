@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 function Row(props) {
-  //props - image, title , phone, website
+  //props - image, title , phone, website, rating, businessStatus
 
   const handlePress = () => {
     if (props.website) {
@@ -30,21 +30,26 @@ function Row(props) {
             )}
           </Text>
           <Text>
-            {props.phone ? (
-              props.phone
+            Rating:
+            {props.rating ? (
+              props.rating
             ) : (
-              <Text style={{ color: "red" }}>No Phone Available</Text>
+              <Text style={{ color: "red" }}>No Rating Available</Text>
             )}
           </Text>
-          <View>
-            <TouchableOpacity onPress={handlePress}>
-              {props.website ? (
-                <Text style={{ color: "blue" }}>click here to the website</Text>
-              ) : (
-                <Text style={{ color: "red" }}>No Website Available</Text>
-              )}
-            </TouchableOpacity>
-          </View>
+          <Text>
+            Business Status:
+            {props.businessStatus ? (
+              props.businessStatus
+                .replace(/_/g, " ")
+                .toLowerCase()
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+                .join(" ")
+            ) : (
+              <Text style={{ color: "red" }}>No Business Status Available</Text>
+            )}
+          </Text>
         </View>
       </View>
     </View>
