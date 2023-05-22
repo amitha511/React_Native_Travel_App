@@ -8,14 +8,6 @@ import {
 } from "react-native";
 
 function Row(props) {
-  //props - image, title , phone, website, rating, businessStatus
-
-  const handlePress = () => {
-    if (props.website) {
-      Linking.openURL(props.website);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -50,6 +42,7 @@ function Row(props) {
               <Text style={{ color: "red" }}>No Business Status Available</Text>
             )}
           </Text>
+          {console.log(props.image)}
         </View>
       </View>
     </View>

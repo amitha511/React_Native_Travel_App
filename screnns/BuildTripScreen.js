@@ -21,50 +21,107 @@ export default function BuildTripScreen() {
   const [hotel, setHotel] = useState("");
   const [location, setLocation] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
-  const [selectedType, setSelectedType] = useState("");
+  const [selectedType, setSelectedType] = useState([]);
   const [icon, setIcon] = useState(require("../assets/markIcon/question.png"));
   const [message, setMessage] = useState("");
   let findHotel = false;
   const [inboundDate, setInboundDate] = useState(null);
   const [outboundDate, setOutboundDate] = useState(null);
   const today = new Date().toISOString().split("T")[0];
+  const [allData, setAllData] = useState([]);
 
-  async function NearByAPI() {
-    let userRaduis = 100;
-    if (selectedOption != null) {
+  // function buildTrip(selectedType, location) {
+  //   selectedType.forEach((attraction) => NearByAPI(attraction, location));
+  // }
+
+  function buildTrip(selectedType, location) {
+    NearByAPI(selectedType, location);
+  }
+  // async function NearByAPI(attraction, location) {
+  //   let userRaduis = 100;
+  //   if (selectedOption != null) {
+  //     if (selectedOption === "walking") {
+  //       userRaduis = 1000;
+  //     } else if (selectedOption === "public") {
+  //       userRaduis = 2500;
+  //     } else if (selectedOption === "car") {
+  //       userRaduis = 4000;
+  //     }
+  //     axios
+  //       .get("https://maps.googleapis.com/maps/api/place/nearbysearch/json", {
+  //         params: {
+  //           location: location,
+  //           radius: userRaduis,
+  //           type: attraction,
+  //           key: "AIzaSyChcyF4cVEDDH2QVUYwvST7QAMughUNnhU",
+  //         },
+  //       })
+  //       .then(function (response) {
+  //         console.log(response.data);
+  //         const data = response.data.results;
+  //         console.log("--------------------------------");
+  //         data.forEach((item, index) => {
+  //           if (item.photos) {
+  //             console.log(`Photos for item ${index}:`, item.photos);
+  //           } else {
+  //             console.log(`No photos for item ${index}`);
+  //           }
+  //         });
+
+  //         clickSearchHandel(data);
+  //         setHotel("");
+  //         setSelectedOption("");
+  //         setSelectedType([]);
+  //         findHotel = false;
+  //         setIcon(require("../assets/markIcon/question.png"));
+  //       })
+  //       .catch(function (error) {
+  //         console.error(error);
+  //       });
+  //   }
+  // }
+  async function NearByAPI(attractions, location) {
+    let userRadius = 100;
+    if (selectedOption !== null) {
       if (selectedOption === "walking") {
-        userRaduis = 1000;
+        userRadius = 1000;
       } else if (selectedOption === "public") {
-        userRaduis = 2500;
+        userRadius = 2500;
       } else if (selectedOption === "car") {
-        userRaduis = 4000;
+        userRadius = 4000;
       }
-      axios
-        .get("https://maps.googleapis.com/maps/api/place/nearbysearch/json", {
-          params: {
-            location: location,
-            radius: userRaduis,
-            type: selectedType,
-            key: "AIzaSyChcyF4cVEDDH2QVUYwvST7QAMughUNnhU",
-          },
-        })
-        .then(function (response) {
-          console.log(response.data);
-          const data = response.data.results;
-          console.log("--------------------------------");
-          data.forEach((item, index) => {
-            if (item.photos) {
-              console.log(`Photos for item ${index}:`, item.photos);
-            } else {
-              console.log(`No photos for item ${index}`);
-            }
-          });
 
-          clickSearchHandel(data);
-        })
-        .catch(function (error) {
-          console.error(error);
+      try {
+        const requests = attractions.map((attraction) => {
+          return axios.get(
+            "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+            {
+              params: {
+                location: location,
+                radius: userRadius,
+                type: attraction,
+                key: "AIzaSyChcyF4cVEDDH2QVUYwvST7QAMughUNnhU",
+              },
+            }
+          );
         });
+
+        const responses = await Promise.all(requests);
+        const data = responses.map((response) => response.data.results);
+
+        const allData = data.flat();
+
+        // console.log(allData);
+
+        clickSearchHandel(allData);
+        setHotel("");
+        setSelectedOption("");
+        setSelectedType([]);
+        findHotel = false;
+        setIcon(require("../assets/markIcon/question.png"));
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -86,14 +143,13 @@ export default function BuildTripScreen() {
           setLocation(cordinates.lat + "," + cordinates.lng);
           setIcon(require("../assets/markIcon/validationIcon.png"));
           findHotel = true;
-          console.log(location);
+          // console.log(location);
         } else {
           console.error("No results returned from the Geocoding API");
         }
       })
       .catch(function (error) {
         setIcon(require("../assets/markIcon/error.png"));
-        findHotel = false;
         console.error(error);
       });
   }
@@ -119,10 +175,6 @@ export default function BuildTripScreen() {
     ).value;
     setSelectedOption(newSelectedValue);
   }
-
-  const handleMenuOptionType = (option) => {
-    setSelectedType(option);
-  };
 
   function clickSearchHandel(params) {
     navigation.navigate("Details", {
@@ -167,6 +219,7 @@ export default function BuildTripScreen() {
             minDate={today}
             maxDate="2023-12-31"
             onDateChange={(date) => setOutboundDate(date)}
+            locale="en"
           />
           <Text style={styles.text}>Enter Hotel/location:</Text>
           <View style={styles.validHotel}>
@@ -184,7 +237,8 @@ export default function BuildTripScreen() {
           </View>
           <View style={styles.separator} />
           <Text style={styles.text}>Select an option:</Text>
-          <Menu onValueSelect={handleMenuOptionType} />
+          <Menu selectedType={selectedType} setSelectedType={setSelectedType} />
+
           <View style={styles.separator} />
 
           <Text style={styles.text}>mobility:</Text>
@@ -205,7 +259,7 @@ export default function BuildTripScreen() {
             style={styles.emphasizedButton}
             titleStyle={styles.buttonTitle}
             title="Search"
-            onPress={() => NearByAPI(location)}
+            onPress={() => buildTrip(selectedType, location)}
           />
           <StatusBar style="auto" />
         </View>
