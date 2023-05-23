@@ -1,6 +1,7 @@
 import request from 'supertest'
 import app from '../server'
 import mongoose from 'mongoose'
+import Post from '../models/travel_model'
 import Post from '../models/post_model'
 import User from '../models/user_model'
 
@@ -94,3 +95,4 @@ describe('Testing Auth API', () => {
     })
 
 })
+

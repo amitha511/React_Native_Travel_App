@@ -6,7 +6,8 @@ GET http://localhost:4000/
 ###
 
 GET http://localhost:4000/post
-Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU5NTM0MTJkYTRjYTM3YWU3NmRiYyIsImlhdCI6MTY4MzIwODUyNiwiZXhwIjoxNjgzMjEyMTI2fQ.yV_frJZFwHhuuxF7JQuclb51NrpWhhXWvtigXapPzLA
+Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NmIxZmVlYmQ5M2RmYmYwMjgzOTIxMSIsImlhdCI6MTY4NDc0MzgyOCwiZXhwIjoxNjg0NzY5MDI4fQ.I830PJ7jrQ9VJ0dUp2-UsEg5Pcwmucbej_GefW3GYl0
+
 ###
 
 GET http://localhost:4000/post/643ef7b9d73feddefacccf60
@@ -14,12 +15,32 @@ GET http://localhost:4000/post/643ef7b9d73feddefacccf60
 ###
 
 POST http://localhost:4000/post
-Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NTNjMjA2NTUwYzkyMzM0ZjQ5MmMwZCIsImlhdCI6MTY4MzY0NTYyMiwiZXhwIjoxNjgzNjQ5MjIyfQ.OfpgiqQ3NCo8zZgtwq3HCImljcXnSrkIeFhEDep0DNM
+Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NmIxZmVlYmQ5M2RmYmYwMjgzOTIxMSIsImlhdCI6MTY4NDc0MzgyOCwiZXhwIjoxNjg0NzY5MDI4fQ.I830PJ7jrQ9VJ0dUp2-UsEg5Pcwmucbej_GefW3GYl0
 Content-Type: application/json
 
 {
     "message": "this is my authorized new post",
-    "sender": "Idan"
+    "sender": "or"
+}
+
+###
+
+GET http://localhost:4000/travel
+Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NmIxZmVlYmQ5M2RmYmYwMjgzOTIxMSIsImlhdCI6MTY4NDc0MzgyOCwiZXhwIjoxNjg0NzY5MDI4fQ.I830PJ7jrQ9VJ0dUp2-UsEg5Pcwmucbej_GefW3GYl0
+
+###
+
+GET http://localhost:4000/travel/643ef7b9d73feddefacccf60
+
+###
+
+POST http://localhost:4000/travel
+Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NmIxZmVlYmQ5M2RmYmYwMjgzOTIxMSIsImlhdCI6MTY4NDc0MzgyOCwiZXhwIjoxNjg0NzY5MDI4fQ.I830PJ7jrQ9VJ0dUp2-UsEg5Pcwmucbej_GefW3GYl0
+Content-Type: application/json
+
+{
+    "message": "this is my authorized new travel",
+    "sender": "or"
 }
 
 ###
@@ -28,7 +49,7 @@ POST http://localhost:4000/auth/register
 Content-Type: application/json
 
 {
-    "email": "benNew3@gmail.com",
+    "email": "or@gmail.com",
     "password": "1234567"
 }
 
@@ -38,16 +59,14 @@ POST http://localhost:4000/auth/login
 Content-Type: application/json
 
 {
-    "email": "benNew3@gmail.com",
+    "email": "or@gmail.com",
     "password": "1234567"
 }
 
 ###
 
-POST http://localhost:4000/auth/logout
-Content-Type: application/json
+GET http://localhost:4000/auth/logout
+Authorization: barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NmIxZmVlYmQ5M2RmYmYwMjgzOTIxMSIsImlhdCI6MTY4NDc0MzgyOH0.Lx3lbf7PEikehXZSHA1L6kd6RrhW35fwzbbdqKm5LJ8
+// refresh token ^^
 
-{
-    "email": "idanNew@gmail.com",
-    "password": "1234567"
-}
+###

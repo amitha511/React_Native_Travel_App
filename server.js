@@ -42,6 +42,9 @@ app.use('/', indexRouter)
 const postRouter = require('./routes/post_routes')
 app.use('/post', postRouter)
 
+const travelRouter = require('./routes/travel_routes')
+app.use('/travel', travelRouter)
+
 const authRouter = require('./routes/auth_routes')
 app.use('/auth', authRouter)
 

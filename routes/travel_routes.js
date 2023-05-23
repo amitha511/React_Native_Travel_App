@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const Post = require('../controllers/posts')
+const Travel = require('../controllers/travels')
 const authenticate = require('../common/auth_middleware')
 
 /* API specifications written in YAML */
@@ -9,15 +9,15 @@ const authenticate = require('../common/auth_middleware')
 /**
 * @swagger
 * tags:
-*   name: Post Api
-*   description: The Post API
+*   name: Travel Api
+*   description: The Travel API
 */
 
 /**
 * @swagger
 * components:
 *   schemas:
-*     Post:
+*     Travel:
 *       type: object
 *       required:
 *         - message
@@ -25,62 +25,62 @@ const authenticate = require('../common/auth_middleware')
 *       properties:
 *         message:
 *           type: string
-*           description: The post text 
+*           description: The travel text 
 *         sender:
 *           type: string
-*           description: The user who send the post id
+*           description: The user who send the travel id
 *       example:
 *         message: 'this is swagger test message'
 *         sender: '1'
 */
 
-router.get('/', authenticate, Post.getPosts)
+router.get('/', authenticate, Travel.getTravels)
 
 /**
 * @swagger
-* /post/{id}:
+* /travel/{id}:
 *   get:
-*     summary: get all posts
-*     tags: [Post Api]
+*     summary: get all travels
+*     tags: [Travel Api]
 *     parameters:
 *       - in: path
 *         name: id
 *         schema:
 *           type: string
 *         required: true
-*         description: The post id
+*         description: The travel id
 *     responses:
 *       200:
-*         description: The posts list
+*         description: The travels list
 *         content:
 *           application/json:
 *             schema:
-*               $ref: '#/components/schemas/Post'
+*               $ref: '#/components/schemas/Travel'
 */
 
-router.get('/:id', authenticate, Post.getPostById)
+router.get('/:id', authenticate, Travel.getTravelById)
 
 /**
 * @swagger
-* /post:
+* /travel:
 *   post:
-*     summary: add new post
-*     tags: [Post Api]
+*     summary: add new travel
+*     tags: [Travel Api]
 *     requestBody:
 *       required: true
 *       content:
 *         application/json:
 *           schema:
-*             $ref: '#/components/schemas/Post'
+*             $ref: '#/components/schemas/Travel'
 *     responses:
 *       200:
-*         description: The posts list
+*         description: The travels list
 *         content:
 *           application/json:
 *             schema:
-*               $ref: '#/components/schemas/Post'
+*               $ref: '#/components/schemas/Travel'
 */
 
-router.post('/', authenticate, Post.addNewPost)
+router.post('/', authenticate, Travel.addNewTravel)
 
 module.exports = router;

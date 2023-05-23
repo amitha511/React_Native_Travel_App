@@ -123,30 +123,27 @@ const refresh = async (req, res, next) => {
     })
 }
 
-const logout = async (req, res, next) => {
-    const authHeaders = req.headers['authorization']
+const logout = async (req, res) => {
+    const authHeader = req.headers['authorization']
     if (authHeader == null) return sendError(res, 'authentication missing')
-    const token = authHeaders && authHeaders.split(' ')[1]
-    if (token == null) return res.sendStatus('401')
+    const refreshToken = authHeader && authHeader.split(' ')[1]
+    if (refreshToken == null) return sendError(res, 'authentication missing')
+    try {
+        const user = await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+        const userObj = await User.findById(user.id)
+        if (userObj == null) return sendError(res, 'authentication missing')
 
-    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, async (error, userInfo) => {
-        if (error) return res.status(403).send(err.message)
-        const userId = userInfo._id
-        try {
-            user = await User.findById(userId)
-            if (user == null) return res.status(403).send('invalid request')
-            if (!user.token.includes(token)) {
-                user.refresh_tokens = []
-                await user.save()
-                return res.status(403).send('invalid request')
-            }
-            user.refresh_tokens.splice(user.refresh_tokens.indexOf(token), 1)
-            await user.save()
-            res.status(200).send()
-        } catch (error) {
-            res.status(403).send(error.message)
+        if (!userObj.refresh_tokens.includes(refreshToken)) {
+            userObj.refresh_tokens = []
+            await userObj.save()
+            return sendError(res, 'fail validating token')
         }
-    })
+        userObj.refresh_tokens.splice(userObj.refresh_tokens.indexOf(refreshToken), 1)
+        await userObj.save()
+        res.status(200).send()
+    } catch (error) {
+        return sendError(res, 'fail validating token')
+    }
 }
 
 const authenticateMiddleware = async (req, res, next) => {
@@ -156,11 +153,26 @@ const authenticateMiddleware = async (req, res, next) => {
     if (refreshToken == null) return sendError(res, 'authentication missing')
     try {
         const user = await jwt.verify(refreshToken, process.env.ACCESS_TOKEN_SECRET)
+        req.body.userId = user.id
         consloe.log("token user: " + user)
         next()
     } catch (error) {
         return sendError(res, 'fail validating token')
     }
+}
+
+async function generateTokens(userId) {
+    const accessToken = jwt.sign(
+        { 'id': userId },
+        process.env.ACCESS_TOKEN_SECRET,
+        { 'expiresIn': process.env.JWT_TOKEN_EXPIRATION }
+    )
+    const refreshToken = jwt.sign(
+        { 'id': userId },
+        process.env.REFRESH_TOKEN_SECRET
+    )
+
+    return { 'accessToken': accessToken, 'refreshToken': refreshToken }
 }
 
 module.exports = {
@@ -169,5 +181,6 @@ module.exports = {
     register,
     logout,
     authenticateMiddleware,
-
+    generateTokens
 }
+
