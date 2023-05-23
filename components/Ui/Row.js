@@ -42,7 +42,7 @@ function Row(props) {
               <Text style={{ color: "red" }}>No Business Status Available</Text>
             )}
           </Text>
-          {console.log(props.image)}
+          {/*console.log(props.image)*/}
         </View>
       </View>
     </View>

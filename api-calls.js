@@ -6,7 +6,7 @@ import { useContext } from "react";
 const API_KEY = "AIzaSyDCYasArcOwcALFhIj2szug5aD2PgUQu1E";
 
 export async function authenticate(mode, email, password, setUserConnect) {
-  const url = `http://192.168.1.41:4000/auth/${mode}`;
+  const url = `http://192.168.5.206:4000/auth/${mode}`;
   await axios
     .post(url, {
       email: email,

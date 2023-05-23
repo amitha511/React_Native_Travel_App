@@ -165,6 +165,9 @@ export default function BuildTripScreen() {
     navigation.navigate("Details", {
       dataList: params,
       selectedType: selectedType,
+      duration: diff,
+      dates: dateRange,
+
     });
   }
 

@@ -5,7 +5,7 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  Image,
+  Image, Button
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
@@ -14,9 +14,11 @@ import Row from "./Row";
 
 export default function DetailsList() {
   const route = useRoute();
-  const { dataList, selectedType } = route.params;
+  const { dataList, selectedType, duration, dates } = route.params;
   const [list, setList] = useState(dataList);
   const [tripData, setTripData] = useState([]);
+  const [currentDay, setCurrentDay] = useState(0);
+  const [index, setIndex] = useState(1);
   const [images, setImages] = useState({
     bar: require("../../assets/defualtBackground/bar.jpg"),
     bowling: require("../../assets/defualtBackground/bowling.jpg"),
@@ -45,8 +47,89 @@ export default function DetailsList() {
     transit_station: require("../../assets/defualtBackground/transit_station.jpg"),
     zoo: require("../../assets/defualtBackground/zoo.jpg"),
   });
+  /*----------------------------------------
+  const axios = require('axios');
 
-  const url = useEffect(() => {
+async function getPlaces(attraction_type, api_key) {
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${attraction_type}&key=${api_key}`;
+
+    const response = await axios.get(url);
+
+    if (response.status === 200) {
+        return response.data.results;
+    } else {
+        return null;
+    }
+}
+
+async function getDistanceTime(place1, place2, api_key) {
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${place1.place_id}&destinations=${place2.place_id}&key=${api_key}`;
+
+    const response = await axios.get(url);
+
+    if (response.status === 200) {
+        const distance = response.data.rows[0].elements[0].distance.value;
+        const duration = response.data.rows[0].elements[0].duration.value;
+        return { distance, duration };
+    } else {
+        return { distance: null, duration: null };
+    }
+}
+  
+  ------------------------------------------*/
+  let attractionArray = [];
+
+  for (let i = 0; i < 3; i++) {
+    attractionArray[i] = new Array(duration);
+  }
+  for (let i = 0; i < duration; i++) {
+    attractionArray[0][i] = dates[i];
+  }
+  for (let i = 1; i < 3; i++) {
+    attractionArray[i] = [];
+    for (let j = 0; j < duration; j++) {
+      attractionArray[i][j] = {};
+    }
+  }
+
+  const filteredDataList = dataList.filter(item => item.rating !== undefined);
+  startingAttraction();
+  async function findMaxItem(ItemList) {
+    const maxRatingItem = filteredDataList.reduce((maxItem, currentItem) => {
+      if (currentItem.rating > maxItem.rating) {
+        return currentItem;
+      }
+      return maxItem;
+    });
+    return maxRatingItem;
+  }
+  //------------------------------------------------------------------
+  async function startingAttraction() {
+
+    let index = 1;
+    let currentDay = 0;
+    let maxItem = findMaxItem(filteredDataList);
+    while (index == 2 && currentDay == duration - 1) {
+
+      attractionArray[index][currentDay] = JSON.stringify(maxItem);
+      if (index == 2) {
+        currentDay++;
+        index = 1; // Reset index to 0 when moving to the next day
+      } else {
+        index++;
+      }
+      const updatedDataList = filteredDataList.filter(item => item !== maxRatingItem);
+      maxItem = findMaxItem(updatedDataList);
+    }
+    for (let i = 1; i < 3; i++) {
+      for (let j = 0; j < duration; j++) {
+        console.log(attractionArray[i][j]);
+      }
+    }
+  }
+
+  //----------------------------------------------------------------------------
+  useEffect(() => {
     const fetchImages = async () => {
       let updatedImages = {};
 
@@ -66,7 +149,7 @@ export default function DetailsList() {
             }
           } catch (error) {
             updatedImages[item.place_id] = images[selectedType];
-            console.error(error);
+            //console.error(error);
           }
         }
       }
@@ -75,8 +158,8 @@ export default function DetailsList() {
     };
 
     fetchImages();
-  }, [list]);
-  console.log(url);
+  }, []);
+  //console.log(url);
 
   const handleButtonClick = (item) => {
     setTripData((prevData) => {
@@ -88,6 +171,7 @@ export default function DetailsList() {
       }
     });
   };
+
 
   if (!(list.length > 0)) {
     return (
@@ -128,6 +212,8 @@ export default function DetailsList() {
     );
   }
 }
+
+
 
 const styles = StyleSheet.create({
   text: {
