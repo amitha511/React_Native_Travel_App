@@ -53,7 +53,7 @@ export default function DetailsList() {
       for (const item of list) {
         if (item.photos && item.photos.length > 0) {
           let photoReference = item.photos[0].photo_reference;
-          let photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=AIzaSyChcyF4cVEDDH2QVUYwvST7QAMughUNnhU`;
+          let photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=AIzaSyAlbzwSETLZjyKsbInBioNPQP85gWNPlQ0`;
 
           try {
             let response = await axios.get(photoUrl);

@@ -28,67 +28,50 @@ export default function BuildTripScreen() {
   const [inboundDate, setInboundDate] = useState(null);
   const [outboundDate, setOutboundDate] = useState(null);
   const today = new Date().toISOString().split("T")[0];
-  const [allData, setAllData] = useState([]);
-
-  // function buildTrip(selectedType, location) {
-  //   selectedType.forEach((attraction) => NearByAPI(attraction, location));
-  // }
-
+  const [dateRange, setDateRange] = useState([]);
   function buildTrip(selectedType, location) {
     NearByAPI(selectedType, location);
   }
-  // async function NearByAPI(attraction, location) {
-  //   let userRaduis = 100;
-  //   if (selectedOption != null) {
-  //     if (selectedOption === "walking") {
-  //       userRaduis = 1000;
-  //     } else if (selectedOption === "public") {
-  //       userRaduis = 2500;
-  //     } else if (selectedOption === "car") {
-  //       userRaduis = 4000;
-  //     }
-  //     axios
-  //       .get("https://maps.googleapis.com/maps/api/place/nearbysearch/json", {
-  //         params: {
-  //           location: location,
-  //           radius: userRaduis,
-  //           type: attraction,
-  //           key: "AIzaSyChcyF4cVEDDH2QVUYwvST7QAMughUNnhU",
-  //         },
-  //       })
-  //       .then(function (response) {
-  //         console.log(response.data);
-  //         const data = response.data.results;
-  //         console.log("--------------------------------");
-  //         data.forEach((item, index) => {
-  //           if (item.photos) {
-  //             console.log(`Photos for item ${index}:`, item.photos);
-  //           } else {
-  //             console.log(`No photos for item ${index}`);
-  //           }
-  //         });
 
-  //         clickSearchHandel(data);
-  //         setHotel("");
-  //         setSelectedOption("");
-  //         setSelectedType([]);
-  //         findHotel = false;
-  //         setIcon(require("../assets/markIcon/question.png"));
-  //       })
-  //       .catch(function (error) {
-  //         console.error(error);
-  //       });
-  //   }
-  // }
+  const calculateDateDifference = () => {
+    const date1 = new Date(inboundDate);
+
+    const date2 = new Date(outboundDate);
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+
+  useEffect(() => {
+    if (inboundDate && outboundDate) {
+      const range = getDatesBetween(
+        new Date(inboundDate),
+        new Date(outboundDate)
+      );
+      setDateRange(range);
+    }
+  }, [inboundDate, outboundDate]);
+
+  const getDatesBetween = (start, end) => {
+    const dateArray = [];
+    let currentDate = new Date(start);
+
+    while (currentDate <= end) {
+      dateArray.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dateArray;
+  };
   async function NearByAPI(attractions, location) {
     let userRadius = 100;
     if (selectedOption !== null) {
       if (selectedOption === "walking") {
-        userRadius = 1000;
-      } else if (selectedOption === "public") {
         userRadius = 2500;
+      } else if (selectedOption === "public") {
+        userRadius = 5000;
       } else if (selectedOption === "car") {
-        userRadius = 4000;
+        userRadius = 10000;
       }
 
       try {
@@ -100,7 +83,7 @@ export default function BuildTripScreen() {
                 location: location,
                 radius: userRadius,
                 type: attraction,
-                key: "AIzaSyChcyF4cVEDDH2QVUYwvST7QAMughUNnhU",
+                key: "AIzaSyAlbzwSETLZjyKsbInBioNPQP85gWNPlQ0",
               },
             }
           );
@@ -110,8 +93,10 @@ export default function BuildTripScreen() {
         const data = responses.map((response) => response.data.results);
 
         const allData = data.flat();
-
-        // console.log(allData);
+        console.log(allData); //all the data that is send to the details components
+        console.log(allData.map((item) => item.rating)); // all the data that is send to the details components
+        console.log(selectedType); // an array of type's the user selected
+        console.log(dateRange); // an array of dates , //<Text key={date}>{date.toISOString().split("T")[0]}</Text>
 
         clickSearchHandel(allData);
         setHotel("");
@@ -130,7 +115,7 @@ export default function BuildTripScreen() {
       .get("https://maps.googleapis.com/maps/api/geocode/json", {
         params: {
           address: hotel,
-          key: "AIzaSyChcyF4cVEDDH2QVUYwvST7QAMughUNnhU",
+          key: "AIzaSyAlbzwSETLZjyKsbInBioNPQP85gWNPlQ0",
         },
       })
       .then(function (response) {
@@ -189,6 +174,7 @@ export default function BuildTripScreen() {
     findHotel = false;
     setIcon(require("../assets/markIcon/question.png"));
   }
+  const diff = calculateDateDifference();
 
   return (
     <ImageBackground
@@ -221,6 +207,19 @@ export default function BuildTripScreen() {
             onDateChange={(date) => setOutboundDate(date)}
             locale="en"
           />
+          <Text>
+            {diff > 7 ? (
+              <Text style={{ color: "red" }}>
+                There are too many days the max is 7
+              </Text>
+            ) : (
+              `Days Difference: ${diff}`
+            )}
+          </Text>
+          {diff <= 7 &&
+            dateRange.map((date) => (
+              <Text key={date}>{date.toISOString().split("T")[0]}</Text>
+            ))}
           <Text style={styles.text}>Enter Hotel/location:</Text>
           <View style={styles.validHotel}>
             <View style={styles.inputView}>
