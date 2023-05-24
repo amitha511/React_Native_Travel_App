@@ -9,6 +9,7 @@ import {
 import Recommends from "../components/Recommends";
 import { UserContext } from "../App";
 
+//homeScreen
 function HomeScreen() {
   const { userConnect, setUserConnect } = useContext(UserContext);
 
