@@ -68,9 +68,8 @@ export default function BuildTripScreen() {
     let daysKeyArrays = [];
     let maxItem; //item with max rating
     let numDays = calculateDateDifference(); // number days
-    for (let i = 0; i < numDays + 1; i++) {
-      // i = num of day
 
+    for (let i = 0; i < numDays + 1; i++) {
       for (let j = 0; j < 3; j++) {
         maxItem = findMaxItem(filteredDataList);
 
@@ -87,6 +86,7 @@ export default function BuildTripScreen() {
     }
 
     //print the map to the terminal:
+
     for (let i = 0; i < diff + 1; i++) {
       console.log("day " + i + ":");
       for (let j = 0; j < 3; j++) {
