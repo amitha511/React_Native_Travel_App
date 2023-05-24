@@ -8,10 +8,6 @@ import React, { createContext, useState, useEffect } from "react";
 import HomeScreen from "./screnns/HomeScreen";
 import Tabs from "./navigation/tabs";
 
-import { LogBox } from "react-native";
-
-LogBox.ignoreAllLogs();
-
 import { LoginStack } from "./navigation/LoginStack";
 
 const Stack = createStackNavigator();

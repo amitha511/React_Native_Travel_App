@@ -11,12 +11,11 @@ import {
 import axios from "axios";
 import { useState, useEffect } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
-import { ScrollView, LogBox } from "react-native";
+import { ScrollView } from "react-native";
 import Menu from "../components/Menu";
 import { useNavigation } from "@react-navigation/native";
 import DatePicker from "react-native-datepicker";
 
-LogBox.ignoreAllLogs();
 export default function BuildTripScreen() {
   const navigation = useNavigation();
   const [hotel, setHotel] = useState("");
@@ -86,7 +85,6 @@ export default function BuildTripScreen() {
     }
 
     //print the map to the terminal:
-
     for (let i = 0; i < diff + 1; i++) {
       console.log("day " + i + ":");
       for (let j = 0; j < 3; j++) {
@@ -244,6 +242,8 @@ export default function BuildTripScreen() {
             placeholder="Select Inbound Date"
             format="YYYY-MM-DD"
             minDate={today}
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
             maxDate="2023-12-31"
             onDateChange={(date) => setInboundDate(date)}
           />
@@ -255,6 +255,8 @@ export default function BuildTripScreen() {
             placeholder="Select Outbound Date"
             format="YYYY-MM-DD"
             minDate={today}
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
             maxDate="2023-12-31"
             onDateChange={(date) => setOutboundDate(date)}
             locale="en"
