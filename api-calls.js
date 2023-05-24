@@ -7,6 +7,7 @@ const API_KEY = "AIzaSyDCYasArcOwcALFhIj2szug5aD2PgUQu1E";
 
 export async function authenticate(mode, email, password, setUserConnect) {
   const url = `http://172.20.10.3:4000/auth/${mode}`;
+
   await axios
     .post(url, {
       email: email,
