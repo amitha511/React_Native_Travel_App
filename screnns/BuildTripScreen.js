@@ -11,11 +11,12 @@ import {
 import axios from "axios";
 import { useState, useEffect } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
-import { ScrollView } from "react-native";
+import { ScrollView, LogBox } from "react-native";
 import Menu from "../components/Menu";
 import { useNavigation } from "@react-navigation/native";
 import DatePicker from "react-native-datepicker";
 
+LogBox.ignoreAllLogs();
 export default function BuildTripScreen() {
   const navigation = useNavigation();
   const [hotel, setHotel] = useState("");
@@ -28,13 +29,14 @@ export default function BuildTripScreen() {
   const [outboundDate, setOutboundDate] = useState(null);
   const today = new Date().toISOString().split("T")[0];
   const [dateRange, setDateRange] = useState([]);
+
+  //search btn
   function buildTrip(selectedType, location) {
     NearByAPI(selectedType, location);
   }
 
   const calculateDateDifference = () => {
     const date1 = new Date(inboundDate);
-
     const date2 = new Date(outboundDate);
     const diffTime = Math.abs(date2 - date1);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -62,55 +64,37 @@ export default function BuildTripScreen() {
   }
 
   async function startingAttraction(filteredDataList) {
-    // console.log("Function!!!!!!!!!!!!!!!!");
-    let attractionArray = [];
+    const mapCalender = new Map(); //map => (numday , [attractionArray])
+    let daysKeyArrays = [];
+    let maxItem; //item with max rating
+    let numDays = calculateDateDifference(); // number days
+    for (let i = 0; i < numDays + 1; i++) {
+      // i = num of day
 
-    for (let i = 0; i < 3; i++) {
-      attractionArray[i] = new Array(diff);
-    }
-    for (let i = 0; i < diff; i++) {
-      attractionArray[0][i] = dateRange[i];
-      //  console.log("attraction date: " + attractionArray[0][i]);
-    }
-    for (let i = 1; i < 3; i++) {
-      attractionArray[i] = [];
-      for (let j = 0; j < diff; j++) {
-        attractionArray[i][j] = {};
-      }
-    }
-    let index = 1;
-    let currentDay = 0;
-    let flag = 0;
-    //console.log("before max item");
-    let maxItem = findMaxItem(filteredDataList);
-    //console.log("after max item");
-    //console.log("diff is:" + diff);
-    while (true) {
-      //console.log("max item!!!!!" + maxItem)
-      attractionArray[index][currentDay] = JSON.stringify(maxItem);
-      //console.log("attraction!!!!!!!!!!!!!!!!! on index" + index + "on day" + currentDay + attractionArray[index][currentDay]);
-      if (index == 2 && currentDay == diff - 1)
-        break;
-      else if (index == 2) {
-        currentDay++;
-        index = 1; // Reset index to 0 when moving to the next day
-      } else {
-        index++;
-      }
-      //const updatedDataList = filteredDataList.filter(item => JSON.stringify(item).name !== JSON.stringify(maxItem).name);
-      console.log(filteredDataList);
-      const updatedDataList = filteredDataList.filter(item => item.name);
-      maxItem = findMaxItem(updatedDataList);
+      for (let j = 0; j < 3; j++) {
+        maxItem = findMaxItem(filteredDataList);
 
+        //j = num of attraction in a day
+        let objItem = Object.values(maxItem)[2]; //get the obj
+        daysKeyArrays.push(objItem);
+        const updatedDataList = filteredDataList.filter(
+          (item) => item.place_id !== objItem.place_id
+        );
+        filteredDataList = updatedDataList;
+      }
+      mapCalender.set(i, daysKeyArrays);
+      daysKeyArrays = [];
     }
-    for (let i = 1; i < 3; i++) {
-      for (let j = 0; j < diff; j++) {
-        // console.log(attractionArray[i][j]);
+
+    //print the map to the terminal:
+    for (let i = 0; i < diff + 1; i++) {
+      console.log("day " + i + ":");
+      for (let j = 0; j < 3; j++) {
+        console.log("attra " + j + ":");
+        console.log(mapCalender.get(i)[j].name);
       }
     }
   }
-
-
 
   const getDatesBetween = (start, end) => {
     const dateArray = [];
@@ -160,10 +144,12 @@ export default function BuildTripScreen() {
         //console.log(allData.map((item) => item.rating)); // all the data that is send to the details components
         //console.log(selectedType); // an array of type's the user selected
         //console.log(dateRange); // an array of dates , //<Text key={date}>{date.toISOString().split("T")[0]}</Text>
-        const filteredDataList = allData.filter(item => item.rating !== undefined);
+        const filteredDataList = allData.filter(
+          (item) => item.rating !== undefined
+        );
         startingAttraction(filteredDataList);
         clickSearchHandel(filteredDataList);
-        setHotel("");
+        // setHotel("");
         setSelectedOption("");
         setSelectedType([]);
         findHotel = false;
@@ -231,7 +217,6 @@ export default function BuildTripScreen() {
       selectedType: selectedType,
       duration: diff,
       dates: dateRange,
-
     });
   }
 
@@ -242,8 +227,6 @@ export default function BuildTripScreen() {
     setIcon(require("../assets/markIcon/question.png"));
   }
   const diff = calculateDateDifference();
-
-
 
   return (
     <ImageBackground
