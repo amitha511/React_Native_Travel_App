@@ -1,34 +1,25 @@
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Text,
   ScrollView,
   StyleSheet,
-  Dimensions,
   View,
   TouchableOpacity,
+  Image, Button
 } from "react-native";
-import Row from "./Row";
-import { Fragment, useState } from "react";
 import { useRoute } from "@react-navigation/native";
+import axios from "axios";
+
+import Row from "./Row";
 
 export default function DetailsList() {
   const route = useRoute();
-
-  const { dataList, selectedType } = route.params;
+  const { dataList, selectedType, duration, dates } = route.params;
   const [list, setList] = useState(dataList);
   const [tripData, setTripData] = useState([]);
-
-  const handleButtonClick = (item) => {
-    setTripData((prevData) => {
-      const itemExist = prevData.find((data) => data.id === item.id);
-      if (!itemExist) {
-        return [...prevData, item];
-      } else {
-        return prevData;
-      }
-    });
-  };
-
-  const images = {
+  const [currentDay, setCurrentDay] = useState(0);
+  const [index, setIndex] = useState(1);
+  const [images, setImages] = useState({
     bar: require("../../assets/defualtBackground/bar.jpg"),
     bowling: require("../../assets/defualtBackground/bowling.jpg"),
     cafe: require("../../assets/defualtBackground/cafe.jpg"),
@@ -55,7 +46,133 @@ export default function DetailsList() {
     train_station: require("../../assets/defualtBackground/train_station.jpg"),
     transit_station: require("../../assets/defualtBackground/transit_station.jpg"),
     zoo: require("../../assets/defualtBackground/zoo.jpg"),
+  });
+  /*----------------------------------------
+  const axios = require('axios');
+
+async function getPlaces(attraction_type, api_key) {
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${attraction_type}&key=${api_key}`;
+
+    const response = await axios.get(url);
+
+    if (response.status === 200) {
+        return response.data.results;
+    } else {
+        return null;
+    }
+}
+
+async function getDistanceTime(place1, place2, api_key) {
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${place1.place_id}&destinations=${place2.place_id}&key=${api_key}`;
+
+    const response = await axios.get(url);
+
+    if (response.status === 200) {
+        const distance = response.data.rows[0].elements[0].distance.value;
+        const duration = response.data.rows[0].elements[0].duration.value;
+        return { distance, duration };
+    } else {
+        return { distance: null, duration: null };
+    }
+}
+  
+  ------------------------------------------*/
+  // let attractionArray = [];
+
+  // for (let i = 0; i < 3; i++) {
+  //   attractionArray[i] = new Array(duration);
+  // }
+  // for (let i = 0; i < duration; i++) {
+  //   attractionArray[0][i] = dates[i];
+  // }
+  // for (let i = 1; i < 3; i++) {
+  //   attractionArray[i] = [];
+  //   for (let j = 0; j < duration; j++) {
+  //     attractionArray[i][j] = {};
+  //   }
+  // }
+
+  // const filteredDataList = dataList.filter(item => item.rating !== undefined);
+  // async function findMaxItem(ItemList) {
+  //   const maxRatingItem = filteredDataList.reduce((maxItem, currentItem) => {
+  //     if (currentItem.rating > maxItem.rating) {
+  //       return currentItem;
+  //     }
+  //     return maxItem;
+  //   });
+  //   return maxRatingItem;
+  // }
+  //------------------------------------------------------------------
+
+  // async function startingAttraction() {
+
+  //   let index = 1;
+  //   let currentDay = 0;
+  //   let maxItem = findMaxItem(filteredDataList);
+  //   while (index == 2 && currentDay == duration - 1) {
+
+  //     attractionArray[index][currentDay] = JSON.stringify(maxItem);
+  //     console.log("attraction!!!!!!!!!!!!!!!!!" + attractionArray[index][currentDay]);
+  //     if (index == 2) {
+  //       currentDay++;
+  //       index = 1; // Reset index to 0 when moving to the next day
+  //     } else {
+  //       index++;
+  //     }
+  //     const updatedDataList = filteredDataList.filter(item => item !== maxRatingItem);
+  //     maxItem = findMaxItem(updatedDataList);
+  //   }
+  //   for (let i = 1; i < 3; i++) {
+  //     for (let j = 0; j < duration; j++) {
+  //       //console.log(attractionArray[i][j]);
+  //     }
+  //   }
+  // }
+
+  //----------------------------------------------------------------------------
+  useEffect(() => {
+    const fetchImages = async () => {
+      let updatedImages = {};
+
+      for (const item of list) {
+        if (item.photos && item.photos.length > 0) {
+          let photoReference = item.photos[0].photo_reference;
+          let photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=AIzaSyAlbzwSETLZjyKsbInBioNPQP85gWNPlQ0`;
+
+          try {
+            let response = await axios.get(photoUrl);
+            if (response.status === 200 && response.request.responseURL) {
+              updatedImages[item.place_id] = {
+                uri: response.request.responseURL,
+              };
+            } else {
+              updatedImages[item.place_id] = images[selectedType];
+            }
+          } catch (error) {
+            updatedImages[item.place_id] = images[selectedType];
+            //console.error(error);
+          }
+        }
+      }
+
+      setImages(updatedImages);
+    };
+
+    fetchImages();
+  }, []);
+  //console.log(url);
+
+  const handleButtonClick = (item) => {
+    setTripData((prevData) => {
+      const itemExist = prevData.find((data) => data.id === item.id);
+      if (!itemExist) {
+        return [...prevData, item];
+      } else {
+        return prevData;
+      }
+    });
   };
+
 
   if (!(list.length > 0)) {
     return (
@@ -73,11 +190,16 @@ export default function DetailsList() {
             <View key={index}>
               <Row
                 title={item.name}
-                image={images[selectedType]}
-                phone={item.phone_number}
-                address={item.address}
-                website={item.website}
+                image={
+                  images[item.place_id]
+                    ? images[item.place_id]
+                    : images[selectedType]
+                }
+                address={item.vicinity}
+                rating={item.rating}
+                businessStatus={item.business_status}
               />
+
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => handleButtonClick(item)}
@@ -91,6 +213,8 @@ export default function DetailsList() {
     );
   }
 }
+
+
 
 const styles = StyleSheet.create({
   text: {

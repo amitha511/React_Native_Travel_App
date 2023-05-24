@@ -9,6 +9,7 @@ import {
 import Recommends from "../components/Recommends";
 import { UserContext } from "../App";
 
+//homeScreen
 function HomeScreen() {
   const { userConnect, setUserConnect } = useContext(UserContext);
 
@@ -19,28 +20,26 @@ function HomeScreen() {
 
   return (
     <ImageBackground
-      source={require("../assets/background/homeBack.png")}
+      source={require("../assets/background/airBallon.png")}
       resizeMode="cover"
       style={styles.image}
     >
-      <View style={styles.container}>
-        <ScrollView style={styles.scroll}>
-          <View style={styles.recommends}>
-            <Text style={styles.text}>Hotels:</Text>
-            <Recommends onValueSelect={handleMenuOptionType} />
-          </View>
+      <ScrollView style={styles.scroll}>
+        <View style={styles.recommends}>
+          <Text style={styles.text}>Hotels:</Text>
+          <Recommends onValueSelect={handleMenuOptionType} />
+        </View>
 
-          <View style={styles.recommends}>
-            <Text style={styles.text}>Attractions:</Text>
-            <Recommends onValueSelect={handleMenuOptionType} />
-          </View>
+        <View style={styles.recommends}>
+          <Text style={styles.text}>Attractions:</Text>
+          <Recommends onValueSelect={handleMenuOptionType} />
+        </View>
 
-          <View style={styles.recommends}>
-            <Text style={styles.text}>Restaurants:</Text>
-            <Recommends onValueSelect={handleMenuOptionType} />
-          </View>
-        </ScrollView>
-      </View>
+        <View style={styles.recommends}>
+          <Text style={styles.text}>Restaurants:</Text>
+          <Recommends onValueSelect={handleMenuOptionType} />
+        </View>
+      </ScrollView>
     </ImageBackground>
   );
 }
@@ -49,12 +48,11 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   scroll: {
-    marginTop: "20%",
+    marginTop: "50%",
   },
   container: {
     paddingTop: "-30%",
     flex: 1,
-    width: "100%",
   },
   image: {
     flex: 1,

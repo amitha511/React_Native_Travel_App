@@ -16,6 +16,9 @@ import { UserContext } from "../App";
 import { register } from "../api-calls";
 import { useNavigation } from "@react-navigation/native";
 
+import { login } from "../api-calls";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 function LoginScreen() {
   const navigation = useNavigation();
 
@@ -45,12 +48,29 @@ function LoginScreen() {
     } else if (!validatePassword(password)) {
       setMessage("Password should include numbers");
     } else {
-      await register(email, password);
+      // setMessage("");
+      // setPassword("");
+      // setEmail("");
+      // setUserConnect(email);
+      await login(email, password);
+      try {
+        const success = await AsyncStorage.getItem("success");
+        console.log(success + " aa");
+        if (success == "true") {
+          setEmail("");
+          setPassword("");
+          setMessage("");
+          console.log("test2");
+          navigation.navigate("Home");
+        } else {
+          navigation.navigate("Login");
+          console.log("test3");
+          setMessage("Login failed");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
-    // setMessage("");
-    // setPassword("");
-    // setEmail("");
-    // setUserConnect(email);
   };
 
   function clickRegisterHandler() {
@@ -152,6 +172,7 @@ const styles = StyleSheet.create({
   },
   TextInput: {
     height: "50%",
+    width: "70%",
     flex: 1,
     padding: "2%",
     marginLeft: 20,

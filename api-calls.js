@@ -1,51 +1,36 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "./App";
 import { useContext } from "react";
+
 const API_KEY = "AIzaSyDCYasArcOwcALFhIj2szug5aD2PgUQu1E";
 
-async function authenticate(mode, email, password) {
-  const url = `http://localhost:4000/auth/${mode}`;
-  const response = await axios
+export async function authenticate(mode, email, password, setUserConnect) {
+  const url = `http://172.20.10.3:4000/auth/${mode}`;
+  await axios
     .post(url, {
       email: email,
       password: password,
       returnSecureToken: true,
     })
-    .then((response) => {
-      // handle success response
-      console.log(response);
-      console.log(response.data.email);
+    .then(async (response) => {
+      if (response.status === 200) {
+        await AsyncStorage.setItem("success", "true");
+        if (setUserConnect) setUserConnect(true); // Update context
+      }
     })
-    .catch((error) => {
+    .catch(async (error) => {
       if (error.response && error.response.status === 400) {
-        console.log(error.response.data.error); // prints the error message sent by the server
-        // handle error response
-      } else {
-        //console.log('Network error');
-        // handle other errors
+        await AsyncStorage.setItem("success", "false");
+        if (setUserConnect) setUserConnect(false); // Update context
       }
     });
 }
 
-export async function createUser(email, password) {
-  await authenticate("signUp", email, password);
+export async function login(email, password, setUserConnect) {
+  await authenticate("login", email, password, setUserConnect);
 }
 
-export async function register(email, password) {
-  await authenticate("register", email, password);
+export async function register(email, password, setUserConnect) {
+  await authenticate("register", email, password, setUserConnect);
 }
-
-// const getHeader = async (type) => {
-//     const token = await AsyncStorage.getItem('userToken');
-//     const token_json = JSON.parse(token);
-//     if (type === 'refresh') {
-//         return token_json.refreshToken;
-
-//     } else {
-//         return token_json.accessToken;
-//     }
-// }
-
-// export default axios.create({
-//     baseURL: 'http://localhost:4000'
-// })
