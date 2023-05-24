@@ -24,7 +24,6 @@ export default function BuildTripScreen() {
   const [selectedType, setSelectedType] = useState([]);
   const [icon, setIcon] = useState(require("../assets/markIcon/question.png"));
   const [message, setMessage] = useState("");
-  let findHotel = false;
   const [inboundDate, setInboundDate] = useState(null);
   const [outboundDate, setOutboundDate] = useState(null);
   const today = new Date().toISOString().split("T")[0];
@@ -51,6 +50,67 @@ export default function BuildTripScreen() {
       setDateRange(range);
     }
   }, [inboundDate, outboundDate]);
+
+  async function findMaxItem(ItemList) {
+    const maxRatingItem = ItemList.reduce((maxItem, currentItem) => {
+      if (currentItem.rating > maxItem.rating) {
+        return currentItem;
+      }
+      return maxItem;
+    });
+    return maxRatingItem;
+  }
+
+  async function startingAttraction(filteredDataList) {
+    // console.log("Function!!!!!!!!!!!!!!!!");
+    let attractionArray = [];
+
+    for (let i = 0; i < 3; i++) {
+      attractionArray[i] = new Array(diff);
+    }
+    for (let i = 0; i < diff; i++) {
+      attractionArray[0][i] = dateRange[i];
+      //  console.log("attraction date: " + attractionArray[0][i]);
+    }
+    for (let i = 1; i < 3; i++) {
+      attractionArray[i] = [];
+      for (let j = 0; j < diff; j++) {
+        attractionArray[i][j] = {};
+      }
+    }
+    let index = 1;
+    let currentDay = 0;
+    let flag = 0;
+    //console.log("before max item");
+    let maxItem = findMaxItem(filteredDataList);
+    //console.log("after max item");
+    //console.log("diff is:" + diff);
+    while (true) {
+      //console.log("max item!!!!!" + maxItem)
+      attractionArray[index][currentDay] = JSON.stringify(maxItem);
+      //console.log("attraction!!!!!!!!!!!!!!!!! on index" + index + "on day" + currentDay + attractionArray[index][currentDay]);
+      if (index == 2 && currentDay == diff - 1)
+        break;
+      else if (index == 2) {
+        currentDay++;
+        index = 1; // Reset index to 0 when moving to the next day
+      } else {
+        index++;
+      }
+      //const updatedDataList = filteredDataList.filter(item => JSON.stringify(item).name !== JSON.stringify(maxItem).name);
+      console.log(filteredDataList);
+      const updatedDataList = filteredDataList.filter(item => item.name);
+      maxItem = findMaxItem(updatedDataList);
+
+    }
+    for (let i = 1; i < 3; i++) {
+      for (let j = 0; j < diff; j++) {
+        // console.log(attractionArray[i][j]);
+      }
+    }
+  }
+
+
 
   const getDatesBetween = (start, end) => {
     const dateArray = [];
@@ -91,21 +151,25 @@ export default function BuildTripScreen() {
 
         const responses = await Promise.all(requests);
         const data = responses.map((response) => response.data.results);
-
+        const convert = data.map((item) => {
+          id: item.place_id;
+          name: item.name;
+        });
         const allData = data.flat();
-        console.log(allData); //all the data that is send to the details components
-        console.log(allData.map((item) => item.rating)); // all the data that is send to the details components
-        console.log(selectedType); // an array of type's the user selected
-        console.log(dateRange); // an array of dates , //<Text key={date}>{date.toISOString().split("T")[0]}</Text>
-
-        clickSearchHandel(allData);
+        //console.log(allData); //all the data that is send to the details components
+        //console.log(allData.map((item) => item.rating)); // all the data that is send to the details components
+        //console.log(selectedType); // an array of type's the user selected
+        //console.log(dateRange); // an array of dates , //<Text key={date}>{date.toISOString().split("T")[0]}</Text>
+        const filteredDataList = allData.filter(item => item.rating !== undefined);
+        startingAttraction(filteredDataList);
+        clickSearchHandel(filteredDataList);
         setHotel("");
         setSelectedOption("");
         setSelectedType([]);
         findHotel = false;
         setIcon(require("../assets/markIcon/question.png"));
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     }
   }
@@ -130,12 +194,12 @@ export default function BuildTripScreen() {
           findHotel = true;
           // console.log(location);
         } else {
-          console.error("No results returned from the Geocoding API");
+          // console.error("No results returned from the Geocoding API");
         }
       })
       .catch(function (error) {
         setIcon(require("../assets/markIcon/error.png"));
-        console.error(error);
+        //console.error(error);
       });
   }
 
@@ -178,6 +242,8 @@ export default function BuildTripScreen() {
     setIcon(require("../assets/markIcon/question.png"));
   }
   const diff = calculateDateDifference();
+
+
 
   return (
     <ImageBackground

@@ -77,56 +77,57 @@ async function getDistanceTime(place1, place2, api_key) {
 }
   
   ------------------------------------------*/
-  let attractionArray = [];
+  // let attractionArray = [];
 
-  for (let i = 0; i < 3; i++) {
-    attractionArray[i] = new Array(duration);
-  }
-  for (let i = 0; i < duration; i++) {
-    attractionArray[0][i] = dates[i];
-  }
-  for (let i = 1; i < 3; i++) {
-    attractionArray[i] = [];
-    for (let j = 0; j < duration; j++) {
-      attractionArray[i][j] = {};
-    }
-  }
+  // for (let i = 0; i < 3; i++) {
+  //   attractionArray[i] = new Array(duration);
+  // }
+  // for (let i = 0; i < duration; i++) {
+  //   attractionArray[0][i] = dates[i];
+  // }
+  // for (let i = 1; i < 3; i++) {
+  //   attractionArray[i] = [];
+  //   for (let j = 0; j < duration; j++) {
+  //     attractionArray[i][j] = {};
+  //   }
+  // }
 
-  const filteredDataList = dataList.filter(item => item.rating !== undefined);
-  startingAttraction();
-  async function findMaxItem(ItemList) {
-    const maxRatingItem = filteredDataList.reduce((maxItem, currentItem) => {
-      if (currentItem.rating > maxItem.rating) {
-        return currentItem;
-      }
-      return maxItem;
-    });
-    return maxRatingItem;
-  }
+  // const filteredDataList = dataList.filter(item => item.rating !== undefined);
+  // async function findMaxItem(ItemList) {
+  //   const maxRatingItem = filteredDataList.reduce((maxItem, currentItem) => {
+  //     if (currentItem.rating > maxItem.rating) {
+  //       return currentItem;
+  //     }
+  //     return maxItem;
+  //   });
+  //   return maxRatingItem;
+  // }
   //------------------------------------------------------------------
-  async function startingAttraction() {
 
-    let index = 1;
-    let currentDay = 0;
-    let maxItem = findMaxItem(filteredDataList);
-    while (index == 2 && currentDay == duration - 1) {
+  // async function startingAttraction() {
 
-      attractionArray[index][currentDay] = JSON.stringify(maxItem);
-      if (index == 2) {
-        currentDay++;
-        index = 1; // Reset index to 0 when moving to the next day
-      } else {
-        index++;
-      }
-      const updatedDataList = filteredDataList.filter(item => item !== maxRatingItem);
-      maxItem = findMaxItem(updatedDataList);
-    }
-    for (let i = 1; i < 3; i++) {
-      for (let j = 0; j < duration; j++) {
-        console.log(attractionArray[i][j]);
-      }
-    }
-  }
+  //   let index = 1;
+  //   let currentDay = 0;
+  //   let maxItem = findMaxItem(filteredDataList);
+  //   while (index == 2 && currentDay == duration - 1) {
+
+  //     attractionArray[index][currentDay] = JSON.stringify(maxItem);
+  //     console.log("attraction!!!!!!!!!!!!!!!!!" + attractionArray[index][currentDay]);
+  //     if (index == 2) {
+  //       currentDay++;
+  //       index = 1; // Reset index to 0 when moving to the next day
+  //     } else {
+  //       index++;
+  //     }
+  //     const updatedDataList = filteredDataList.filter(item => item !== maxRatingItem);
+  //     maxItem = findMaxItem(updatedDataList);
+  //   }
+  //   for (let i = 1; i < 3; i++) {
+  //     for (let j = 0; j < duration; j++) {
+  //       //console.log(attractionArray[i][j]);
+  //     }
+  //   }
+  // }
 
   //----------------------------------------------------------------------------
   useEffect(() => {
