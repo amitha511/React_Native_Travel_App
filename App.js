@@ -26,7 +26,7 @@ export default function App() {
     <UserContext.Provider value={{ userConnect, setUserConnect }}>
       <NavigationContainer>
         <Tabs />
-        {/* {userConnect ? <Tabs /> : <LoginStack />} */}
+        {/* {userConnect ? <Tabs /> : <LoginScreen />} */}
       </NavigationContainer>
     </UserContext.Provider>
   );

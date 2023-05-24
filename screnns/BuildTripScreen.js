@@ -69,7 +69,10 @@ export default function BuildTripScreen() {
     let numDays = calculateDateDifference(); // number days
     for (let i = 0; i < numDays; i++) {
       // i = num of day
+
       for (let j = 0; j < 3; j++) {
+        maxItem = findMaxItem(filteredDataList);
+
         //j = num of attraction in a day
         let objItem = Object.values(maxItem)[2]; //get the obj
         daysKeyArrays.push(objItem);
@@ -87,7 +90,7 @@ export default function BuildTripScreen() {
       console.log("day " + i + ":");
       for (let j = 0; j < 3; j++) {
         console.log("attra " + j + ":");
-        console.log(mapCalender.get(i)[j]);
+        console.log(mapCalender.get(i)[j].name);
       }
     }
   }
