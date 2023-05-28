@@ -72,7 +72,6 @@ export default function BuildTripScreen() {
     for (let i = 0; i < numDays + 1; i++) {
       for (let j = 0; j < 3; j++) {
         maxItem = findMaxItem(filteredDataList);
-
         //j = num of attraction in a day
         let objItem = Object.values(maxItem)[2]; //get the obj
         daysKeyArrays.push(objItem);
@@ -86,7 +85,6 @@ export default function BuildTripScreen() {
     }
 
     //print the map to the terminal:
-
     for (let i = 0; i < diff + 1; i++) {
       console.log("day " + i + ":");
       for (let j = 0; j < 3; j++) {
@@ -107,6 +105,7 @@ export default function BuildTripScreen() {
 
     return dateArray;
   };
+
   async function NearByAPI(attractions, location) {
     let userRadius = 100;
     if (selectedOption !== null) {
@@ -135,10 +134,6 @@ export default function BuildTripScreen() {
 
         const responses = await Promise.all(requests);
         const data = responses.map((response) => response.data.results);
-        const convert = data.map((item) => {
-          id: item.place_id;
-          name: item.name;
-        });
         const allData = data.flat();
         //console.log(allData); //all the data that is send to the details components
         //console.log(allData.map((item) => item.rating)); // all the data that is send to the details components
@@ -155,7 +150,7 @@ export default function BuildTripScreen() {
         findHotel = false;
         setIcon(require("../assets/markIcon/question.png"));
       } catch (error) {
-        // console.error(error);
+        console.error(error);
       }
     }
   }

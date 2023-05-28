@@ -5,7 +5,8 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  Image, Button
+  Image,
+  Button,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
@@ -173,7 +174,6 @@ async function getDistanceTime(place1, place2, api_key) {
     });
   };
 
-
   if (!(list.length > 0)) {
     return (
       <Fragment>
@@ -213,8 +213,6 @@ async function getDistanceTime(place1, place2, api_key) {
     );
   }
 }
-
-
 
 const styles = StyleSheet.create({
   text: {

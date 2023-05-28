@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import BuildTripScreen from "../screnns/BuildTripScreen";
 import DetailsList from "../components/Ui/DetailsList";
+import { useState } from "react";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 

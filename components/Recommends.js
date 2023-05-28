@@ -7,31 +7,25 @@ import {
   StyleSheet,
 } from "react-native";
 import Row from "./Ui/Row";
-const options = [
-  { title: "try1", phone: "rowwww", website: "dfgfdf" },
-  { title: "try1", phone: "rowwww", website: "dfgfdf" },
 
-  { title: "try1", phone: "rowwww", website: "dfgfdf" },
-];
-function Recommends() {
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-    onValueSelect(option);
-  };
-
+function Recommends(props) {
+  const recommends = props.dataApi;
   //row => props - image, title , phone, website
 
   return (
-    <View>
-      <ScrollView horizontal={true} style={styles.container}>
-        {options.map((item) => (
+    <View style={styles.container}>
+      <ScrollView
+        horizontal={true}
+        style={styles.scrollView}
+        showsHorizontalScrollIndicator={false}
+      >
+        {recommends.map((item) => (
           <Row
+            key={item.title}
             image={require("../assets/people.jpg")}
-            phone={item.phone_number}
-            address={item.address}
-            website={item.website}
+            address={item.vicinity}
+            rating={item.rating}
+            businessStatus={item.business_status}
           ></Row>
         ))}
       </ScrollView>
@@ -43,6 +37,17 @@ export default Recommends;
 
 const styles = StyleSheet.create({
   container: {
+    margin: 5,
+
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 5,
+    borderRadius: 10,
+    backgroundColor: "white",
+  },
+  scrollView: {
     margin: 5,
   },
   content: {

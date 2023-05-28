@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,17 +6,57 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
+import axios from "axios";
 import Recommends from "../components/Recommends";
-import { UserContext } from "../App";
 
 //homeScreen
 function HomeScreen() {
-  const { userConnect, setUserConnect } = useContext(UserContext);
+  const [dataApi, setDataAPI] = useState([]);
 
-  const handleMenuOptionType = (option) => {
-    setSelectedType(option);
-    console.log("selectedOption: " + selectedType);
-  };
+  async function NearByAPI(attractions, location) {
+    let userRadius = 100;
+    selectedOption = "car";
+    if (selectedOption !== null) {
+      if (selectedOption === "walking") {
+        userRadius = 2500;
+      } else if (selectedOption === "public") {
+        userRadius = 5000;
+      } else if (selectedOption === "car") {
+        userRadius = 10000;
+      }
+
+      try {
+        const requests = attractions.map((attraction) => {
+          return axios.get(
+            "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+            {
+              params: {
+                location: "32.109333,34.855499",
+                radius: 10000,
+                type: "bar",
+                key: "AIzaSyAlbzwSETLZjyKsbInBioNPQP85gWNPlQ0",
+              },
+            }
+          );
+        });
+
+        const responses = await Promise.all(requests);
+        const data = responses.map((response) => response.data.results);
+        const allData = data.flat();
+        const filteredDataList = allData.filter(
+          (item) => item.rating !== undefined
+        );
+        setDataAPI(allData);
+      } catch (error) {
+        console.error(error);
+        return error;
+      }
+    }
+  }
+
+  useEffect(() => {
+    NearByAPI(["bar"], "a");
+  }, []);
 
   return (
     <ImageBackground
@@ -25,19 +65,20 @@ function HomeScreen() {
       style={styles.image}
     >
       <ScrollView style={styles.scroll}>
+        {console.log(dataApi)}
         <View style={styles.recommends}>
           <Text style={styles.text}>Hotels:</Text>
-          <Recommends onValueSelect={handleMenuOptionType} />
+          <Recommends dataApi={dataApi} />
         </View>
 
         <View style={styles.recommends}>
           <Text style={styles.text}>Attractions:</Text>
-          <Recommends onValueSelect={handleMenuOptionType} />
+          <Recommends dataApi={dataApi} />
         </View>
 
-        <View style={styles.recommends}>
+        <View key={"3"} style={styles.recommends}>
           <Text style={styles.text}>Restaurants:</Text>
-          <Recommends onValueSelect={handleMenuOptionType} />
+          <Recommends dataApi={dataApi} />
         </View>
       </ScrollView>
     </ImageBackground>

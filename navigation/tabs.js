@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screnns/HomeScreen";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { LoginStack } from "./LoginStack";
+import { useState } from "react";
 import { BuildTripStack } from "./BuildTripStack";
 import ScheduleScreen from "../screnns/ScheduleScreen";
 const Tab = createBottomTabNavigator();
@@ -26,7 +27,7 @@ const Tabs = () => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeScreen} // Pass the dataApi state as a prop
         options={{
           tabBarIcon: ({ focused }) => (
             <View
