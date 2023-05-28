@@ -28,6 +28,7 @@ export default function BuildTripScreen() {
   const [outboundDate, setOutboundDate] = useState(null);
   const today = new Date().toISOString().split("T")[0];
   const [dateRange, setDateRange] = useState([]);
+  const [displayData, setDisplayData] = useState([]);
 
   //search btn
   function buildTrip(selectedType, location) {
@@ -85,13 +86,25 @@ export default function BuildTripScreen() {
     }
 
     //print the map to the terminal:
+
+    // for (let i = 0; i < diff + 1; i++) {
+    //   console.log("day " + i + ":");
+    //   for (let j = 0; j < 3; j++) {
+    //     console.log("attra " + j + ":");
+    //     const map = mapCalender.get(i)[j].name;
+    //     console.log(mapCalender.get(i)[j].name);
+    //   }
+    // }
+    let tempData = [];
     for (let i = 0; i < diff + 1; i++) {
-      console.log("day " + i + ":");
       for (let j = 0; j < 3; j++) {
-        console.log("attra " + j + ":");
+        const map = mapCalender.get(i)[j].name;
         console.log(mapCalender.get(i)[j].name);
+
+        tempData.push(`day ${i}: attra ${j}: ${map}`);
       }
     }
+    setDisplayData(tempData);
   }
 
   const getDatesBetween = (start, end) => {
@@ -274,6 +287,9 @@ export default function BuildTripScreen() {
             dateRange.map((date) => (
               <Text key={date}>{date.toISOString().split("T")[0]}</Text>
             ))}
+          {/* {displayData.map((item, index) => (
+            <Text key={index}>{item}</Text>
+          ))} */}
           <Text style={styles.text}>Enter Hotel/location:</Text>
           <View style={styles.validHotel}>
             <View style={styles.inputView}>
