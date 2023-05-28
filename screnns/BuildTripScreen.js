@@ -86,12 +86,35 @@ export default function BuildTripScreen() {
 
     //print the map to the terminal:
     for (let i = 0; i < diff + 1; i++) {
-      console.log("day " + i + ":");
+      //console.log("day " + i + ":");
       for (let j = 0; j < 3; j++) {
-        console.log("attra " + j + ":");
-        console.log(mapCalender.get(i)[j].name);
+        //console.log("attra " + j + ":");
+        //console.log(mapCalender.get(i)[j]);
       }
     }
+    var oneItem;
+    (oneItem = {
+      dates: dateRange,
+      attractions: new Map([
+        ["attraction1", "Description 1"],
+        ["attraction2", "Description 2"],
+        ["attraction3", "Description 3"],
+      ]),
+    }),
+      console.log(mapCalender.get(0));
+    await axios.post("http://192.168.5.206:4000/travel/add", oneItem)
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+      });
+
   }
 
   const getDatesBetween = (start, end) => {
