@@ -2,11 +2,12 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "./App";
 import { useContext } from "react";
-
+import Tabs from "./navigation/tabs";
+import { LoginStack } from "./navigation/LoginStack";
 const API_KEY = "AIzaSyDCYasArcOwcALFhIj2szug5aD2PgUQu1E";
 
 export async function authenticate(mode, email, password, setUserConnect) {
-  const url = `http://172.20.10.3:4000/auth/${mode}`;
+  const url = `http://10.0.0.5:4000/auth/${mode}`;
 
   await axios
     .post(url, {

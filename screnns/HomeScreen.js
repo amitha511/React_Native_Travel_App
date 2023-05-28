@@ -4,13 +4,16 @@ import {
   Text,
   ImageBackground,
   StyleSheet,
+  Button,
   ScrollView,
 } from "react-native";
 import axios from "axios";
+import { UserContext } from "../App";
 import Recommends from "../components/Recommends";
-
 //homeScreen
 function HomeScreen() {
+  const { userConnect, setUserConnect } = useContext(UserContext);
+
   const [dataApi, setDataAPI] = useState([]);
 
   async function NearByAPI(attractions, location) {
@@ -58,12 +61,18 @@ function HomeScreen() {
     NearByAPI(["bar"], "a");
   }, []);
 
+  function logout() {
+    setUserConnect(false);
+  }
   return (
     <ImageBackground
       source={require("../assets/background/airBallon.png")}
       resizeMode="cover"
       style={styles.image}
     >
+      <View>
+        <Button title="Logout" onPress={logout}></Button>
+      </View>
       <ScrollView style={styles.scroll}>
         {console.log(dataApi)}
         <View style={styles.recommends}>

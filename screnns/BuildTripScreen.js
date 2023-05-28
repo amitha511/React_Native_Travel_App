@@ -11,12 +11,12 @@ import {
 import axios from "axios";
 import { useState, useEffect } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
-import { ScrollView, LogBox } from "react-native";
+import { ScrollView } from "react-native";
 import Menu from "../components/Menu";
 import { useNavigation } from "@react-navigation/native";
 import DatePicker from "react-native-datepicker";
+import { Calendar } from "react-native-calendars";
 
-LogBox.ignoreAllLogs();
 export default function BuildTripScreen() {
   const navigation = useNavigation();
   const [hotel, setHotel] = useState("");
@@ -29,6 +29,7 @@ export default function BuildTripScreen() {
   const [outboundDate, setOutboundDate] = useState(null);
   const today = new Date().toISOString().split("T")[0];
   const [dateRange, setDateRange] = useState([]);
+  const [displayData, setDisplayData] = useState([]);
 
   //search btn
   function buildTrip(selectedType, location) {
@@ -85,13 +86,47 @@ export default function BuildTripScreen() {
     }
 
     //print the map to the terminal:
+
     for (let i = 0; i < diff + 1; i++) {
       console.log("day " + i + ":");
       for (let j = 0; j < 3; j++) {
         console.log("attra " + j + ":");
-        console.log(mapCalender.get(i)[j].name);
+        const map = mapCalender.get(i)[j];
+        console.log(mapCalender.get(i)[j]);
       }
     }
+
+    let tempData = [];
+    // for (let i = 0; i < diff + 1; i++) {
+    //   //console.log("day " + i + ":");
+    //   for (let j = 0; j < 3; j++) {
+    //     //console.log("attra " + j + ":");
+    //     //console.log(mapCalender.get(i)[j]);
+    //   }
+    // }
+    var oneItem;
+    (oneItem = {
+      dates: dateRange,
+      days: {
+        day1: { dailyAttractions: mapCalender.get(0) },
+        day2: { dailyAttractions: mapCalender.get(1) },
+        day3: { dailyAttractions: mapCalender.get(3) },
+      },
+    }),
+      await axios
+        .post("http://10.0.0.5:4000/travel/add", oneItem)
+        .then(console.log(typeof oneItem.attractions))
+        .catch((error) => {
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            console.log(error.request);
+          } else {
+            console.log("Error", error.message);
+          }
+        });
   }
 
   const getDatesBetween = (start, end) => {
@@ -239,6 +274,8 @@ export default function BuildTripScreen() {
             placeholder="Select Inbound Date"
             format="YYYY-MM-DD"
             minDate={today}
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
             maxDate="2023-12-31"
             onDateChange={(date) => setInboundDate(date)}
           />
@@ -250,6 +287,8 @@ export default function BuildTripScreen() {
             placeholder="Select Outbound Date"
             format="YYYY-MM-DD"
             minDate={today}
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
             maxDate="2023-12-31"
             onDateChange={(date) => setOutboundDate(date)}
             locale="en"
@@ -267,6 +306,9 @@ export default function BuildTripScreen() {
             dateRange.map((date) => (
               <Text key={date}>{date.toISOString().split("T")[0]}</Text>
             ))}
+          {/* {displayData.map((item, index) => (
+            <Text key={index}>{item}</Text>
+          ))} */}
           <Text style={styles.text}>Enter Hotel/location:</Text>
           <View style={styles.validHotel}>
             <View style={styles.inputView}>

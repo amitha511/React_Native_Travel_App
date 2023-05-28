@@ -48,10 +48,6 @@ function LoginScreen() {
     } else if (!validatePassword(password)) {
       setMessage("Password should include numbers");
     } else {
-      // setMessage("");
-      // setPassword("");
-      // setEmail("");
-      // setUserConnect(email);
       await login(email, password);
       try {
         const success = await AsyncStorage.getItem("success");
@@ -60,8 +56,8 @@ function LoginScreen() {
           setEmail("");
           setPassword("");
           setMessage("");
-          console.log("test2");
-          navigation.navigate("Home");
+          console.log("login success user");
+          setUserConnect(true);
         } else {
           navigation.navigate("Login");
           console.log("test3");
