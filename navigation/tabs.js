@@ -5,6 +5,8 @@ import { LoginStack } from "./LoginStack";
 import { useState } from "react";
 import { BuildTripStack } from "./BuildTripStack";
 import ScheduleScreen from "../screnns/ScheduleScreen";
+import { ProfileStack } from "./ProfileStack";
+
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
@@ -180,8 +182,8 @@ const Tabs = () => {
       /> */}
 
       <Tab.Screen
-        name="connection"
-        component={LoginStack}
+        name="Profile"
+        component={ProfileStack}
         options={{
           tabBarIcon: ({ focused }) => (
             <View
@@ -203,7 +205,7 @@ const Tabs = () => {
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
               >
-                DEFAULT
+                PROFILE
               </Text>
             </View>
           ),

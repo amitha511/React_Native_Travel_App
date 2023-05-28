@@ -4,7 +4,6 @@ import LoginScreen from "../screnns/LoginScreen";
 import RegisterScreen from "../screnns/RegisterScreen";
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
 
 export const LoginStack = () => {
   return (

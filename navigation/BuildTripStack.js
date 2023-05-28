@@ -4,7 +4,6 @@ import BuildTripScreen from "../screnns/BuildTripScreen";
 import DetailsList from "../components/Ui/DetailsList";
 import { useState } from "react";
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
 
 export const BuildTripStack = () => {
   return (

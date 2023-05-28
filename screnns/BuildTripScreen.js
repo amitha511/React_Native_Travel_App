@@ -268,33 +268,38 @@ export default function BuildTripScreen() {
       <ScrollView style={styles.scroll}>
         <Text style={styles.errorMessage}>{message}</Text>
         <View style={styles.container}>
-          <Text>Inbound Date:</Text>
-          <DatePicker
-            style={styles.datePicker}
-            date={inboundDate}
-            mode="date"
-            placeholder="Select Inbound Date"
-            format="YYYY-MM-DD"
-            minDate={today}
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            maxDate="2023-12-31"
-            onDateChange={(date) => setInboundDate(date)}
-          />
-          <Text>Outbound Date:</Text>
-          <DatePicker
-            style={styles.datePicker}
-            date={outboundDate}
-            mode="date"
-            placeholder="Select Outbound Date"
-            format="YYYY-MM-DD"
-            minDate={today}
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            maxDate="2023-12-31"
-            onDateChange={(date) => setOutboundDate(date)}
-            locale="en"
-          />
+          <View style={styles.calenderTitle}>
+            <Text style={styles.calenderTitle.title}>Outbound Date:</Text>
+            <Text>Inbound Date:</Text>
+          </View>
+          <View style={styles.calender}>
+            <DatePicker
+              style={styles.datePicker}
+              date={inboundDate}
+              mode="date"
+              placeholder="Select Inbound Date"
+              format="YYYY-MM-DD"
+              minDate={today}
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              maxDate="2023-12-31"
+              onDateChange={(date) => setInboundDate(date)}
+            />
+            <DatePicker
+              style={styles.datePicker}
+              date={outboundDate}
+              mode="date"
+              placeholder="Select Outbound Date"
+              format="YYYY-MM-DD"
+              minDate={today}
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              maxDate="2023-12-31"
+              onDateChange={(date) => setOutboundDate(date)}
+              locale="en"
+            />
+          </View>
+
           <Text>
             {diff > 7 ? (
               <Text style={{ color: "red" }}>
@@ -424,11 +429,24 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1,
   },
-  datePicker: {
-    width: "100%",
-    borderWidth: 1,
+  calender: {
     borderColor: "#ccc",
+    borderWidth: 1,
+    flexDirection: "row",
     borderRadius: 4,
-    padding: 10,
+    margin: 10,
+  },
+  calenderTitle: {
+    title: {
+      marginRight: 102,
+    },
+    marginLeft: 15,
+
+    flexDirection: "row",
+    width: "50%",
+  },
+  datePicker: {
+    width: "50%",
+    padding: 5,
   },
 });
