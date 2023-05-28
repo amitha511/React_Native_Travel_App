@@ -107,26 +107,28 @@ export default function BuildTripScreen() {
     var oneItem;
     (oneItem = {
       dates: dateRange,
-      days: {
+      attractions: {
         day1: { dailyAttractions: mapCalender.get(0) },
         day2: { dailyAttractions: mapCalender.get(1) },
         day3: { dailyAttractions: mapCalender.get(3) },
       },
     }),
-      await axios
-        .post("http://10.0.0.5:4000/travel/add", oneItem)
-        .then(console.log(typeof oneItem.attractions))
-        .catch((error) => {
-          if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            console.log(error.request);
-          } else {
-            console.log("Error", error.message);
-          }
-        });
+      console.log(mapCalender.get(0));
+
+    await axios
+      .post("http://10.0.0.5:4000/travel/add", oneItem)
+      .then(console.log(typeof oneItem.attractions))
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log("Error", error.message);
+        }
+      });
   }
 
   const getDatesBetween = (start, end) => {
