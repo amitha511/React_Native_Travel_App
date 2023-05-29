@@ -11,12 +11,12 @@ function Schedule() {
 
   useEffect(() => {
     axios
-      .get("http://192.168.1.70:4000/travel/get")
+      .get("http://10.0.0.5:4000/travel/get")
       .then((response) => {
         setResponseData(response.data);
         setReceiveData(true);
       })
-      .catch((error) => console.error(`Error${error}`));
+      .catch((error) => console.error(`Error${error} !`));
   }, []);
 
   let data = [];
