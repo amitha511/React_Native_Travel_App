@@ -16,6 +16,7 @@ import { register } from "../api-calls";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 function RegisterScreen({ navigation }) {
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const { userConnect, setUserConnect } = useContext(UserContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -51,7 +52,7 @@ function RegisterScreen({ navigation }) {
       // setEmail("");
       // setUserConnect(email);
       // await register(email, password)
-      await register(email, password);
+      await register(email, password, setUserConnect, setUserDetails);
       try {
         const success = await AsyncStorage.getItem("success");
         console.log(success);

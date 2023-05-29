@@ -10,8 +10,12 @@ import {
 import axios from "axios";
 import { UserContext } from "../App";
 import Recommends from "../components/Recommends";
+import { userDetails } from "../App";
+
 //homeScreen
 function HomeScreen() {
+  const { userDetails, setUserDetails } = useContext(UserContext);
+
   const { userConnect, setUserConnect } = useContext(UserContext);
 
   const [dataApi, setDataAPI] = useState([]);
@@ -59,6 +63,7 @@ function HomeScreen() {
 
   useEffect(() => {
     NearByAPI(["bar"], "a");
+    console.log(userDetails);
   }, []);
 
   function logout() {
@@ -74,7 +79,6 @@ function HomeScreen() {
         <Button title="Logout" onPress={logout}></Button>
       </View>
       <ScrollView style={styles.scroll}>
-        {console.log(dataApi)}
         <View style={styles.recommends}>
           <Text style={styles.text}>Hotels:</Text>
           <Recommends dataApi={dataApi} />

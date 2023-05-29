@@ -13,6 +13,7 @@ export const UserContext = createContext();
 
 export default function App() {
   const [userConnect, setUserConnect] = useState(false);
+  const [userDetails, setUserDetails] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -22,9 +23,10 @@ export default function App() {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userConnect, setUserConnect }}>
+    <UserContext.Provider
+      value={{ userConnect, setUserConnect, userDetails, setUserDetails }}
+    >
       <NavigationContainer>
-        {/* <Tabs /> */}
         {userConnect ? <Tabs /> : <LoginStack name="Login" />}
       </NavigationContainer>
     </UserContext.Provider>

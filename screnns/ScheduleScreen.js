@@ -8,14 +8,16 @@ import moment from "moment";
 function Schedule() {
   const [receiveData, setReceiveData] = useState(false);
   const [responseData, setResponseData] = useState(null);
+
   useEffect(async () => {
     await axios
       .get("http://192.168.1.70:4000/travel/get")
+
       .then((response) => {
         setResponseData(response.data);
         setReceiveData(true);
       })
-      .catch((error) => console.error(`Error${error}`));
+      .catch((error) => console.error(`Error${error} !`));
   }, []);
 
   // let data = [];

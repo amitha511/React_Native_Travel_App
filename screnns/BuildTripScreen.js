@@ -116,7 +116,7 @@ export default function BuildTripScreen() {
       console.log(mapCalender.get(0));
 
     await axios
-      .post("http://192.168.1.70:4000/travel/add", oneItem)
+      .post("http://10.0.0.5:4000/travel/add", oneItem)
       .then(console.log(typeof oneItem.attractions))
       .catch((error) => {
         if (error.response) {
