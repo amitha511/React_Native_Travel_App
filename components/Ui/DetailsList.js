@@ -50,35 +50,22 @@ export default function DetailsList() {
   });
 
   useEffect(() => {
-    const fetchImages = async () => {
-      let updatedImages = {};
+    let updatedImages = {};
 
-      for (const item of list) {
-        if (item.photos && item.photos.length > 0) {
-          let photoReference = item.photos[0].photo_reference;
-          let photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=AIzaSyAlbzwSETLZjyKsbInBioNPQP85gWNPlQ0`;
-
-          try {
-            let response = await axios.get(photoUrl);
-            if (response.status === 200 && response.request.responseURL) {
-              updatedImages[item.place_id] = {
-                uri: response.request.responseURL,
-              };
-            } else {
-              updatedImages[item.place_id] = images[selectedType];
-            }
-          } catch (error) {
-            updatedImages[item.place_id] = images[selectedType];
-            //console.error(error);
-          }
-        }
+    for (const item of list) {
+      if (item.photos && item.photos.length > 0) {
+        let photoReference = item.photos[0].photo_reference;
+        updatedImages[item.place_id] = {
+          uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=AIzaSyAlbzwSETLZjyKsbInBioNPQP85gWNPlQ0`,
+        };
+      } else {
+        updatedImages[item.place_id] = images[selectedType];
       }
+    }
 
-      setImages(updatedImages);
-    };
-
-    fetchImages();
+    setImages(updatedImages);
   }, []);
+
   //console.log(url);
 
   const handleButtonClick = (item) => {
@@ -117,13 +104,6 @@ export default function DetailsList() {
                 rating={item.rating}
                 businessStatus={item.business_status}
               />
-
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => handleButtonClick(item)}
-              >
-                <Text style={styles.buttonText}>Add to trip</Text>
-              </TouchableOpacity>
             </View>
           ))}
         </ScrollView>

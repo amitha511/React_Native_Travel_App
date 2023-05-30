@@ -104,19 +104,28 @@ export default function BuildTripScreen() {
     //     //console.log(mapCalender.get(i)[j]);
     //   }
     // }
-    var oneItem;
-    (oneItem = {
-      dates: dateRange,
-      attractions: {
-        day1: { dailyAttractions: mapCalender.get(0) },
-        day2: { dailyAttractions: mapCalender.get(1) },
-        day3: { dailyAttractions: mapCalender.get(3) },
-      },
-    }),
-      console.log(mapCalender.get(0));
+    // var oneItem;
+    // (oneItem = {
+    //   dates: dateRange,
+    //   attractions: {
+    //     day1: { dailyAttractions: mapCalender.get(0) },
+    //     day2: { dailyAttractions: mapCalender.get(1) },
+    //     day3: { dailyAttractions: mapCalender.get(3) },
+    //   },
+    // }),
+    //   console.log(mapCalender.get(0));
+    let attractions = {};
 
+    for (let i = 0; i < mapCalender.size; i++) {
+      attractions[`day${i + 1}`] = { dailyAttractions: mapCalender.get(i) };
+    }
+
+    let oneItem = {
+      dates: dateRange,
+      attractions: attractions,
+    };
     await axios
-      .post("http://10.0.0.5:4000/travel/add", oneItem)
+      .post("http://192.168.1.54:4000/travel/add", oneItem)
       .then(console.log(typeof oneItem.attractions))
       .catch((error) => {
         if (error.response) {
