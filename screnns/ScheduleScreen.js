@@ -21,7 +21,7 @@ function Schedule() {
     console.log("enter from the delete");
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.1.54:4000/travel/get");
+        const response = await axios.get("http://192.168.1.41:4000/travel/get");
         setResponseData(response.data);
         setReceiveData(true);
       } catch (error) {
@@ -68,7 +68,7 @@ function Schedule() {
     let id = responseData[currentTrip]._id;
     try {
       await axios
-        .delete(`http://192.168.1.54:4000/travel/delete/${id}`)
+        .delete(`http://192.168.1.41:4000/travel/delete/${id}`)
         .then((response) => {
           console.log(`Deleted id: ${id}`);
           setRefreshData(true);
@@ -125,11 +125,13 @@ function Schedule() {
   };
   return receiveData ? (
     <View contentContainerStyle={styles.container}>
-      <Text>page number {currentTrip + 1}</Text>
+      <Text>
+        page number {currentTrip + 1} of {responseData.length}
+      </Text>
       <View style={styles.buttonContainer}>
         <Button title="Reload Trip" onPress={handleRefresh} />
-        <Button title="Next Trip" onPress={handleNextTrip} />
         <Button title="Previous Trip" onPress={handlePreviousTrip} />
+        <Button title="Next Trip" onPress={handleNextTrip} />
         <Button title="delete Trip" onPress={deleteAttraction} />
       </View>
 
