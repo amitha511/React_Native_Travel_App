@@ -13,7 +13,7 @@ export async function authenticate(
   setUserConnect,
   setUserDetails
 ) {
-  const url = `http://10.160.20.200:4000/auth/${mode}`;
+  const url = `http://192.168.5.206:4000/auth/${mode}`;
 
   await axios
     .post(url, {

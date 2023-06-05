@@ -15,11 +15,12 @@ import Row from "./Row";
 
 export default function DetailsList() {
   const route = useRoute();
-  const { dataList, selectedType, id, attractionIndex, dayIndex } = route.params;
+  const { dataList, id, attractionIndex, dayIndex } = route.params;
   const [list, setList] = useState(dataList);
   const [tripData, setTripData] = useState([]);
   const [currentDay, setCurrentDay] = useState(0);
   const [index, setIndex] = useState(1);
+  const selectedType = "tourist_attraction";
   const [images, setImages] = useState({
     bar: require("../../assets/defualtBackground/bar.jpg"),
     bowling: require("../../assets/defualtBackground/bowling.jpg"),
@@ -79,7 +80,7 @@ export default function DetailsList() {
     console.log(id);
     try {
       await axios
-        .post(`http://172.20.10.5:4000/travel/update`, oneItem)
+        .post(`http:/192.168.5.206:4000/travel/update`, oneItem)
         .then((response) => {
           console.log(`updated!`);
 

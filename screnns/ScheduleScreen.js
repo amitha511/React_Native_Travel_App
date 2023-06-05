@@ -14,7 +14,7 @@ import * as Animatable from "react-native-animatable";
 import { useRoute } from "@react-navigation/native";
 function Schedule() {
   const route = useRoute();
-  const { dataList, selectedType, duration, dates } = route.params;
+  // const { duration, dates } = route.params;
   const navigation = useNavigation();
   const [receiveData, setReceiveData] = useState(0);
   const [responseData, setResponseData] = useState(null);
@@ -24,12 +24,12 @@ function Schedule() {
   let currentIndex = currentTrip;
   const [idArr, setIdArr] = useState([]);
   const [flag, setFlag] = useState(0)
-
+  let attractions = [];
   useEffect(() => {
     console.log("enter from the delete");
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://172.20.10.5:4000/travel/get");
+        const response = await axios.get("http://192.168.5.206:4000/travel/get");
         setCurrentId(response.data[0]._id);
         if (flag != 1) {
           for (let i = 0; i < response.data.length; i++) {
@@ -38,6 +38,7 @@ function Schedule() {
           }
         }
         setFlag(1)
+        attractions = [];
         setResponseData(response.data);
         setReceiveData(1);
       } catch (error) {
@@ -84,7 +85,7 @@ function Schedule() {
     let id = responseData[currentTrip]._id;
     try {
       await axios
-        .delete(`http://172.20.10.5:4000/travel/delete/${id}`)
+        .delete(`http://192.168.5.206:4000/travel/delete/${id}`)
         .then((response) => {
           console.log(`Deleted id: ${id}`);
           setRefreshData(true);
@@ -144,14 +145,42 @@ function Schedule() {
       setCurrentTrip(currentTrip - 1);
     }
   };
-  const handleEditAttraction = (attraction, index, i) => {
-    navigation.navigate("Details", {
-      dataList: dataList,
-      selectedType: selectedType,
-      id: idArr[currentTrip],
-      attractionIndex: i,
-      dayIndex: index
-    });
+  async function NearByAPI() {
+    let userRadius = 5000;
+    let searchFrom = responseData[currentTrip].attractions.day1.dailyAttractions[0].geometry;
+    const cordinates = searchFrom.location;
+    let locationFrom = cordinates.lat + "," + cordinates.lng;
+    console.log(locationFrom);
+    const responseArray = [];
+
+    const response = await axios.get(
+      "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+      {
+        params: {
+          location: locationFrom,
+          radius: userRadius,
+          type: "tourist_attraction",
+          key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
+        },
+      }
+    )
+
+    responseArray.push(response.data);
+    return responseArray;
+    // Do something with the responseArray
+  };
+  const handleEditAttraction = (index, i) => {
+    NearByAPI()
+      .then((dataList) => {
+        console.log(dataList[0].results);
+        navigation.navigate("Details", {
+          dataList: dataList[0].results,
+          id: idArr[currentTrip],
+          attractionIndex: i,
+          dayIndex: index
+        });
+      });
+
   };
   if (receiveData === 1) {
     return (
@@ -185,7 +214,7 @@ function Schedule() {
               <Button
                 key={i}
                 title={`Change Attraction: ${attraction.title}`}
-                onPress={() => handleEditAttraction(attraction, index, i)}
+                onPress={() => handleEditAttraction(index, i)}
               />
             ))}
           </View>

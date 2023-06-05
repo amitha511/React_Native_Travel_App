@@ -125,7 +125,7 @@ export default function BuildTripScreen() {
       attractions: attractions,
     };
     await axios
-      .post("http://172.20.10.5:4000/travel/add", oneItem)
+      .post("http://192.168.5.206:4000/travel/add", oneItem)
       .then(console.log(typeof oneItem.attractions))
       .catch((error) => {
         if (error.response) {
@@ -254,8 +254,6 @@ export default function BuildTripScreen() {
 
   function clickSearchHandel(params) {
     navigation.navigate("Schedule", {
-      dataList: params,
-      selectedType: selectedType,
       duration: diff,
       dates: dateRange,
     });
