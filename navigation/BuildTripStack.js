@@ -4,6 +4,7 @@ import BuildTripScreen from "../screnns/BuildTripScreen";
 import DetailsList from "../components/Ui/DetailsList";
 import { useState } from "react";
 import Recommends from "../components/Recommends";
+import Schedule from "../screnns/ScheduleScreen";
 const Stack = createStackNavigator();
 
 export const BuildTripStack = () => {
@@ -11,7 +12,7 @@ export const BuildTripStack = () => {
     <Stack.Navigator>
       <Stack.Screen name="Search" component={BuildTripScreen} />
       <Stack.Screen name="Details" component={DetailsList} />
-      <Stack.Screen name="Edit" component={DetailsList} />
+      <Stack.Screen name="Schedule" component={Schedule} />
     </Stack.Navigator>
   );
 };

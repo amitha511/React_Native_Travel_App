@@ -15,7 +15,7 @@ import Row from "./Row";
 
 export default function DetailsList() {
   const route = useRoute();
-  const { dataList, selectedType, duration, dates } = route.params;
+  const { dataList, selectedType, id, attractionIndex, dayIndex } = route.params;
   const [list, setList] = useState(dataList);
   const [tripData, setTripData] = useState([]);
   const [currentDay, setCurrentDay] = useState(0);
@@ -68,15 +68,37 @@ export default function DetailsList() {
 
   //console.log(url);
 
-  const handleButtonClick = (item) => {
-    setTripData((prevData) => {
-      const itemExist = prevData.find((data) => data.id === item.id);
-      if (!itemExist) {
-        return [...prevData, item];
+  const handleButtonClick = async (item) => {
+    let oneItem = {
+      id: id,
+      num: attractionIndex,
+      attraction: item,
+      dayIndex: dayIndex,
+    };
+    console.log("click!");
+    console.log(id);
+    try {
+      await axios
+        .post(`http://172.20.10.5:4000/travel/update`, oneItem)
+        .then((response) => {
+          console.log(`updated!`);
+
+        })
+    }
+    catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.log(error.response.status);
+        console.log(error.response.data);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log(error.request);
       } else {
-        return prevData;
+        // Something happened in setting up the request that triggered an error
+        console.log('Error', error.message);
       }
-    });
+    }
+
   };
 
   if (!(list.length > 0)) {
@@ -104,6 +126,12 @@ export default function DetailsList() {
                 rating={item.rating}
                 businessStatus={item.business_status}
               />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => handleButtonClick(item)}
+              >
+                <Text style={styles.buttonText}>Update!</Text>
+              </TouchableOpacity>
             </View>
           ))}
         </ScrollView>
