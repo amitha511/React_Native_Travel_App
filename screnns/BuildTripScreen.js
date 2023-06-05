@@ -125,7 +125,7 @@ export default function BuildTripScreen() {
       attractions: attractions,
     };
     await axios
-      .post("http://192.168.1.41:4000/travel/add", oneItem)
+      .post("http://192.168.5.206:4000/travel/add", oneItem)
       .then(console.log(typeof oneItem.attractions))
       .catch((error) => {
         if (error.response) {
@@ -172,7 +172,7 @@ export default function BuildTripScreen() {
                 location: location,
                 radius: userRadius,
                 type: attraction,
-                key: "AIzaSyAlbzwSETLZjyKsbInBioNPQP85gWNPlQ0",
+                key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
               },
             }
           );
@@ -206,7 +206,7 @@ export default function BuildTripScreen() {
       .get("https://maps.googleapis.com/maps/api/geocode/json", {
         params: {
           address: hotel,
-          key: "AIzaSyAlbzwSETLZjyKsbInBioNPQP85gWNPlQ0",
+          key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
         },
       })
       .then(function (response) {

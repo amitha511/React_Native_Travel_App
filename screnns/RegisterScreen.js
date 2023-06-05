@@ -15,12 +15,16 @@ import { UserContext } from "../App";
 import { register } from "../api-calls";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setGestureState } from "react-native-reanimated/lib/reanimated2/NativeMethods";
 function RegisterScreen({ navigation }) {
-  const { userDetails, setUserDetails } = useContext(UserContext);
   const { userConnect, setUserConnect } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const [name, setName] = useState("");
+  const [lastname, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
   const [message, setMessage] = useState("");
 
   // const handleLogin = () => {
@@ -37,6 +41,31 @@ function RegisterScreen({ navigation }) {
     let re = /[0-9]+/;
     return re.test(password);
   };
+
+  const validateName = (Name) => {
+    let nameRegex = /^[A-Za-z]+$/;
+    return nameRegex.test(name);
+  };
+
+  const validateLastName = (lastname) => {
+    let lastnameRegex = /^[A-Za-z]+$/;
+    return lastnameRegex.test(lastname);
+  };
+
+  const validateAge = (age) => {
+    let re = /[0-9]+/;
+    return re.test(re);
+  };
+
+  const validateGender = (gender) => {
+    var validGenders = ["Male", "Female", "male", "female"];
+    if (validGenders.includes(gender)) {
+      return gender
+    } else {
+      return false;
+    }
+  };
+
   const handleSubmit = async () => {
     if (email === "" || password === "") {
       setMessage("Fill in all fields");
@@ -46,6 +75,14 @@ function RegisterScreen({ navigation }) {
       setMessage("Password should have more than 5 characters");
     } else if (!validatePassword(password)) {
       setMessage("Password should include numbers");
+    } else if (!validateName(name)) {
+      setMessage("Name should include only words");
+    } else if (!validateLastName(lastname)) {
+      setMessage("Last Name should include only words");
+    }
+    else if (!validateAge(age)) { setMessage("Age should be 18-99"); }
+    else if (!validateGender(gender)) {
+      setMessage("Gender should be Male or Female");
     } else {
       // setMessage("");
       // setPassword("");
@@ -58,6 +95,10 @@ function RegisterScreen({ navigation }) {
         console.log(success);
         if (success == "true") {
           console.log("test2");
+          setGender("");
+          setAge("");
+          setName("");
+          setLastName("");
           setEmail("");
           setPassword("");
           setMessage("");
@@ -88,16 +129,6 @@ function RegisterScreen({ navigation }) {
             <View style={styles.container}>
               <Text style={styles.title}>Register</Text>
               <Text style={styles.errorMessage}>{message}</Text>
-              {/*   
-              <Text style={styles.box}>Full name:</Text>
-              <View style={styles.inputView}>
-                <TextInput
-                  style={styles.TextInput}
-                  value={name}
-                  placeholderTextColor="#003f5c"
-                  onChangeText={setName}
-                />
-              </View> */}
 
               <Text style={styles.box}>Email:</Text>
               <View style={styles.inputView}>
@@ -106,6 +137,46 @@ function RegisterScreen({ navigation }) {
                   value={email}
                   placeholderTextColor="#003f5c"
                   onChangeText={setEmail}
+                />
+              </View>
+
+              <Text style={styles.box}>Name:</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={name}
+                  placeholderTextColor="#003f5c"
+                  onChangeText={setName}
+                />
+              </View>
+
+              <Text style={styles.box}>Last Name:</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={lastname}
+                  placeholderTextColor="#003f5c"
+                  onChangeText={setLastName}
+                />
+              </View>
+
+              <Text style={styles.box}>Age:</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={age}
+                  placeholderTextColor="#003f5c"
+                  onChangeText={setAge}
+                />
+              </View>
+
+              <Text style={styles.box}>Gender:</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={gender}
+                  placeholderTextColor="#003f5c"
+                  onChangeText={setGender}
                 />
               </View>
 
@@ -195,150 +266,3 @@ const styles = StyleSheet.create({
     color: "#858282",
   },
 });
-
-//-----------------------------------------
-// import React, { useState, useContext } from "react";
-// import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
-// import { UserContext } from "../App";
-// import { register } from "../api-calls";
-// import { useNavigation } from "@react-navigation/native";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// function SignupScreen({ navigation }) {
-//   // const { userConnect, setUserConnect } = useContext(UserContext);
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [message, setMessage] = useState("");
-
-//   // const handleLogin = () => {
-//   //   setUserConnect(email);
-//   // };
-
-//   const validateEmail = (email) => {
-//     var re =
-//       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-//     return re.test(email);
-//   };
-
-//   const validatePassword = (password) => {
-//     let re = /[0-9]+/;
-//     return re.test(password);
-//   };
-
-//   const handleSubmit = async () => {
-//     if (email === "" || password === "") {
-//       setMessage("Fill in all fields");
-//     } else if (!validateEmail(email)) {
-//       setMessage("Only valid email addresses are accepted");
-//     } else if (password.length <= 5) {
-//       setMessage("Password should have more than 5 characters");
-//     } else if (!validatePassword(password)) {
-//       setMessage("Password should include numbers");
-//     } else {
-//       // setMessage("");
-//       // setPassword("");
-//       // setEmail("");
-//       // setUserConnect(email);
-//       // await register(email, password)
-//       await register(email, password);
-//       try {
-//         const success = await AsyncStorage.getItem("success");
-//         console.log(success);
-//         if (success == "true") {
-//           console.log("test2");
-//           navigation.navigate("Home");
-//         } else {
-//           //navigation.navigate("Login");
-//           console.log("test3");
-//           setMessage("Register failed");
-//         }
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <Image style={styles.image} source={require("../assets/favicon.png")} />
-//       {/* <Text style={form.message}>{message}</Text> */}
-//       <View style={styles.inputView}>
-//         <TextInput
-//           style={styles.TextInput}
-//           value={email}
-//           placeholder="Enter your email"
-//           placeholderTextColor="#003f5c"
-//           onChangeText={setEmail}
-//         />
-//       </View>
-//       <View style={styles.inputView}>
-//         <TextInput
-//           style={styles.TextInput}
-//           placeholder="Enter your password"
-//           placeholderTextColor="#003f5c"
-//           secureTextEntry={true}
-//           value={password}
-//           onChangeText={setPassword}
-//         />
-//       </View>
-//       <View style={styles.inputView}>
-//         <TextInput
-//           style={styles.TextInput}
-//           placeholder="msg test"
-//           placeholderTextColor="#003f5c"
-//           value={message}
-//           onChangeText={setMessage}
-//         />
-//       </View>
-
-//       <Button style={styles.signupBtn} title="Sign up" onPress={handleSubmit} />
-//     </View>
-//   );
-// }
-
-// export default SignupScreen;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-//   image: {
-//     marginBottom: 40,
-//     width: 300,
-//     height: 210,
-//   },
-//   title: {
-//     fontSize: 32,
-//     fontWeight: "bold",
-//     color: "black",
-//     textAlign: "center",
-//     // margin: 100,
-//   },
-//   inputView: {
-//     alignItems: "center",
-//     backgroundColor: "#F0EDED",
-//     borderRadius: 30,
-//     width: "70%",
-//     height: 45,
-//     marginBottom: 20,
-//     alignItems: "center",
-//   },
-//   TextInput: {
-//     height: 50,
-//     flex: 1,
-//     padding: 10,
-//     marginLeft: 20,
-//   },
-//   signupBtn: {
-//     width: "80%",
-//     borderRadius: 25,
-//     height: 50,
-//     alignItems: "center",
-//     justifyContent: "center",
-//     marginTop: 40,
-//     backgroundColor: "#FF1493",
-//   },
-// });

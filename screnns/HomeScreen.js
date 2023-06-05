@@ -41,7 +41,7 @@ function HomeScreen() {
                 location: "32.109333,34.855499",
                 radius: 10000,
                 type: "bar",
-                key: "AIzaSyAlbzwSETLZjyKsbInBioNPQP85gWNPlQ0",
+                key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
               },
             }
           );

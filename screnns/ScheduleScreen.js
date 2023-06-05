@@ -21,7 +21,7 @@ function Schedule() {
     console.log("enter from the delete");
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.1.41:4000/travel/get");
+        const response = await axios.get("http://192.168.5.206:4000/travel/get");
         setResponseData(response.data);
         setReceiveData(true);
       } catch (error) {
@@ -68,7 +68,7 @@ function Schedule() {
     let id = responseData[currentTrip]._id;
     try {
       await axios
-        .delete(`http://192.168.1.41:4000/travel/delete/${id}`)
+        .delete(`http://192.168.5.206:4000/travel/delete/${id}`)
         .then((response) => {
           console.log(`Deleted id: ${id}`);
           setRefreshData(true);
@@ -88,28 +88,33 @@ function Schedule() {
   };
 
   for (let i = 0; i < newDays.length - 1; i++) {
-    let dailyData = [];
+    for (let i = 0; i < newDays.length - 1; i++) {
+      let dailyData = [];
+      let dateAndHour = newDays[i].getTime() + 18000000;
 
-    let currentDayAttractions = dataMap.get(responseData[currentTrip].dates[i])[
-      i
-    ]?.dailyAttractions;
-
-    if (currentDayAttractions) {
-      for (let j = 0; j < currentDayAttractions.length; j++) {
-        if (currentDayAttractions[j]) {
-          dailyData.push({
-            title: currentDayAttractions[j].name,
-            subtitle: `Location is: ${currentDayAttractions[j].vicinity}`,
-            date: newDays[i].getTime(),
-          });
+      let currentDayAttractions = dataMap.get(responseData[currentTrip].dates[i])[i]?.dailyAttractions;
+      if (currentDayAttractions) {
+        for (let j = 0; j < currentDayAttractions.length; j++) {
+          if (currentDayAttractions[j]) {
+            dailyData.push({
+              title: currentDayAttractions[j].name,
+              subtitle: `Location is: ${currentDayAttractions[j].vicinity}`,
+              date: dateAndHour,
+              editButton: () => handleEditAttraction(i, j),
+            });
+            dateAndHour = dateAndHour + 7200000
+          }
         }
       }
+      data.push({
+        date: newDays[i],
+        data: dailyData,
+      });
     }
-    data.push({
-      date: newDays[i],
-      data: dailyData,
-    });
   }
+  const handleEditAttraction = (dayIndex, attractionIndex) => {
+    // Perform the edit action for the attraction at the specified indexes
+  };
   const handleRefresh = () => {
     setRefreshData(true);
   };
@@ -135,7 +140,14 @@ function Schedule() {
         <Button title="delete Trip" onPress={deleteAttraction} />
       </View>
 
-      <Timeline data={data} />
+      <Timeline data={data} renderDetail={({ item }) => (
+        <View>
+          <Text>{item.title}</Text>
+          <Text>{item.subtitle}</Text>
+          <Text>{item.date}</Text>
+          <Button title="Edit" onPress={item.editButton} />
+        </View>
+      )} />
     </View>
   ) : (
     <View style={styles.container}>
