@@ -89,9 +89,9 @@ function RegisterScreen({ navigation }) {
       // setEmail("");
       // setUserConnect(email);
       // await register(email, password)
-      await register(email, password, setUserConnect, setUserDetails);
+      await register(email, password, name, lastname, gender, age, setUserConnect, setUserDetails);
       try {
-        const success = await AsyncStorage.getItem("success");
+        const success = await AsyncStorage.getItem("successRegister");
         console.log(success);
         if (success == "true") {
           console.log("test2");
@@ -104,8 +104,6 @@ function RegisterScreen({ navigation }) {
           setMessage("");
           navigation.navigate("Home");
         } else {
-          //navigation.navigate("Login");
-          console.log("test3");
           setMessage("Register failed");
         }
       } catch (error) {

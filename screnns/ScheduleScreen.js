@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import Timeline from "react-native-beautiful-timeline";
 import * as Animatable from "react-native-animatable";
 import { useRoute } from "@react-navigation/native";
+import { UserContext } from "../App";
 function Schedule() {
   const route = useRoute();
   // const { duration, dates } = route.params;
@@ -24,12 +25,14 @@ function Schedule() {
   let currentIndex = currentTrip;
   const [idArr, setIdArr] = useState([]);
   const [flag, setFlag] = useState(0)
+  const { userDetails, setUserDetails } = useContext(UserContext);
   let attractions = [];
   useEffect(() => {
     console.log("enter from the delete");
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.5.206:4000/travel/get");
+        console.log(userDetails);
+        const response = await axios.get(`http://192.168.5.206:4000/travel/get/${userDetails}`);
         setCurrentId(response.data[0]._id);
         if (flag != 1) {
           for (let i = 0; i < response.data.length; i++) {

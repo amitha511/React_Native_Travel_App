@@ -40,20 +40,67 @@ export async function authenticate(
 }
 
 export async function login(email, password, setUserConnect, setUserDetails) {
-  await authenticate("login", email, password, setUserConnect, setUserDetails);
+  await authenticateLogin("login", email, password, setUserConnect, setUserDetails);
 }
 
-export async function register(
-  email,
-  password,
-  setUserConnect,
-  setUserDetails
-) {
-  await authenticate(
-    "register",
-    email,
-    password,
-    setUserConnect,
-    setUserDetails
-  );
+export async function register(email, password, name, lastname, gender, age, setUserConnect, setUserDetails) {
+  await authenticateRegister("register", email, password, name, lastname, gender, age, setUserConnect, setUserDetails);
+}
+
+export async function authenticateLogin(mode, email, password, setUserConnect, setUserDetails) {
+  const url = `http://192.168.5.206:4000/auth/${mode}`;
+
+  await axios
+    .post(url, {
+      email: email,
+      password: password,
+      returnSecureToken: true,
+    })
+    .then(async (response) => {
+      if (response.status === 200) {
+        await AsyncStorage.setItem("successLogin", "true");
+        setUserDetails({
+          accessToken: response.data.accessToken,
+        });
+        setUserDetails(email);
+        setUserConnect(true);
+      }
+    })
+    .catch(async (error) => {
+      if (error.response && error.response.status === 400) {
+        await AsyncStorage.setItem("successLogin", "false");
+        if (setUserConnect) setUserConnect(false); // Update context
+      }
+    });
+}
+
+export async function authenticateRegister(mode, email, password, name, lastname, gender, age, setUserConnect, setUserDetails) {
+  const url = `http://192.168.5.206:4000/auth/${mode}`;
+
+  await axios
+    .post(url, {
+      email: email,
+      password: password,
+      name: name,
+      lastname: lastname,
+      gender: gender,
+      age: age,
+      returnSecureToken: true,
+    })
+    .then(async (response) => {
+      if (response.status === 200) {
+        await AsyncStorage.setItem("successRegister", "true");
+        setUserDetails({
+          accessToken: response.data.accessToken,
+        });
+
+        setUserConnect(true);
+      }
+    })
+    .catch(async (error) => {
+      if (error.response && error.response.status === 400) {
+        await AsyncStorage.setItem("successRegister", "false");
+        if (setUserConnect) setUserConnect(false); // Update context
+      }
+    });
 }

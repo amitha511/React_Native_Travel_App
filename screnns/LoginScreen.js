@@ -54,9 +54,11 @@ function LoginScreen() {
         setUserDetails
       );
       try {
-        const success = await AsyncStorage.getItem("success");
-        console.log(success + " aa");
+        const success = await AsyncStorage.getItem("successLogin");
+        console.log(success);
         if (success == "true") {
+          let myEmail = await AsyncStorage.setItem("userConnected", email)
+          console.log(myEmail + " user is")
           setEmail("");
           setPassword("");
           setMessage("");
@@ -67,8 +69,8 @@ function LoginScreen() {
           // setUserDetails(response.data);
           // console.log(userDetails);
         } else {
+          await AsyncStorage.setItem("userConnected", logout)
           navigation.navigate("Login");
-          console.log("test3");
           setMessage("Login failed");
         }
       } catch (error) {
