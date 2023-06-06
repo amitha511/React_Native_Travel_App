@@ -13,7 +13,7 @@ export const UserContext = createContext();
 
 export default function App() {
   const [userConnect, setUserConnect] = useState(false);
-  const [userDetails, setUserDetails] = useState("Amit@gmail.com");
+  const [userDetails, setUserDetails] = useState();
 
   useEffect(() => {
     (async () => {

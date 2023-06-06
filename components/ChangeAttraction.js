@@ -13,37 +13,34 @@ import { useRoute } from "@react-navigation/native";
 function ChangeAttraction() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { data, id } = route.params;
-  async function NearByAPI() {
-    let userRadius = 5000;
-    let searchFrom =
-      responseData[currentTrip].attractions.day1.dailyAttractions[0].geometry;
-    const cordinates = searchFrom.location;
-    let locationFrom = cordinates.lat + "," + cordinates.lng;
-    console.log(locationFrom);
-    const responseArray = [];
+  const { data, id, NearByAPI } = route.params;
+  //   async function NearByAPI() {
 
-    const response = await axios.get(
-      "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
-      {
-        params: {
-          location: locationFrom,
-          radius: userRadius,
-          type: "tourist_attraction",
-          key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
-        },
-      }
-    );
+  //     let locationFrom = cordinates.lat + "," + cordinates.lng;
+  //     console.log(locationFrom);
+  //     const responseArray = [];
 
-    responseArray.push(response.data);
-    return responseArray;
-  }
+  //     const response = await axios.get(
+  //       "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+  //       {
+  //         params: {
+  //           location: locationFrom,
+  //           radius: userRadius,
+  //           type: "tourist_attraction",
+  //           key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
+  //         },
+  //       }
+  //     );
+
+  //     responseArray.push(response.data);
+  //     return responseArray;
+  //   }
   const handleEditAttraction = (index, i) => {
     NearByAPI().then((dataList) => {
       console.log(dataList[0].results);
       navigation.navigate("Details", {
         dataList: dataList[0].results,
-        id: idArr[currentTrip],
+        id: id,
         attractionIndex: i,
         dayIndex: index,
       });

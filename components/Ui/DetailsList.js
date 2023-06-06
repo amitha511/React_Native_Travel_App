@@ -80,13 +80,11 @@ export default function DetailsList() {
     console.log(id);
     try {
       await axios
-        .post(`http:/192.168.5.206:4000/travel/update`, oneItem)
+        .post(`http:/10.0.0.16:4000/travel/update`, oneItem)
         .then((response) => {
           console.log(`updated!`);
-
-        })
-    }
-    catch (error) {
+        });
+    } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
         console.log(error.response.status);
@@ -96,10 +94,9 @@ export default function DetailsList() {
         console.log(error.request);
       } else {
         // Something happened in setting up the request that triggered an error
-        console.log('Error', error.message);
+        console.log("Error", error.message);
       }
     }
-
   };
 
   if (!(list.length > 0)) {

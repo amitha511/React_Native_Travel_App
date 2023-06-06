@@ -9,14 +9,15 @@ import {
   ImageBackground,
 } from "react-native";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
 import { ScrollView } from "react-native";
 import Menu from "../components/Menu";
 import { useNavigation } from "@react-navigation/native";
 import DatePicker from "react-native-datepicker";
 import { Calendar } from "react-native-calendars";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserContext } from "../App";
 export default function BuildTripScreen() {
   const navigation = useNavigation();
   const [hotel, setHotel] = useState("");
@@ -30,6 +31,7 @@ export default function BuildTripScreen() {
   const today = new Date().toISOString().split("T")[0];
   const [dateRange, setDateRange] = useState([]);
   const [displayData, setDisplayData] = useState([]);
+  const { userDetails, setUserDetails } = useContext(UserContext);
 
   //search btn
   function buildTrip(selectedType, location) {
@@ -123,6 +125,8 @@ export default function BuildTripScreen() {
     let oneItem = {
       dates: dateRange,
       attractions: attractions,
+      author: userDetails,
+      typeAttractions: selectedType,
     };
     await axios
       .post("http://10.0.0.16:4000/travel/add", oneItem)
@@ -202,6 +206,7 @@ export default function BuildTripScreen() {
   }
 
   async function TextAPI(hotel) {
+    console.log(await AsyncStorage.getItem("successLogin"));
     axios
       .get("https://maps.googleapis.com/maps/api/geocode/json", {
         params: {

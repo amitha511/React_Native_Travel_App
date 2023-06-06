@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -13,6 +13,7 @@ import Timeline from "react-native-beautiful-timeline";
 import * as Animatable from "react-native-animatable";
 import { useRoute } from "@react-navigation/native";
 import ChangeAttraction from "../components/ChangeAttraction";
+import { UserContext } from "../App";
 function Schedule() {
   const route = useRoute();
   // const { duration, dates } = route.params;
@@ -26,12 +27,16 @@ function Schedule() {
   let currentIndex = currentTrip;
   const [idArr, setIdArr] = useState([]);
   const [flag, setFlag] = useState(0);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   let attractions = [];
   useEffect(() => {
     console.log("enter from the delete");
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://10.0.0.16:4000/travel/get");
+        const response = await axios.get(
+          `http://10.0.0.16:4000/travel/get/${userDetails}`
+        );
+
         setCurrentId(response.data[0]._id);
         if (flag != 1) {
           for (let i = 0; i < response.data.length; i++) {
@@ -134,6 +139,8 @@ function Schedule() {
     navigation.navigate("Change", {
       data: data,
       id: idArr[currentTrip],
+      NearByAPI: NearByAPI,
+      // type: typearr
     });
   };
   const handleRefresh = () => {
