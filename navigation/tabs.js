@@ -6,7 +6,7 @@ import { useState } from "react";
 import { BuildTripStack } from "./BuildTripStack";
 import ScheduleScreen from "../screnns/ScheduleScreen";
 import { ProfileStack } from "./ProfileStack";
-
+import { ScheduleStack } from "./ScheduleStack";
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
@@ -60,7 +60,7 @@ const Tabs = () => {
 
       <Tab.Screen
         name="Schedule"
-        component={ScheduleScreen}
+        component={ScheduleStack}
         options={{
           tabBarIcon: ({ focused }) => (
             <View

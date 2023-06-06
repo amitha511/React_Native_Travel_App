@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import Timeline from "react-native-beautiful-timeline";
 import * as Animatable from "react-native-animatable";
 import { useRoute } from "@react-navigation/native";
+import ChangeAttraction from "../components/ChangeAttraction";
 function Schedule() {
   const route = useRoute();
   // const { duration, dates } = route.params;
@@ -21,15 +22,16 @@ function Schedule() {
   const [refreshData, setRefreshData] = useState(false);
   const [currentTrip, setCurrentTrip] = useState(0);
   const [currentId, setCurrentId] = useState();
+
   let currentIndex = currentTrip;
   const [idArr, setIdArr] = useState([]);
-  const [flag, setFlag] = useState(0)
+  const [flag, setFlag] = useState(0);
   let attractions = [];
   useEffect(() => {
     console.log("enter from the delete");
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.5.206:4000/travel/get");
+        const response = await axios.get("http://10.0.0.16:4000/travel/get");
         setCurrentId(response.data[0]._id);
         if (flag != 1) {
           for (let i = 0; i < response.data.length; i++) {
@@ -37,7 +39,7 @@ function Schedule() {
             console.log(idArr[i]);
           }
         }
-        setFlag(1)
+        setFlag(1);
         attractions = [];
         setResponseData(response.data);
         setReceiveData(1);
@@ -85,7 +87,7 @@ function Schedule() {
     let id = responseData[currentTrip]._id;
     try {
       await axios
-        .delete(`http://192.168.5.206:4000/travel/delete/${id}`)
+        .delete(`http://10.0.0.16:4000/travel/delete/${id}`)
         .then((response) => {
           console.log(`Deleted id: ${id}`);
           setRefreshData(true);
@@ -107,17 +109,18 @@ function Schedule() {
     let dailyData = [];
     let dateAndHour = newDays[i].getTime() + 18000000;
 
-    let currentDayAttractions = dataMap.get(responseData[currentTrip].dates[i])[i]?.dailyAttractions;
+    let currentDayAttractions = dataMap.get(responseData[currentTrip].dates[i])[
+      i
+    ]?.dailyAttractions;
     if (currentDayAttractions) {
       for (let j = 0; j < currentDayAttractions.length; j++) {
         if (currentDayAttractions[j]) {
-
           dailyData.push({
             title: currentDayAttractions[j].name,
             subtitle: `Location is: ${currentDayAttractions[j].vicinity}`,
             date: dateAndHour,
           });
-          dateAndHour = dateAndHour + 7200000
+          dateAndHour = dateAndHour + 7200000;
         }
       }
     }
@@ -125,11 +128,13 @@ function Schedule() {
     data.push({
       date: newDays[i],
       data: dailyData,
-
     });
   }
   const handleButtonClick = () => {
-    setReceiveData(2);
+    navigation.navigate("Change", {
+      data: data,
+      id: idArr[currentTrip],
+    });
   };
   const handleRefresh = () => {
     setRefreshData(true);
@@ -137,7 +142,6 @@ function Schedule() {
   const handleNextTrip = () => {
     if (currentTrip < responseData.length - 1) {
       setCurrentTrip(currentTrip + 1);
-
     }
   };
   const handlePreviousTrip = () => {
@@ -147,7 +151,8 @@ function Schedule() {
   };
   async function NearByAPI() {
     let userRadius = 5000;
-    let searchFrom = responseData[currentTrip].attractions.day1.dailyAttractions[0].geometry;
+    let searchFrom =
+      responseData[currentTrip].attractions.day1.dailyAttractions[0].geometry;
     const cordinates = searchFrom.location;
     let locationFrom = cordinates.lat + "," + cordinates.lng;
     console.log(locationFrom);
@@ -163,24 +168,22 @@ function Schedule() {
           key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
         },
       }
-    )
+    );
 
     responseArray.push(response.data);
     return responseArray;
     // Do something with the responseArray
-  };
+  }
   const handleEditAttraction = (index, i) => {
-    NearByAPI()
-      .then((dataList) => {
-        console.log(dataList[0].results);
-        navigation.navigate("Details", {
-          dataList: dataList[0].results,
-          id: idArr[currentTrip],
-          attractionIndex: i,
-          dayIndex: index
-        });
+    NearByAPI().then((dataList) => {
+      console.log(dataList[0].results);
+      navigation.navigate("Details", {
+        dataList: dataList[0].results,
+        id: idArr[currentTrip],
+        attractionIndex: i,
+        dayIndex: index,
       });
-
+    });
   };
   if (receiveData === 1) {
     return (
@@ -195,34 +198,24 @@ function Schedule() {
           <Button title="delete Trip" onPress={deleteAttraction} />
         </View>
         <Button title="Edit" onPress={() => handleButtonClick()} />
-        <Timeline data={data} renderDetail={({ item }) => (
-          <View>
-            <Text>{item.title}</Text>
-            <Text>{item.subtitle}</Text>
-            <Text>{item.date}</Text>
-          </View>
-        )} />
+        <Timeline
+          data={data}
+          renderDetail={({ item }) => (
+            <View>
+              <Text>{item.title}</Text>
+              <Text>{item.subtitle}</Text>
+              <Text>{item.date}</Text>
+            </View>
+          )}
+        />
       </View>
     );
-  }
-  else if (receiveData === 2) {
-    return (
-      <View contentContainerStyle={styles.container}>
-        {data.map((item, index) => (
-          <View key={index}>
-            {item.data.map((attraction, i) => (
-              <Button
-                key={i}
-                title={`Change Attraction: ${attraction.title}`}
-                onPress={() => handleEditAttraction(index, i)}
-              />
-            ))}
-          </View>
-        ))}
-      </View>
-    );
-  }
-  else {
+
+    // return (
+    //   // <ChangeAttraction id={idArr[currentTrip]} data={data}></ChangeAttraction>
+
+    // );
+
     return (
       <View style={styles.container}>
         <Animatable.Text

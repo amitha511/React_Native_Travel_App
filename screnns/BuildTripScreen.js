@@ -125,7 +125,7 @@ export default function BuildTripScreen() {
       attractions: attractions,
     };
     await axios
-      .post("http://192.168.5.206:4000/travel/add", oneItem)
+      .post("http://10.0.0.16:4000/travel/add", oneItem)
       .then(console.log(typeof oneItem.attractions))
       .catch((error) => {
         if (error.response) {

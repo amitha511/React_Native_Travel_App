@@ -60,7 +60,7 @@ function RegisterScreen({ navigation }) {
   const validateGender = (gender) => {
     var validGenders = ["Male", "Female", "male", "female"];
     if (validGenders.includes(gender)) {
-      return gender
+      return gender;
     } else {
       return false;
     }
@@ -79,9 +79,9 @@ function RegisterScreen({ navigation }) {
       setMessage("Name should include only words");
     } else if (!validateLastName(lastname)) {
       setMessage("Last Name should include only words");
-    }
-    else if (!validateAge(age)) { setMessage("Age should be 18-99"); }
-    else if (!validateGender(gender)) {
+    } else if (!validateAge(age)) {
+      setMessage("Age should be 18-99");
+    } else if (!validateGender(gender)) {
       setMessage("Gender should be Male or Female");
     } else {
       // setMessage("");
@@ -136,6 +136,7 @@ function RegisterScreen({ navigation }) {
                   style={styles.TextInput}
                   value={email}
                   placeholderTextColor="#003f5c"
+                  n
                   onChangeText={setEmail}
                 />
               </View>
