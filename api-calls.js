@@ -14,7 +14,7 @@ export async function authenticateLogin(
   setUserConnect,
   setUserDetails
 ) {
-  const url = `http://10.0.0.16:4000/auth/${mode}`;
+  const url = `http://172.20.10.5:4000/auth/${mode}`;
 
   await axios
     .post(url, {
@@ -48,7 +48,7 @@ export async function authenticateRegister(
   setUserConnect,
   setUserDetails
 ) {
-  const url = `http://10.0.0.16:4000/auth/${mode}`;
+  const url = `http://172.20.10.5:4000/auth/${mode}`;
 
   await axios
     .post(url, {

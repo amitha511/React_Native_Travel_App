@@ -80,7 +80,7 @@ export default function DetailsList() {
     console.log(id);
     try {
       await axios
-        .post(`http:/10.0.0.16:4000/travel/update`, oneItem)
+        .post(`http:/172.20.10.5:4000/travel/update`, oneItem)
         .then((response) => {
           console.log(`updated!`);
         });

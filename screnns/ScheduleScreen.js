@@ -16,7 +16,7 @@ import ChangeAttraction from "../components/ChangeAttraction";
 import { UserContext } from "../App";
 function Schedule() {
   const route = useRoute();
-  // const { duration, dates } = route.params;
+  //const { mobility, location } = route.params;
   const navigation = useNavigation();
   const [receiveData, setReceiveData] = useState(0);
   const [responseData, setResponseData] = useState(null);
@@ -34,10 +34,10 @@ function Schedule() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://10.0.0.16:4000/travel/get/${userDetails}`
+          `http://172.20.10.5:4000/travel/get/${userDetails}`
         );
 
-        setCurrentId(response.data[0]._id);
+        // setCurrentId(response.data[0]._id);
         if (flag != 1) {
           for (let i = 0; i < response.data.length; i++) {
             idArr.push(response.data[i]._id);
@@ -66,7 +66,8 @@ function Schedule() {
     //     responseData[currentTrip].attractions.day1.dailyAttractions[0]
     //   )
     // );
-    for (let i = 0; i < responseData[currentTrip].dates.length + 1; i++) {
+    for (let i = 0; i < responseData[currentTrip].dates.length; i++) {
+      console.log("Dates2!!!!!!!! " + responseData[currentTrip].dates[i]);
       newDays.push(new Date(responseData[currentTrip].dates[i]));
     }
 
@@ -78,24 +79,26 @@ function Schedule() {
   const dataMap = new Map();
   if (responseData && Array.isArray(responseData) && responseData.length > 0) {
     for (let i = 0; i < newDays.length; i++) {
+      console.log(newDays.length);
+      console.log(responseData[currentTrip].dates[i] + "  Dates!!!!!!")
       dataMap.set(
         responseData[currentTrip].dates[i],
         Object.values(responseData[currentTrip].attractions)
       );
     }
-    for (let i = 0; i < dataMap.size; i++) {
-      const map = dataMap.get(responseData[currentTrip].dates[i]);
-    }
+    // for (let i = 0; i < dataMap.size; i++) {
+    //   const map = dataMap.get(responseData[currentTrip].dates[i]);
+    // }
   }
 
   const deleteAttraction = async () => {
     let id = responseData[currentTrip]._id;
     try {
       await axios
-        .delete(`http://10.0.0.16:4000/travel/delete/${id}`)
+        .delete(`http://172.20.10.5:4000/travel/delete/${id}`)
         .then((response) => {
           console.log(`Deleted id: ${id}`);
-          setRefreshData(true);
+          //setRefreshData(true);
         })
         .catch((error) => {
           if (error.response) {
@@ -110,13 +113,14 @@ function Schedule() {
       console.error(`Error: ${error}`);
     }
   };
-  for (let i = 0; i < newDays.length - 1; i++) {
+  for (let i = 0; i < newDays.length; i++) {
     let dailyData = [];
     let dateAndHour = newDays[i].getTime() + 18000000;
-
     let currentDayAttractions = dataMap.get(responseData[currentTrip].dates[i])[
       i
     ]?.dailyAttractions;
+    console.log(currentDayAttractions + " Current day attraction")
+    console.log(responseData[currentTrip].dates[i] + " Dates@@@")
     if (currentDayAttractions) {
       for (let j = 0; j < currentDayAttractions.length; j++) {
         if (currentDayAttractions[j]) {
@@ -136,11 +140,23 @@ function Schedule() {
     });
   }
   const handleButtonClick = () => {
+    console.log("index is:" + currentTrip);
+    console.log(responseData[currentTrip]._id);
     navigation.navigate("Change", {
       data: data,
-      id: idArr[currentTrip],
+      id: responseData[currentTrip]._id,
       NearByAPI: NearByAPI,
       // type: typearr
+    });
+  };
+  const handleMobilityClick = () => {
+    navigation.navigate("Mobility", {
+      location: responseData[currentTrip].hotelLocation,
+      mobility: responseData[currentTrip].mobility,
+      id: responseData[currentTrip]._id,
+      dates: responseData[currentTrip].dates,
+      type: responseData[currentTrip].typeAttractions,
+      userDetails: userDetails,
     });
   };
   const handleRefresh = () => {
@@ -181,17 +197,6 @@ function Schedule() {
     return responseArray;
     // Do something with the responseArray
   }
-  const handleEditAttraction = (index, i) => {
-    NearByAPI().then((dataList) => {
-      console.log(dataList[0].results);
-      navigation.navigate("Details", {
-        dataList: dataList[0].results,
-        id: idArr[currentTrip],
-        attractionIndex: i,
-        dayIndex: index,
-      });
-    });
-  };
   if (receiveData === 1) {
     return (
       <View contentContainerStyle={styles.container}>
@@ -204,7 +209,10 @@ function Schedule() {
           <Button title="Next Trip" onPress={handleNextTrip} />
           <Button title="delete Trip" onPress={deleteAttraction} />
         </View>
-        <Button title="Edit" onPress={() => handleButtonClick()} />
+        <View style={styles.buttonContainer}>
+          <Button title="Edit" onPress={() => handleButtonClick()} />
+          <Button title="Edit Mobility" onPress={() => handleMobilityClick()} />
+        </View>
         <Timeline
           data={data}
           renderDetail={({ item }) => (
@@ -238,6 +246,22 @@ function Schedule() {
   }
 }
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'black',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
   container: {
     flexGrow: 1,
     backgroundColor: "#fff",

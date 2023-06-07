@@ -38,6 +38,7 @@ function ChangeAttraction() {
   const handleEditAttraction = (index, i) => {
     NearByAPI().then((dataList) => {
       console.log(dataList[0].results);
+      console.log(id + " id in change");
       navigation.navigate("Details", {
         dataList: dataList[0].results,
         id: id,

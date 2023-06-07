@@ -6,6 +6,7 @@ import { useState } from "react";
 import Recommends from "../components/Recommends";
 import Schedule from "../screnns/ScheduleScreen";
 import ChangeAttraction from "../components/ChangeAttraction";
+import ChangeMobility from "../components/ChangeMobility";
 const Stack = createStackNavigator();
 
 export const ScheduleStack = () => {
@@ -14,6 +15,7 @@ export const ScheduleStack = () => {
       <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="Change" component={ChangeAttraction} />
       <Stack.Screen name="Details" component={DetailsList} />
+      <Stack.Screen name="Mobility" component={ChangeMobility} />
     </Stack.Navigator>
   );
 };

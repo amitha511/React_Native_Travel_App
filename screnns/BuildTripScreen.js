@@ -8,7 +8,6 @@ import {
   Image,
   ImageBackground,
 } from "react-native";
-import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
 import { ScrollView } from "react-native";
@@ -18,6 +17,7 @@ import DatePicker from "react-native-datepicker";
 import { Calendar } from "react-native-calendars";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../App";
+import axios from "axios";
 export default function BuildTripScreen() {
   const navigation = useNavigation();
   const [hotel, setHotel] = useState("");
@@ -127,9 +127,11 @@ export default function BuildTripScreen() {
       attractions: attractions,
       author: userDetails,
       typeAttractions: selectedType,
+      hotelLocation: location,
+      mobility: selectedOption
     };
     await axios
-      .post("http://10.0.0.16:4000/travel/add", oneItem)
+      .post("http://172.20.10.5:4000/travel/add", oneItem)
       .then(console.log(typeof oneItem.attractions))
       .catch((error) => {
         if (error.response) {
@@ -160,7 +162,7 @@ export default function BuildTripScreen() {
     let userRadius = 100;
     if (selectedOption !== null) {
       if (selectedOption === "walking") {
-        userRadius = 2500;
+        userRadius = 1000;
       } else if (selectedOption === "public") {
         userRadius = 5000;
       } else if (selectedOption === "car") {
@@ -259,8 +261,9 @@ export default function BuildTripScreen() {
 
   function clickSearchHandel(params) {
     navigation.navigate("Schedule", {
-      duration: diff,
-      dates: dateRange,
+      mobility: selectedOption,
+      location: location,
+
     });
   }
 
