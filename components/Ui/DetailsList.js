@@ -12,7 +12,7 @@ import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 
 import Row from "./Row";
-
+import { ip } from "../../App";
 export default function DetailsList() {
   const route = useRoute();
   const { dataList, id, attractionIndex, dayIndex } = route.params;
@@ -80,7 +80,7 @@ export default function DetailsList() {
     console.log(id);
     try {
       await axios
-        .post(`http:/172.20.10.5:4000/travel/update`, oneItem)
+        .post(`http://${ip}:4000/travel/update`, oneItem)
         .then((response) => {
           console.log(`updated!`);
         });

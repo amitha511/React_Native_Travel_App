@@ -14,6 +14,7 @@ import * as Animatable from "react-native-animatable";
 import { useRoute } from "@react-navigation/native";
 import ChangeAttraction from "../components/ChangeAttraction";
 import { UserContext } from "../App";
+import { ip } from "../App";
 function Schedule() {
   const route = useRoute();
   //const { mobility, location } = route.params;
@@ -34,7 +35,7 @@ function Schedule() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://172.20.10.5:4000/travel/get/${userDetails}`
+          `http://${ip}:4000/travel/get/${userDetails}`
         );
 
         // setCurrentId(response.data[0]._id);
@@ -59,7 +60,12 @@ function Schedule() {
 
   let unixTimestamp;
   let newDays = [];
-  if (responseData && Array.isArray(responseData) && responseData.length > 0) {
+  if (
+    responseData &&
+    responseData[currentTrip] &&
+    Array.isArray(responseData) &&
+    responseData.length > 0
+  ) {
     let date = new Date(responseData[currentTrip].dates[1]);
     // console.log(
     //   Object.values(
@@ -80,7 +86,7 @@ function Schedule() {
   if (responseData && Array.isArray(responseData) && responseData.length > 0) {
     for (let i = 0; i < newDays.length; i++) {
       console.log(newDays.length);
-      console.log(responseData[currentTrip].dates[i] + "  Dates!!!!!!")
+      console.log(responseData[currentTrip].dates[i] + "  Dates!!!!!!");
       dataMap.set(
         responseData[currentTrip].dates[i],
         Object.values(responseData[currentTrip].attractions)
@@ -95,10 +101,16 @@ function Schedule() {
     let id = responseData[currentTrip]._id;
     try {
       await axios
-        .delete(`http://172.20.10.5:4000/travel/delete/${id}`)
+        .delete(`http://${ip}:4000/travel/delete/${id}`)
         .then((response) => {
           console.log(`Deleted id: ${id}`);
-          //setRefreshData(true);
+
+          const updatedData = responseData.filter((trip) => trip._id !== id);
+          setResponseData(updatedData);
+
+          if (currentTrip === responseData.length - 1) {
+            setCurrentTrip(updatedData.length - 1);
+          }
         })
         .catch((error) => {
           if (error.response) {
@@ -113,14 +125,15 @@ function Schedule() {
       console.error(`Error: ${error}`);
     }
   };
+
   for (let i = 0; i < newDays.length; i++) {
     let dailyData = [];
     let dateAndHour = newDays[i].getTime() + 18000000;
     let currentDayAttractions = dataMap.get(responseData[currentTrip].dates[i])[
       i
     ]?.dailyAttractions;
-    console.log(currentDayAttractions + " Current day attraction")
-    console.log(responseData[currentTrip].dates[i] + " Dates@@@")
+    console.log(currentDayAttractions + " Current day attraction");
+    console.log(responseData[currentTrip].dates[i] + " Dates@@@");
     if (currentDayAttractions) {
       for (let j = 0; j < currentDayAttractions.length; j++) {
         if (currentDayAttractions[j]) {
@@ -247,20 +260,20 @@ function Schedule() {
 }
 const styles = StyleSheet.create({
   button: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'black',
+    backgroundColor: "black",
   },
   text: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 0.25,
-    color: 'white',
+    color: "white",
   },
   container: {
     flexGrow: 1,

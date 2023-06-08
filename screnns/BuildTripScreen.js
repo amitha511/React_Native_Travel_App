@@ -18,6 +18,7 @@ import { Calendar } from "react-native-calendars";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../App";
 import axios from "axios";
+import { ip } from "../App";
 export default function BuildTripScreen() {
   const navigation = useNavigation();
   const [hotel, setHotel] = useState("");
@@ -32,7 +33,6 @@ export default function BuildTripScreen() {
   const [dateRange, setDateRange] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const { userDetails, setUserDetails } = useContext(UserContext);
-
   //search btn
   function buildTrip(selectedType, location) {
     NearByAPI(selectedType, location);
@@ -128,10 +128,10 @@ export default function BuildTripScreen() {
       author: userDetails,
       typeAttractions: selectedType,
       hotelLocation: location,
-      mobility: selectedOption
+      mobility: selectedOption,
     };
     await axios
-      .post("http://172.20.10.5:4000/travel/add", oneItem)
+      .post(`http://${ip}:4000/travel/add`, oneItem)
       .then(console.log(typeof oneItem.attractions))
       .catch((error) => {
         if (error.response) {
@@ -263,7 +263,6 @@ export default function BuildTripScreen() {
     navigation.navigate("Schedule", {
       mobility: selectedOption,
       location: location,
-
     });
   }
 

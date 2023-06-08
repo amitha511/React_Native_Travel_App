@@ -39,7 +39,9 @@ const Menu = (props) => {
 
   const handleOptionSelect = (option) => {
     console.log(option + "----");
-    if (!props.selectedType.includes(option)) {
+    if (props.selectedType.includes(option)) {
+      props.setSelectedType((type) => type.filter((item) => item !== option));
+    } else {
       props.setSelectedType((type) => [...type, option]);
     }
     console.log(props.selectedType);

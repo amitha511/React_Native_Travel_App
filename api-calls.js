@@ -6,7 +6,7 @@ import { setUserDetails } from "./App";
 import Tabs from "./navigation/tabs";
 import { LoginStack } from "./navigation/LoginStack";
 const API_KEY = "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0";
-
+import { ip } from "./App";
 export async function authenticateLogin(
   mode,
   email,
@@ -14,7 +14,8 @@ export async function authenticateLogin(
   setUserConnect,
   setUserDetails
 ) {
-  const url = `http://172.20.10.5:4000/auth/${mode}`;
+  console.log("ip is : " + ip);
+  const url = `http://${ip}:4000/auth/${mode}`;
 
   await axios
     .post(url, {
@@ -48,7 +49,7 @@ export async function authenticateRegister(
   setUserConnect,
   setUserDetails
 ) {
-  const url = `http://172.20.10.5:4000/auth/${mode}`;
+  const url = `http://${ip}:4000/auth/${mode}`;
 
   await axios
     .post(url, {
