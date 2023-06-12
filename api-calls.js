@@ -22,6 +22,8 @@ export async function authenticateLogin(
     .then(async (response) => {
       if (response.status === 200) {
         console.log("test200");
+        saveData("email", email);
+
         setUserConnect(true);
         setUserDetails(email);
         return response.status;
@@ -63,6 +65,7 @@ export async function authenticateRegister(
     .then(async (response) => {
       if (response.status === 200) {
         await AsyncStorage.setItem("successRegister", "true");
+        saveData("email", email);
         setUserConnect(true);
         setUserDetails(email);
         return response.status;
@@ -109,3 +112,13 @@ export async function register(
     setUserDetails
   );
 }
+
+const saveData = async (key, value) => {
+  //key "email" , value email
+  try {
+    await AsyncStorage.setItem(key, value);
+    console.log("Data saved successfully in the local memory .");
+  } catch (error) {
+    console.log("Error saving data in the local memory :", error);
+  }
+};

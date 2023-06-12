@@ -11,6 +11,7 @@ import axios from "axios";
 import { UserContext } from "../App";
 import Recommends from "../components/Recommends";
 import { userDetails } from "../App";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //homeScreen
 function HomeScreen() {
@@ -66,9 +67,16 @@ function HomeScreen() {
     console.log(userDetails);
   }, []);
 
-  function logout() {
+  async function logout() {
     setUserConnect(false);
+    try {
+      await AsyncStorage.removeItem("email");
+      console.log("Data removed successfully.");
+    } catch (error) {
+      console.log("Error removing data:", error);
+    }
   }
+  
   return (
     <ImageBackground
       source={require("../assets/background/airBallon.png")}
