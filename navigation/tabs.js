@@ -71,7 +71,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/home.png")}
+                source={require("../assets/icons/favpng_travel-icon-plane-icon-calendar-icon.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,

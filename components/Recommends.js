@@ -19,15 +19,20 @@ function Recommends(props) {
         style={styles.scrollView}
         showsHorizontalScrollIndicator={false}
       >
-        {recommends.map((item) => (
-          <Row
-            key={item.title}
-            image={require("../assets/people.jpg")}
-            address={item.vicinity}
-            rating={item.rating}
-            businessStatus={item.business_status}
-          ></Row>
-        ))}
+        {recommends.map((item) => {
+          // console.log(item);
+          return (
+            <Row
+              key={item.place_id}
+              title={item.name}
+              image={item.photos}
+              address={item.vicinity}
+              rating={item.rating}
+              businessStatus={item.business_status}
+              type={item.types[0]}
+            ></Row>
+          );
+        })}
       </ScrollView>
     </View>
   );

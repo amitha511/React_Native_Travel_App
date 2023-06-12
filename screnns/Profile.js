@@ -32,7 +32,6 @@ const Profile = () => {
           const response = await axios.get(
             `http://${ip}:4000/user/Details/${userDetails}`
           );
-          console.log(response.data[0]._id);
           setId(response.data[0]._id);
           setEmail(response.data[0].email);
           setName(response.data[0].name);
@@ -73,15 +72,19 @@ const Profile = () => {
     let updatedValue;
     switch (field) {
       case "name":
+        setEditName(false);
         updatedValue = name;
         break;
       case "lastName":
+        setEditLastName(false);
         updatedValue = lastName;
         break;
       case "age":
+        setEditAge(false);
         updatedValue = age;
         break;
       case "email":
+        setEditEmail(false);
         updatedValue = email;
         break;
       default:
@@ -89,10 +92,10 @@ const Profile = () => {
     }
 
     try {
-      const response = await axios.put(`http://${ip}:4000/user/update${id}`, {
+      const response = await axios.put(`http://${ip}:4000/user/update/${id}`, {
         field,
         value: updatedValue,
-        userDetails, // Assuming userDetails is the user identifier
+        userDetails,
       });
       console.log(response.data);
     } catch (error) {
