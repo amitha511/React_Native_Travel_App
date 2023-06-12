@@ -1,12 +1,8 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { setUserConnect } from "./App";
-import { userDetails } from "./App";
-import { setUserDetails } from "./App";
-import Tabs from "./navigation/tabs";
-import { LoginStack } from "./navigation/LoginStack";
 const API_KEY = "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0";
 import { ip } from "./App";
+
 export async function authenticateLogin(
   mode,
   email,
@@ -28,12 +24,15 @@ export async function authenticateLogin(
         console.log("test200");
         setUserConnect(true);
         setUserDetails(email);
+        return response.status;
       }
     })
     .catch(async (error) => {
       if (error.response && error.response.status === 400) {
         console.log("test400");
         if (setUserConnect) setUserConnect(false); // Update context
+        console.log(error.response.status);
+        throw error.response.status;
       }
     });
 }
@@ -66,18 +65,20 @@ export async function authenticateRegister(
         await AsyncStorage.setItem("successRegister", "true");
         setUserConnect(true);
         setUserDetails(email);
+        return response.status;
       }
     })
     .catch(async (error) => {
       if (error.response && error.response.status === 400) {
-        await AsyncStorage.setItem("successRegister", "false");
+        console.log(error.response.status);
         if (setUserConnect) setUserConnect(false); // Update context
+        throw error.response.status;
       }
     });
 }
 
 export async function login(email, password, setUserConnect, setUserDetails) {
-  await authenticateLogin(
+  return await authenticateLogin(
     "login",
     email,
     password,
@@ -96,7 +97,7 @@ export async function register(
   setUserConnect,
   setUserDetails
 ) {
-  await authenticateRegister(
+  return await authenticateRegister(
     "register",
     email,
     password,

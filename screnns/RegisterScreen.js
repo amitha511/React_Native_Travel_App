@@ -27,10 +27,6 @@ function RegisterScreen({ navigation }) {
   const [gender, setGender] = useState("");
   const [message, setMessage] = useState("");
 
-  // const handleLogin = () => {
-  //   setUserConnect(email);
-  // };
-
   const validateEmail = (email) => {
     var re =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -84,24 +80,18 @@ function RegisterScreen({ navigation }) {
     } else if (!validateGender(gender)) {
       setMessage("Gender should be Male or Female");
     } else {
-      // setMessage("");
-      // setPassword("");
-      // setEmail("");
-      // setUserConnect(email);
-      // await register(email, password)
-      await register(
-        email,
-        password,
-        name,
-        lastname,
-        gender,
-        age,
-        setUserConnect,
-        setUserDetails
-      );
       try {
-        console.log(success);
-        if (success == "true") {
+        const res = await register(
+          email,
+          password,
+          name,
+          lastname,
+          gender,
+          age,
+          setUserConnect,
+          setUserDetails
+        );
+        if (res == 200) {
           console.log("test2");
           setGender("");
           setAge("");
@@ -118,6 +108,7 @@ function RegisterScreen({ navigation }) {
         }
       } catch (error) {
         console.log(error);
+        setMessage("Register failed, this email already exists");
       }
     }
   };

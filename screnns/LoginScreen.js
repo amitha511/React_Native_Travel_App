@@ -16,7 +16,7 @@ import { UserContext } from "../App";
 import { register } from "../api-calls";
 import { useNavigation } from "@react-navigation/native";
 import { login } from "../api-calls";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 function LoginScreen() {
   const navigation = useNavigation();
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -47,34 +47,23 @@ function LoginScreen() {
     } else if (!validatePassword(password)) {
       setMessage("Password should include numbers");
     } else {
-      const response = await login(
-        email,
-        password,
-        setUserConnect,
-        setUserDetails
-      );
       try {
-        console.log(success);
-        if (success == "true") {
-          console.log(myEmail + " user is");
+        const response = await login(
+          email,
+          password,
+          setUserConnect,
+          setUserDetails
+        );
+        if (response === 200) {
           setEmail("");
           setPassword("");
           setMessage("");
-          setUserConnect(true);
-          setUserDetails(email);
-          console.log("user details");
           console.log(userDetails);
           console.log("login success user");
-          // setUserConnect(true);
-          // setUserDetails(response.data);
-          // console.log(userDetails);
-        } else {
-          await AsyncStorage.setItem("userConnected", logout);
-          navigation.navigate("Login");
-          setMessage("Login failed");
         }
       } catch (error) {
         console.log(error);
+        setMessage("Login failed");
       }
     }
   };
