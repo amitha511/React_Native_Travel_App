@@ -89,7 +89,7 @@ function Schedule() {
       console.log(responseData[currentTrip].dates[i] + "  Dates!!!!!!");
       dataMap.set(
         responseData[currentTrip].dates[i],
-        Object.values(responseData[currentTrip].attractions)
+        Object.values(responseData[currentTrip].attractions)    
       );
     }
     // for (let i = 0; i < dataMap.size; i++) {

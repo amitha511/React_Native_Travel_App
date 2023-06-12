@@ -10,11 +10,10 @@ import Tabs from "./navigation/tabs";
 import { LoginStack } from "./navigation/LoginStack";
 const Stack = createStackNavigator();
 export const UserContext = createContext();
-export const ip = "192.168.1.58";
+export const ip = "172.20.10.4";
 export default function App() {
   const [userConnect, setUserConnect] = useState(false);
   const [userDetails, setUserDetails] = useState();
-
   useEffect(() => {
     (async () => {
       const userIsConnected = await AsyncStorage.getItem("success");

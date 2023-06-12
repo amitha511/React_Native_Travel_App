@@ -12,15 +12,20 @@ import {
 import { UserContext } from "../App";
 
 const Profile = () => {
+  const { userConnect, setUserConnect } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const [name, setName] = useState("Name");
   const [email, setEmail] = useState("@example1.com");
   const [password, setPassword] = useState("*******");
   const [trips, setTrips] = useState(["Trip 1", "Trip 2", "Trip 3"]);
-
-  const { userConnect, setUserConnect } = useContext(UserContext);
+  useEffect(() => {
+    if (userDetails !== undefined) {
+      setEmail(userDetails);
+    }
+  }, [userDetails]);
 
   function logout() {
-    setUserConnect(false);
+    //setUserConnect(false);
   }
 
   const editField = (field) => {

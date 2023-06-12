@@ -143,6 +143,7 @@ function RegisterScreen({ navigation }) {
                 <TextInput
                   style={styles.TextInput}
                   value={email}
+                  placeholder="Enter Your Email"
                   placeholderTextColor="#003f5c"
                   n
                   onChangeText={setEmail}
@@ -154,6 +155,7 @@ function RegisterScreen({ navigation }) {
                 <TextInput
                   style={styles.TextInput}
                   value={name}
+                  placeholder="Enter Your Name"
                   placeholderTextColor="#003f5c"
                   onChangeText={setName}
                 />
@@ -164,6 +166,7 @@ function RegisterScreen({ navigation }) {
                 <TextInput
                   style={styles.TextInput}
                   value={lastname}
+                  placeholder="Enter Your Last Name"
                   placeholderTextColor="#003f5c"
                   onChangeText={setLastName}
                 />
@@ -174,6 +177,7 @@ function RegisterScreen({ navigation }) {
                 <TextInput
                   style={styles.TextInput}
                   value={age}
+                  placeholder="Enter You Age"
                   placeholderTextColor="#003f5c"
                   onChangeText={setAge}
                 />
@@ -184,6 +188,7 @@ function RegisterScreen({ navigation }) {
                 <TextInput
                   style={styles.TextInput}
                   value={gender}
+                  placeholder="Enter Your Gender"
                   placeholderTextColor="#003f5c"
                   onChangeText={setGender}
                 />
@@ -195,6 +200,7 @@ function RegisterScreen({ navigation }) {
                   style={styles.TextInput}
                   value={password}
                   secureTextEntry={true}
+                  placeholder="Enter Your Password"
                   placeholderTextColor="#003f5c"
                   onChangeText={setPassword}
                 />
