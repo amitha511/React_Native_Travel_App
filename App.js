@@ -6,7 +6,7 @@ import { LoginStack } from "./navigation/LoginStack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const UserContext = createContext();
-export const ip = "10.0.0.16";
+export const ip = "172.20.10.4";
 
 export default function App() {
   const [userConnect, setUserConnect] = useState(false);
