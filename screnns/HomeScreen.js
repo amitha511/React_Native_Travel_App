@@ -68,15 +68,15 @@ function HomeScreen() {
   }, []);
 
   async function logout() {
-    setUserConnect(false);
     try {
       await AsyncStorage.removeItem("email");
-      console.log("Data removed successfully.");
+      console.log("local Data removed successfully .");
     } catch (error) {
       console.log("Error removing data:", error);
     }
+    setUserConnect(false);
   }
-  
+
   return (
     <ImageBackground
       source={require("../assets/background/airBallon.png")}
