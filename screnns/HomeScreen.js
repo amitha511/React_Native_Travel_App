@@ -12,12 +12,40 @@ import { UserContext } from "../App";
 import Recommends from "../components/Recommends";
 import { userDetails } from "../App";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import * as Location from "expo-location";
 //homeScreen
 function HomeScreen() {
   const { userDetails, setUserDetails } = useContext(UserContext);
-
   const { userConnect, setUserConnect } = useContext(UserContext);
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+
+  useEffect(() => {
+    const requestLocationPermission = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Location permission denied");
+      } else {
+        console.log("Location permission granted");
+      }
+    };
+
+    requestLocationPermission();
+    getLocation();
+  }, []);
+
+  const getLocation = async () => {
+    try {
+      const { coords } = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = coords;
+      setLatitude(latitude);
+      setLongitude(longitude);
+      console.log("Latitude:", latitude);
+      console.log("Longitude:", longitude);
+    } catch (error) {
+      console.warn("Error getting location:", error);
+    }
+  };
 
   const [dataApi, setDataAPI] = useState([]);
 
@@ -39,7 +67,7 @@ function HomeScreen() {
             "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
             {
               params: {
-                location: "32.109333,34.855499",
+                location: `${latitude},${longitude}`,
                 radius: 10000,
                 type: "bar",
                 key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
