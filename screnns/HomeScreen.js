@@ -13,12 +13,15 @@ import Recommends from "../components/Recommends";
 import { userDetails } from "../App";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
-//homeScreen
+
 function HomeScreen() {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { userConnect, setUserConnect } = useContext(UserContext);
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
+  const [dataApi, setDataApi] = useState([]);
+  const [dataApi1, setDataApi1] = useState([]);
+  const [dataApi2, setDataApi2] = useState([]);
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -27,12 +30,18 @@ function HomeScreen() {
         console.log("Location permission denied");
       } else {
         console.log("Location permission granted");
+        getLocation();
       }
     };
 
     requestLocationPermission();
-    getLocation();
   }, []);
+
+  useEffect(() => {
+    NearByAPI("bar");
+    NearByAPI("tourist_attraction");
+    NearByAPI("restaurant");
+  }, [latitude, longitude]);
 
   const getLocation = async () => {
     try {
@@ -47,58 +56,60 @@ function HomeScreen() {
     }
   };
 
-  const [dataApi, setDataAPI] = useState([]);
+  async function NearByAPI(type) {
+    const userRadius = 100;
+    const selectedOption = "car";
 
-  async function NearByAPI(attractions, location) {
-    let userRadius = 100;
-    selectedOption = "car";
     if (selectedOption !== null) {
+      let radius = 0;
       if (selectedOption === "walking") {
-        userRadius = 2500;
+        radius = 2500;
       } else if (selectedOption === "public") {
-        userRadius = 5000;
+        radius = 5000;
       } else if (selectedOption === "car") {
-        userRadius = 10000;
+        radius = 10000;
       }
 
       try {
-        const requests = attractions.map((attraction) => {
-          return axios.get(
-            "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
-            {
-              params: {
-                location: `${latitude},${longitude}`,
-                radius: 10000,
-                type: "bar",
-                key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
-              },
-            }
-          );
-        });
+        const response = await axios.get(
+          "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+          {
+            params: {
+              location: `${latitude},${longitude}`,
+              radius: radius,
+              type: type,
+              key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
+            },
+          }
+        );
 
-        const responses = await Promise.all(requests);
-        const data = responses.map((response) => response.data.results);
-        const allData = data.flat();
-        const filteredDataList = allData.filter(
+        const data = response.data.results.filter(
           (item) => item.rating !== undefined
         );
-        setDataAPI(allData);
+
+        switch (type) {
+          case "bar":
+            setDataApi(data);
+            break;
+          case "tourist_attraction":
+            setDataApi1(data);
+            break;
+          case "restaurant":
+            setDataApi2(data);
+            break;
+          default:
+            break;
+        }
       } catch (error) {
         console.error(error);
-        return error;
       }
     }
   }
 
-  useEffect(() => {
-    NearByAPI(["bar"], "a");
-    console.log(userDetails);
-  }, []);
-
   async function logout() {
     try {
       await AsyncStorage.removeItem("email");
-      console.log("local Data removed successfully .");
+      console.log("local Data removed successfully.");
     } catch (error) {
       console.log("Error removing data:", error);
     }
@@ -116,18 +127,18 @@ function HomeScreen() {
       </View>
       <ScrollView style={styles.scroll}>
         <View style={styles.recommends}>
-          <Text style={styles.text}>Hotels:</Text>
+          <Text style={styles.text}>Bars Near You:</Text>
           <Recommends dataApi={dataApi} />
         </View>
 
         <View style={styles.recommends}>
-          <Text style={styles.text}>Attractions:</Text>
-          <Recommends dataApi={dataApi} />
+          <Text style={styles.text}>Attractions Near You:</Text>
+          <Recommends dataApi={dataApi1} />
         </View>
 
         <View key={"3"} style={styles.recommends}>
-          <Text style={styles.text}>Restaurants:</Text>
-          <Recommends dataApi={dataApi} />
+          <Text style={styles.text}>Restaurants Near You:</Text>
+          <Recommends dataApi={dataApi2} />
         </View>
       </ScrollView>
     </ImageBackground>
