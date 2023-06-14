@@ -225,7 +225,7 @@ function Schedule() {
   if (receiveData === 1) {
     return (
       <ImageBackground
-        source={require("../assets/BackgroundScreens/home.png")}
+        source={require("../assets/BackgroundScreens/myTrips.png")}
         resizeMode="cover"
         style={styles.image}
       >
@@ -238,14 +238,14 @@ function Schedule() {
             <View style={{ flexDirection: "column" }}>
               <TouchableOpacity
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 50,
+                  height: 50,
                   backgroundColor: "transparent",
                   justifyContent: "center",
                 }}
                 onPress={handleRefresh}
               >
-                <Text></Text>
+                <Text>Reload</Text>
 
                 <Image
                   source={require("../assets/markIcon/reload.png")}
@@ -257,8 +257,8 @@ function Schedule() {
             <View style={{ flexDirection: "column" }}>
               <TouchableOpacity
                 style={{
-                  width: 30,
-                  height: 30,
+                  width: 50,
+                  height: 50,
                   backgroundColor: "transparent",
                   justifyContent: "center",
                 }}
@@ -273,12 +273,45 @@ function Schedule() {
               </TouchableOpacity>
             </View>
 
-            {/* <Button title="Edit" onPress={() => handleButtonClick()} /> */}
-            <Button
-              title="Edit Mobility"
-              onPress={() => handleMobilityClick()}
-            />
-            <Button title="delete Trip" onPress={deleteAttraction} />
+            <View style={{ flexDirection: "column" }}>
+              <TouchableOpacity
+                style={{
+                  width: 60,
+                  height: 50,
+                  backgroundColor: "transparent",
+                  justifyContent: "center",
+                }}
+                onPress={() => handleMobilityClick()}
+              >
+                {/* <Text>Edit</Text> */}
+
+                <Text>Mobility</Text>
+
+                <Image
+                  source={require("../assets/markIcon/mobility.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ flexDirection: "column" }}>
+              <TouchableOpacity
+                style={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: "transparent",
+                  justifyContent: "center",
+                }}
+                onPress={deleteAttraction}
+              >
+                <Text>Delete</Text>
+
+                <Image
+                  source={require("../assets/markIcon/garbage.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.buttonContainer}></View>
 
@@ -358,7 +391,7 @@ function Schedule() {
 }
 const styles = StyleSheet.create({
   scroll: {
-    marginTop: "90.5%",
+    marginTop: "65.5%",
     marginBottom: "10%",
   },
   image: {
@@ -372,14 +405,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     position: "absolute",
     width: "100%",
-    marginVertical: "127%",
+    marginVertical: "143%",
   },
   buttonsTop: {
     flexDirection: "row",
     backgroundColor: "#ffff",
-
     justifyContent: "space-around",
     width: "100%",
+    marginBottom: 10,
   },
   timeLine: {
     borderTopEndRadius: 10,
