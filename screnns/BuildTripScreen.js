@@ -16,9 +16,9 @@ import { useNavigation } from "@react-navigation/native";
 import DatePicker from "react-native-datepicker";
 import { Calendar } from "react-native-calendars";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UserContext } from "../App";
+import { UserContext } from "../UserContext";
 import axios from "axios";
-import { ip } from "../App";
+import { ip } from "@env";
 export default function BuildTripScreen() {
   const navigation = useNavigation();
   const [hotel, setHotel] = useState("");

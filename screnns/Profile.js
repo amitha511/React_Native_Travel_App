@@ -9,9 +9,10 @@ import {
   ImageBackground,
   ScrollView,
 } from "react-native";
-import { UserContext } from "../App";
+import { UserContext } from "../UserContext";
 import axios from "axios";
-import { ip } from "../App";
+import { ip } from "@env";
+//const ip = process.env.REACT_APP_IP;
 const Profile = () => {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [name, setName] = useState("Name");
@@ -26,8 +27,8 @@ const Profile = () => {
   const [trips, setTrips] = useState(["Trip 1", "Trip 2", "Trip 3"]);
   const [id, setId] = useState(null);
   useEffect(() => {
-    if (userDetails !== undefined) {
-      const fetchData = async () => {
+    async function fetchData() {
+      if (userDetails !== undefined) {
         try {
           const response = await axios.get(
             `http://${ip}:4000/user/Details/${userDetails}`
@@ -40,9 +41,10 @@ const Profile = () => {
         } catch (error) {
           console.error(`Error${error} !`);
         }
-      };
-      fetchData();
+      }
     }
+
+    fetchData();
   }, [userDetails]);
 
   function logout() {

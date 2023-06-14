@@ -13,11 +13,10 @@ import Timeline from "react-native-beautiful-timeline";
 import * as Animatable from "react-native-animatable";
 import { useRoute } from "@react-navigation/native";
 import ChangeAttraction from "../components/ChangeAttraction";
-import { UserContext } from "../App";
-import { ip } from "../App";
+import { UserContext } from "../UserContext";
+import { ip } from "@env";
 function Schedule() {
   const route = useRoute();
-  //const { mobility, location } = route.params;
   const navigation = useNavigation();
   const [receiveData, setReceiveData] = useState(0);
   const [responseData, setResponseData] = useState(null);
@@ -56,6 +55,7 @@ function Schedule() {
 
     fetchData();
     setRefreshData(false); // Reset the refresh state after fetching
+    return;
   }, [refreshData]);
   let { refresh } = route.params || {};
   // Check if refresh flag is true and trigger refresh

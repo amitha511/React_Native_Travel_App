@@ -4,27 +4,29 @@ import React, { createContext, useState, useEffect } from "react";
 import Tabs from "./navigation/tabs";
 import { LoginStack } from "./navigation/LoginStack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export const UserContext = createContext();
-export const ip = "172.20.10.2";
+import { UserContext } from "./UserContext";
 
 export default function App() {
   const [userConnect, setUserConnect] = useState(false);
   const [userDetails, setUserDetails] = useState();
 
-  useEffect(async () => {
-    try {
-      const value = await AsyncStorage.getItem("email");
-      console.log(value !== null);
-      if (value !== null) {
-        setUserConnect(true);
-        setUserDetails(value);
-        console.log("user connect");
-        console.log(value);
-      } else console.log(`user not connect`);
-    } catch (error) {
-      console.log("error with AsyncStorage", error);
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("email");
+        console.log(value !== null);
+        if (value !== null) {
+          setUserConnect(true);
+          setUserDetails(value);
+          console.log("user connect");
+          console.log(value);
+        } else console.log(`user not connect`);
+      } catch (error) {
+        console.log("error with AsyncStorage", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (

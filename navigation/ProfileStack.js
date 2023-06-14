@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import Profile from "../screnns/Profile";
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
 
 export const ProfileStack = () => {
   return (

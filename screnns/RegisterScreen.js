@@ -11,7 +11,7 @@ import {
   Keyboard,
   Button,
 } from "react-native";
-import { UserContext } from "../App";
+import { UserContext } from "../UserContext";
 import { register } from "../api-calls";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";

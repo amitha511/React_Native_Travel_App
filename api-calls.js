@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const API_KEY = "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0";
-import { ip } from "./App";
+import { ip } from "@env";
 
 export async function authenticateLogin(
   mode,
