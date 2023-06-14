@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator();
 const Tabs = () => {
   return (
     <Tab.Navigator
-      tabBarOptions={{
+      screenOptions={{
         showLabel: false,
         style: {
           position: "absolute",
@@ -29,7 +29,7 @@ const Tabs = () => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen} // Pass the dataApi state as a prop
+        component={HomeScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <View
@@ -50,16 +50,14 @@ const Tabs = () => {
               />
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
-              >
-                Home
-              </Text>
+              ></Text>
             </View>
           ),
         }}
       />
 
       <Tab.Screen
-        name="My Trips"
+        name="ScheduleScreen"
         component={ScheduleStack}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -81,17 +79,14 @@ const Tabs = () => {
               />
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
-              >
-                My Trips
-              </Text>
+              ></Text>
             </View>
           ),
-          headerShown: false,
         }}
       />
 
       <Tab.Screen
-        name="New Trip"
+        name="Build Trip"
         component={BuildTripStack}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -113,17 +108,14 @@ const Tabs = () => {
               />
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
-              >
-                New Trip
-              </Text>
+              ></Text>
             </View>
           ),
-          headerShown: false,
         }}
       />
 
       <Tab.Screen
-        name="Profile"
+        name="ProfileScreen"
         component={ProfileStack}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -145,12 +137,9 @@ const Tabs = () => {
               />
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
-              >
-                Profile
-              </Text>
+              ></Text>
             </View>
           ),
-          headerShown: false,
         }}
       />
     </Tab.Navigator>

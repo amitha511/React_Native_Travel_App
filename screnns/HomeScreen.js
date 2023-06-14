@@ -8,14 +8,12 @@ import {
   ScrollView,
 } from "react-native";
 import axios from "axios";
-import { UserContext } from "../App";
+import { UserContext } from "../UserContext";
 import Recommends from "../components/Recommends";
-import { userDetails } from "../App";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
 
 function HomeScreen() {
-  const { userDetails, setUserDetails } = useContext(UserContext);
   const { userConnect, setUserConnect } = useContext(UserContext);
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);

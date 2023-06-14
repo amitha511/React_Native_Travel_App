@@ -10,7 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
-import { ip } from "../App";
+import { ip } from "@env";
 function ChangeMobility() {
   const route = useRoute();
   const navigation = useNavigation();

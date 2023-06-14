@@ -12,8 +12,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { UserContext } from "../App";
-import { register } from "../api-calls";
+import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 import { login } from "../api-calls";
 

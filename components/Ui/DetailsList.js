@@ -12,7 +12,7 @@ import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 
 import Row from "./Row";
-import { ip } from "../../App";
+import { ip } from "@env";
 export default function DetailsList() {
   const route = useRoute();
   const { dataList, id, attractionIndex, dayIndex } = route.params;
