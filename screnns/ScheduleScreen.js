@@ -61,7 +61,15 @@ function Schedule() {
     fetchData();
     setRefreshData(false); // Reset the refresh state after fetching
   }, [refreshData]);
-
+  let { refresh } = route.params || {};
+  // Check if refresh flag is true and trigger refresh
+  useEffect(() => {
+    console.log(refresh + " refreshhhhhhhhhhhhhhhhhhhhhhhh");
+    if (refresh) {
+      handleRefresh();
+    }
+    refresh = false;
+  }, [refresh]);
   let unixTimestamp;
   let newDays = [];
   if (

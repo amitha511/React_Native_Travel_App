@@ -16,7 +16,7 @@ function ChangeMobility() {
   const navigation = useNavigation();
   const { location, mobility, id, dates, type, userDetails } = route.params;
   //----------------------------------
-  async function NearByAPI(location, userRadius) {
+  async function NearByAPI(location, userRadius, newMobility) {
     deleteAttraction();
     try {
       const requests = type.map((attraction) => {
@@ -43,13 +43,13 @@ function ChangeMobility() {
       const filteredDataList = allData.filter(
         (item) => item.rating !== undefined
       );
-      startingAttraction(filteredDataList);
+      startingAttraction(filteredDataList, newMobility);
     } catch (error) {
       console.error(error);
     }
   }
   //-----------------------------------------------------------------
-  async function startingAttraction(filteredDataList) {
+  async function startingAttraction(filteredDataList, newMobility) {
     const mapCalender = new Map(); //map => (numday , [attractionArray])
     let daysKeyArrays = [];
     let maxItem; //item with max rating
@@ -87,18 +87,21 @@ function ChangeMobility() {
     for (let i = 0; i < mapCalender.size; i++) {
       attractions[`day${i + 1}`] = { dailyAttractions: mapCalender.get(i) };
     }
-
     let oneItem = {
       dates: dates,
       attractions: attractions,
       author: userDetails,
       typeAttractions: type,
       hotelLocation: location,
-      mobility: mobility,
+      mobility: newMobility,
     };
     await axios
       .post(`http://${ip}:4000/travel/add`, oneItem)
-      .then(console.log(typeof oneItem.attractions))
+      .then((response) => {
+        console.log(typeof oneItem.attractions);
+        // Reload the screen to see the changes
+        navigation.navigate("Schedule", { refresh: true });
+      })
       .catch((error) => {
         if (error.response) {
           console.log(error.response.data);
@@ -150,9 +153,12 @@ function ChangeMobility() {
       <View style={styles.buttonContainer}>
         <Button
           title="Public Transport"
-          onPress={() => NearByAPI(location, "5000")}
+          onPress={() => NearByAPI(location, "5000", "public")}
         />
-        <Button title="Car" onPress={() => console.log("Car button pressed")} />
+        <Button
+          title="Car"
+          onPress={() => NearByAPI(location, "8000", "car")}
+        />
       </View>
     );
   } else if (mobility == "public") {
@@ -160,9 +166,12 @@ function ChangeMobility() {
       <View style={styles.buttonContainer}>
         <Button
           title="Walking"
-          onPress={() => console.log("Public Transport button pressed")}
+          onPress={() => NearByAPI(location, "2000", "walking")}
         />
-        <Button title="Car" onPress={() => console.log("Car button pressed")} />
+        <Button
+          title="Car"
+          onPress={() => NearByAPI(location, "8000", "car")}
+        />
       </View>
     );
   } else {
@@ -170,11 +179,11 @@ function ChangeMobility() {
       <View style={styles.buttonContainer}>
         <Button
           title="Public Transport"
-          onPress={() => console.log("Public Transport button pressed")}
+          onPress={() => NearByAPI(location, "5000", "public")}
         />
         <Button
           title="Walking"
-          onPress={() => console.log("Car button pressed")}
+          onPress={() => NearByAPI(location, "2000", "walking")}
         />
       </View>
     );
