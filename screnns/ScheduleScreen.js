@@ -22,6 +22,7 @@ import { UserContext } from "../UserContext";
 import { ip } from "@env";
 
 function Schedule() {
+  console.log("this is the ip :" + ip);
   const route = useRoute();
   //const { mobility, location } = route.params;
   const navigation = useNavigation();
@@ -406,7 +407,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     position: "absolute",
     width: "100%",
-    marginVertical: "143%",
+    marginVertical: "144%",
   },
   buttonsTop: {
     flexDirection: "row",
