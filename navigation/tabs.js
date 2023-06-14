@@ -40,7 +40,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/home.png")}
+                source={require("../assets/NavGraphIcons/home.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,
@@ -51,7 +51,7 @@ const Tabs = () => {
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
               >
-                HOME
+                Home
               </Text>
             </View>
           ),
@@ -59,7 +59,7 @@ const Tabs = () => {
       />
 
       <Tab.Screen
-        name="Schedule"
+        name="My Trips"
         component={ScheduleStack}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -71,7 +71,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/favpng_travel-icon-plane-icon-calendar-icon.png")}
+                source={require("../assets/NavGraphIcons/myTrips.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,
@@ -82,15 +82,16 @@ const Tabs = () => {
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
               >
-                Schedule
+                My Trips
               </Text>
             </View>
           ),
+          headerShown: false,
         }}
       />
 
       <Tab.Screen
-        name="Build Trip"
+        name="New Trip"
         component={BuildTripStack}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -102,7 +103,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/black-settings-button.png")}
+                source={require("../assets/NavGraphIcons/newTrip.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,
@@ -113,10 +114,11 @@ const Tabs = () => {
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
               >
-                SELECT TRIP
+                New Trip
               </Text>
             </View>
           ),
+          headerShown: false,
         }}
       />
 
@@ -133,7 +135,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/black-settings-button.png")}
+                source={require("../assets/NavGraphIcons/userIcon.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,
@@ -144,10 +146,11 @@ const Tabs = () => {
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
               >
-                PROFILE
+                Profile
               </Text>
             </View>
           ),
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

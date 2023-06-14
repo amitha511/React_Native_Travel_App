@@ -16,7 +16,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 //homeScreen
 function HomeScreen() {
   const { userDetails, setUserDetails } = useContext(UserContext);
-
   const { userConnect, setUserConnect } = useContext(UserContext);
 
   const [dataApi, setDataAPI] = useState([]);
@@ -79,7 +78,7 @@ function HomeScreen() {
 
   return (
     <ImageBackground
-      source={require("../assets/background/airBallon.png")}
+      source={require("../assets/BackgroundScreens/home.png")}
       resizeMode="cover"
       style={styles.image}
     >
@@ -87,6 +86,7 @@ function HomeScreen() {
         <Button title="Logout" onPress={logout}></Button>
       </View>
       <ScrollView style={styles.scroll}>
+        <Text style={styles.title}>Recommendations</Text>
         <View style={styles.recommends}>
           <Text style={styles.text}>Hotels:</Text>
           <Recommends dataApi={dataApi} />
@@ -109,8 +109,14 @@ function HomeScreen() {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 30,
+    color: "#000",
+    textAlign: "center",
+    marginBottom: "3%",
+  },
   scroll: {
-    marginTop: "50%",
+    marginTop: "32%",
   },
   container: {
     paddingTop: "-30%",

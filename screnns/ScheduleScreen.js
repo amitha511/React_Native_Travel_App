@@ -89,7 +89,7 @@ function Schedule() {
       console.log(responseData[currentTrip].dates[i] + "  Dates!!!!!!");
       dataMap.set(
         responseData[currentTrip].dates[i],
-        Object.values(responseData[currentTrip].attractions)    
+        Object.values(responseData[currentTrip].attractions)
       );
     }
     // for (let i = 0; i < dataMap.size; i++) {
@@ -213,29 +213,35 @@ function Schedule() {
   if (receiveData === 1) {
     return (
       <View contentContainerStyle={styles.container}>
-        <Text>
-          page number {currentTrip + 1} of {responseData.length}
-        </Text>
-        <View style={styles.buttonContainer}>
-          <Button title="Reload Trip" onPress={handleRefresh} />
-          <Button title="Previous Trip" onPress={handlePreviousTrip} />
-          <Button title="Next Trip" onPress={handleNextTrip} />
-          <Button title="delete Trip" onPress={deleteAttraction} />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button title="Edit" onPress={() => handleButtonClick()} />
-          <Button title="Edit Mobility" onPress={() => handleMobilityClick()} />
-        </View>
-        <Timeline
-          data={data}
-          renderDetail={({ item }) => (
-            <View>
-              <Text>{item.title}</Text>
-              <Text>{item.subtitle}</Text>
-              <Text>{item.date}</Text>
-            </View>
-          )}
-        />
+        <ScrollView style={styles.scroll}>
+          <Text style={styles.title}>Recommendations</Text>
+          <Text>
+            page number {currentTrip + 1} of {responseData.length}
+          </Text>
+          <View style={styles.buttonContainer}>
+            <Button title="Reload Trip" onPress={handleRefresh} />
+            <Button title="Previous Trip" onPress={handlePreviousTrip} />
+            <Button title="Next Trip" onPress={handleNextTrip} />
+            <Button title="delete Trip" onPress={deleteAttraction} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title="Edit" onPress={() => handleButtonClick()} />
+            <Button
+              title="Edit Mobility"
+              onPress={() => handleMobilityClick()}
+            />
+          </View>
+          <Timeline
+            data={data}
+            renderDetail={({ item }) => (
+              <View>
+                <Text>{item.title}</Text>
+                <Text>{item.subtitle}</Text>
+                <Text>{item.date}</Text>
+              </View>
+            )}
+          />
+        </ScrollView>
       </View>
     );
 
@@ -259,6 +265,15 @@ function Schedule() {
   }
 }
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 30,
+    color: "#000",
+    textAlign: "center",
+    marginBottom: "3%",
+  },
+  scroll: {
+    marginTop: "32%",
+  },
   button: {
     alignItems: "center",
     justifyContent: "center",
