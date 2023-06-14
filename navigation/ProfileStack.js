@@ -7,22 +7,12 @@ export const ProfileStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Profile"
-        // options={{
-
-        //   title: "My Profile",
-        //   headerStyle: {
-        //     backgroundColor: "#f4511e",
-        //   },
-        //   headerTintColor: "#fff",
-        //   headerTitleStyle: {
-        //     fontWeight: "bold",
-        //   },
-        // }}
-
+        name="Profile1"
+        options={{
+          headerShown: false,
+        }}
         component={Profile}
       />
-      {/* <Stack.Screen name="trip" component={DetailsList} /> */}
     </Stack.Navigator>
   );
 };

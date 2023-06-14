@@ -18,9 +18,12 @@ import * as Animatable from "react-native-animatable";
 import { useRoute } from "@react-navigation/native";
 import ChangeAttraction from "../components/ChangeAttraction";
 import { UserContext } from "../UserContext";
+// import { ip } from "../App";
 import { ip } from "@env";
+
 function Schedule() {
   const route = useRoute();
+  //const { mobility, location } = route.params;
   const navigation = useNavigation();
   const [receiveData, setReceiveData] = useState(0);
   const [responseData, setResponseData] = useState(null);
@@ -59,7 +62,6 @@ function Schedule() {
 
     fetchData();
     setRefreshData(false); // Reset the refresh state after fetching
-    return;
   }, [refreshData]);
   let { refresh } = route.params || {};
   // Check if refresh flag is true and trigger refresh
@@ -151,6 +153,10 @@ function Schedule() {
         if (currentDayAttractions[j]) {
           dailyData.push({
             title: currentDayAttractions[j].name,
+            vicinity: currentDayAttractions[j].vicinity,
+            photos: currentDayAttractions[j].photos,
+            rating: currentDayAttractions[j].rating,
+            openingHours: currentDayAttractions[j].opening_hours,
             subtitle: `Location is: ${currentDayAttractions[j].vicinity}`,
             date: dateAndHour,
           });
@@ -167,6 +173,7 @@ function Schedule() {
   const handleButtonClick = () => {
     console.log("index is:" + currentTrip);
     console.log(responseData[currentTrip]._id);
+    console.log(responseData[currentTrip]);
     navigation.navigate("Change", {
       data: data,
       id: responseData[currentTrip]._id,
@@ -284,9 +291,8 @@ function Schedule() {
                 onPress={() => handleMobilityClick()}
               >
                 {/* <Text>Edit</Text> */}
-
+                <Text>edit</Text>
                 <Text>Mobility</Text>
-
                 <Image
                   source={require("../assets/markIcon/mobility.png")}
                   style={{ width: 30, height: 30 }}
@@ -329,7 +335,7 @@ function Schedule() {
             />
           </View>
 
-          <Animated.View style={styles.buttonsPages}>
+          <View style={styles.buttonsPages}>
             <TouchableOpacity
               style={{
                 width: 35,
@@ -365,15 +371,10 @@ function Schedule() {
                 style={{ width: 35, height: 35 }}
               />
             </TouchableOpacity>
-          </Animated.View>
+          </View>
         </View>
       </ImageBackground>
     );
-
-    // return (
-    //   // <ChangeAttraction id={idArr[currentTrip]} data={data}></ChangeAttraction>
-
-    // );
 
     return (
       <View style={styles.container}>

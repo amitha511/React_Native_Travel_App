@@ -8,13 +8,14 @@ import {
   Image,
   Button,
 } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
 import Row from "./Row";
 import { ip } from "@env";
 export default function DetailsList() {
   const route = useRoute();
+  const navigation = useNavigation();
   const { dataList, id, attractionIndex, dayIndex } = route.params;
   const [list, setList] = useState(dataList);
 
@@ -59,23 +60,27 @@ export default function DetailsList() {
   } else {
     return (
       <Fragment>
-        <ScrollView>
+        <ScrollView style={{ backgroundColor: "#ffff" }}>
+          <Text style={styles.title}>Please Choose a new attraction</Text>
           {list.map((item, index) => (
             <View key={index}>
-              <Row
-                key={item.place_id}
-                title={item.name}
-                image={item.photos}
-                address={item.vicinity}
-                rating={item.rating}
-                openingHours={item.opening_hours}
-                type={item.types[0]}
-              />
               <TouchableOpacity
-                style={styles.button}
-                onPress={() => handleButtonClick(item)}
+                style={styles.row}
+                //
+                onPress={() => {
+                  handleButtonClick(item);
+                  navigation.navigate("Schedule");
+                }}
               >
-                <Text style={styles.buttonText}>Update!</Text>
+                <Row
+                  key={item.place_id}
+                  title={item.name}
+                  image={item.photos}
+                  address={item.vicinity}
+                  rating={item.rating}
+                  openingHours={item.opening_hours}
+                  type={item.types[0]}
+                />
               </TouchableOpacity>
             </View>
           ))}
@@ -86,11 +91,15 @@ export default function DetailsList() {
 }
 
 const styles = StyleSheet.create({
-  text: {
-    textAlign: "center",
+  title: {
     fontSize: 20,
-    margin: "20%",
-    width: 270,
+    color: "#000",
+    textAlign: "center",
+    backgroundColor: "#B7E1B1",
+  },
+  row: {
+    borderWidth: 1,
+    borderColor: "#76C580",
   },
   button: {
     backgroundColor: "#ADD8E6",

@@ -6,6 +6,8 @@ import {
   ActivityIndicator,
   Button,
   Text,
+  Image,
+  ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
@@ -36,14 +38,11 @@ function ChangeMobility() {
       const responses = await Promise.all(requests);
       const data = responses.map((response) => response.data.results);
       const allData = data.flat();
-      //console.log(allData); //all the data that is send to the details components
-      //console.log(allData.map((item) => item.rating)); // all the data that is send to the details components
-      //console.log(selectedType); // an array of type's the user selected
-      //console.log(dateRange); // an array of dates , //<Text key={date}>{date.toISOString().split("T")[0]}</Text>
       const filteredDataList = allData.filter(
         (item) => item.rating !== undefined
       );
       startingAttraction(filteredDataList, newMobility);
+      navigation.navigate("Schedule");
     } catch (error) {
       console.error(error);
     }
@@ -188,36 +187,58 @@ function ChangeMobility() {
       </View>
     );
   }
+  let mobilityIcon = require(`../assets/MobilityIcons/public.png`);
+  if (mobility === "public")
+    mobilityIcon = require(`../assets/MobilityIcons/public.png`);
+  else if (mobility === "walking")
+    mobilityIcon = require(`../assets/MobilityIcons/walking.png`);
+  else if (mobility === "car")
+    mobilityIcon = require(`../assets/MobilityIcons/car.png`);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.currentMobilityText}>
-        Your current mobility is: {mobility}
-      </Text>
-      <Text style={styles.chooseOptionText}>Please choose another option:</Text>
-      {buttons}
-    </View>
+    <ImageBackground
+      source={require("../assets/BackgroundScreens/editMobility.png")}
+      resizeMode="cover"
+      style={styles.image}
+    >
+      <View style={styles.container}>
+        <Text style={styles.currentMobilityText}>
+          Your current mobility is: {mobility}
+        </Text>
+        <Image source={mobilityIcon} style={{ width: 100, height: 100 }} />
+        <Text style={styles.chooseOptionText}>
+          Please choose another option:
+        </Text>
+        {buttons}
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
+  image: {
+    flex: 1,
     justifyContent: "center",
   },
+  container: {
+    marginTop: 50,
+    backgroundColor: "#transparent",
+    alignItems: "center",
+    // marginStart: 60,
+    // marginEnd: 200,
+  },
   currentMobilityText: {
+    marginTop: 10,
     fontSize: 18,
-    marginBottom: 10,
   },
   chooseOptionText: {
+    marginTop: 10,
+
     fontSize: 16,
-    marginBottom: 10,
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: "col",
+    // justifyContent: "space-around",
     width: "100%",
   },
 });
