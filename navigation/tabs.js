@@ -40,7 +40,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/home.png")}
+                source={require("../assets/NavGraphIcons/home.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,
@@ -69,7 +69,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/favpng_travel-icon-plane-icon-calendar-icon.png")}
+                source={require("../assets/NavGraphIcons/myTrips.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,
@@ -98,7 +98,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/black-settings-button.png")}
+                source={require("../assets/NavGraphIcons/newTrip.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,
@@ -127,7 +127,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/black-settings-button.png")}
+                source={require("../assets/NavGraphIcons/userIcon.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,
