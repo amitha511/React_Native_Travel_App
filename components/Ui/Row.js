@@ -76,19 +76,17 @@ function Row(props) {
             )}
           </Text>
           <Text>
-            Business Status:
-            {props.businessStatus ? (
-              props.businessStatus
-                .replace(/_/g, " ")
-                .toLowerCase()
-                .split(" ")
-                .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
-                .join(" ")
+            Opening Hours:
+            {props.openingHours && props.openingHours.open_now !== undefined ? (
+              props.openingHours.open_now ? (
+                <Text style={{ color: "green" }}>Open Now</Text>
+              ) : (
+                <Text style={{ color: "red" }}>Closed</Text>
+              )
             ) : (
-              <Text style={{ color: "red" }}>No Business Status Available</Text>
+              <Text style={{ color: "red" }}>No Opening Hours Available</Text>
             )}
           </Text>
-          {/*console.log(props.image)*/}
         </View>
       </View>
     </View>

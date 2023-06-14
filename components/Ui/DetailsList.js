@@ -68,7 +68,7 @@ export default function DetailsList() {
                 image={item.photos}
                 address={item.vicinity}
                 rating={item.rating}
-                businessStatus={item.business_status}
+                openingHours={item.opening_hours}
                 type={item.types[0]}
               />
               <TouchableOpacity

@@ -20,7 +20,6 @@ function Recommends(props) {
         showsHorizontalScrollIndicator={false}
       >
         {recommends.map((item) => {
-          // console.log(item);
           return (
             <Row
               key={item.place_id}
@@ -28,7 +27,7 @@ function Recommends(props) {
               image={item.photos}
               address={item.vicinity}
               rating={item.rating}
-              businessStatus={item.business_status}
+              openingHours={item.opening_hours}
               type={item.types[0]}
             ></Row>
           );

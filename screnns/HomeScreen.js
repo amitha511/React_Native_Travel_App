@@ -82,9 +82,9 @@ function HomeScreen() {
       resizeMode="cover"
       style={styles.image}
     >
-      <View>
+      {/* <View>
         <Button title="Logout" onPress={logout}></Button>
-      </View>
+      </View> */}
       <ScrollView style={styles.scroll}>
         <Text style={styles.title}>Recommendations</Text>
         <View style={styles.recommends}>
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     marginBottom: "3%",
   },
   scroll: {
-    marginTop: "32%",
+    marginTop: "40.5%",
   },
   container: {
     paddingTop: "-30%",
