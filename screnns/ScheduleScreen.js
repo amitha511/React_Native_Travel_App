@@ -6,7 +6,11 @@ import {
   ScrollView,
   ActivityIndicator,
   Button,
+  TouchableOpacity,
+  Image,
   Text,
+  ImageBackground,
+  Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Timeline from "react-native-beautiful-timeline";
@@ -220,31 +224,117 @@ function Schedule() {
   }
   if (receiveData === 1) {
     return (
-      <View contentContainerStyle={styles.container}>
-        <Text>
-          page number {currentTrip + 1} of {responseData.length}
-        </Text>
-        <View style={styles.buttonContainer}>
-          <Button title="Reload Trip" onPress={handleRefresh} />
-          <Button title="Previous Trip" onPress={handlePreviousTrip} />
-          <Button title="Next Trip" onPress={handleNextTrip} />
-          <Button title="delete Trip" onPress={deleteAttraction} />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button title="Edit" onPress={() => handleButtonClick()} />
-          <Button title="Edit Mobility" onPress={() => handleMobilityClick()} />
-        </View>
-        <Timeline
-          data={data}
-          renderDetail={({ item }) => (
-            <View>
-              <Text>{item.title}</Text>
-              <Text>{item.subtitle}</Text>
-              <Text>{item.date}</Text>
+      <ImageBackground
+        source={require("../assets/BackgroundScreens/home.png")}
+        resizeMode="cover"
+        style={styles.image}
+      >
+        <View style={styles.scroll}>
+          {/* <View Style={styles.container}> */}
+          {/* <Text>
+            page number {currentTrip + 1} of {responseData.length}
+          </Text> */}
+          <View style={styles.buttonsTop}>
+            <View style={{ flexDirection: "column" }}>
+              <TouchableOpacity
+                style={{
+                  width: 40,
+                  height: 40,
+                  backgroundColor: "transparent",
+                  justifyContent: "center",
+                }}
+                onPress={handleRefresh}
+              >
+                <Text></Text>
+
+                <Image
+                  source={require("../assets/markIcon/reload.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
             </View>
-          )}
-        />
-      </View>
+
+            <View style={{ flexDirection: "column" }}>
+              <TouchableOpacity
+                style={{
+                  width: 30,
+                  height: 30,
+                  backgroundColor: "transparent",
+                  justifyContent: "center",
+                }}
+                onPress={() => handleButtonClick()}
+              >
+                <Text>Edit</Text>
+
+                <Image
+                  source={require("../assets/markIcon/edit.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/* <Button title="Edit" onPress={() => handleButtonClick()} /> */}
+            <Button
+              title="Edit Mobility"
+              onPress={() => handleMobilityClick()}
+            />
+            <Button title="delete Trip" onPress={deleteAttraction} />
+          </View>
+          <View style={styles.buttonContainer}></View>
+
+          <View style={styles.timeLineContainer}>
+            <Timeline
+              timelineStyle={styles.timeLine}
+              data={data}
+              renderDetail={({ item }) => (
+                <View>
+                  <Text>{item.title}</Text>
+                  <Text>{item.subtitle}</Text>
+                  <Text>{item.date}</Text>
+                </View>
+              )}
+            />
+          </View>
+
+          <Animated.View style={styles.buttonsPages}>
+            <TouchableOpacity
+              style={{
+                width: 35,
+                height: 35,
+                backgroundColor: "transparent",
+                justifyContent: "center",
+                paddingLeft: "30%",
+              }}
+              onPress={handlePreviousTrip}
+            >
+              <Image
+                source={require("../assets/markIcon/back.png")}
+                style={{ width: 35, height: 35 }}
+              />
+            </TouchableOpacity>
+
+            <Text style={{ margin: 10, paddingLeft: 40 }}>
+              {currentTrip + 1} of {responseData.length}
+            </Text>
+
+            <TouchableOpacity
+              style={{
+                width: 35,
+                height: 35,
+                backgroundColor: "transparent",
+                justifyContent: "center",
+                paddingRight: "40%",
+              }}
+              onPress={handleNextTrip}
+            >
+              <Image
+                source={require("../assets/markIcon/next.png")}
+                style={{ width: 35, height: 35 }}
+              />
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
+      </ImageBackground>
     );
 
     // return (
@@ -267,6 +357,35 @@ function Schedule() {
   }
 }
 const styles = StyleSheet.create({
+  scroll: {
+    marginTop: "90.5%",
+    marginBottom: "10%",
+  },
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
+
+  buttonsPages: {
+    flexDirection: "row",
+    backgroundColor: "#ffff",
+    justifyContent: "space-between",
+    position: "absolute",
+    width: "100%",
+    marginVertical: "127%",
+  },
+  buttonsTop: {
+    flexDirection: "row",
+    backgroundColor: "#ffff",
+
+    justifyContent: "space-around",
+    width: "100%",
+  },
+  timeLine: {
+    borderTopEndRadius: 10,
+    borderTopLeftRadius: 10,
+    height: 700,
+  },
   button: {
     alignItems: "center",
     justifyContent: "center",
@@ -274,6 +393,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
+    flex: 1,
     backgroundColor: "black",
   },
   text: {
@@ -285,15 +405,12 @@ const styles = StyleSheet.create({
   },
   container: {
     flexGrow: 1,
+    marginTop: "40.5%",
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-  },
+
   loadingText: {
     fontSize: 20,
     marginBottom: 10,

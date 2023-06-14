@@ -116,14 +116,15 @@ function HomeScreen() {
 
   return (
     <ImageBackground
-      source={require("../assets/background/airBallon.png")}
+      source={require("../assets/BackgroundScreens/home.png")}
       resizeMode="cover"
       style={styles.image}
     >
-      <View>
+      {/* <View>
         <Button title="Logout" onPress={logout}></Button>
-      </View>
+      </View> */}
       <ScrollView style={styles.scroll}>
+        <Text style={styles.title}>Recommendations</Text>
         <View style={styles.recommends}>
           <Text style={styles.text}>Bars Near You:</Text>
           <Recommends dataApi={dataApi} />
@@ -146,8 +147,14 @@ function HomeScreen() {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 30,
+    color: "#000",
+    textAlign: "center",
+    marginBottom: "3%",
+  },
   scroll: {
-    marginTop: "50%",
+    marginTop: "40.5%",
   },
   container: {
     paddingTop: "-30%",
