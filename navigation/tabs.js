@@ -57,7 +57,7 @@ const Tabs = () => {
       />
 
       <Tab.Screen
-        name="ScheduleScreen"
+        name="My Trips"
         component={ScheduleStack}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -82,11 +82,12 @@ const Tabs = () => {
               ></Text>
             </View>
           ),
+          headerShown: false,
         }}
       />
 
       <Tab.Screen
-        name="Build Trip"
+        name="New Trip"
         component={BuildTripStack}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -111,11 +112,12 @@ const Tabs = () => {
               ></Text>
             </View>
           ),
+          headerShown: false,
         }}
       />
 
       <Tab.Screen
-        name="ProfileScreen"
+        name="Profile"
         component={ProfileStack}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -140,6 +142,7 @@ const Tabs = () => {
               ></Text>
             </View>
           ),
+          headerShown: false,
         }}
       />
     </Tab.Navigator>
