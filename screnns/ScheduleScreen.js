@@ -57,7 +57,15 @@ function Schedule() {
     fetchData();
     setRefreshData(false); // Reset the refresh state after fetching
   }, [refreshData]);
-
+  let { refresh } = route.params || {};
+  // Check if refresh flag is true and trigger refresh
+  useEffect(() => {
+    console.log(refresh + " refreshhhhhhhhhhhhhhhhhhhhhhhh");
+    if (refresh) {
+      handleRefresh();
+    }
+    refresh = false;
+  }, [refresh]);
   let unixTimestamp;
   let newDays = [];
   if (
@@ -89,7 +97,7 @@ function Schedule() {
       console.log(responseData[currentTrip].dates[i] + "  Dates!!!!!!");
       dataMap.set(
         responseData[currentTrip].dates[i],
-        Object.values(responseData[currentTrip].attractions)    
+        Object.values(responseData[currentTrip].attractions)
       );
     }
     // for (let i = 0; i < dataMap.size; i++) {
