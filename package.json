@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@atiladev/usecalendar": "^0.3.3",
-    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^0.17.4",
     "@react-native-async-storage/async-storage": "^1.18.1",
@@ -63,6 +62,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@react-native-community/geolocation": "^3.0.6"
   },
   "private": true
