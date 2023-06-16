@@ -45,11 +45,11 @@ const Tabs = () => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#990099" : "#748c94",
                 }}
               />
               <Text
-                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
+                style={{ color: focused ? "#990099" : "#748c94", fontSize: 12 }}
               ></Text>
             </View>
           ),
@@ -74,11 +74,11 @@ const Tabs = () => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#990099" : "#748c94",
                 }}
               />
               <Text
-                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
+                style={{ color: focused ? "#990099" : "#748c94", fontSize: 12 }}
               ></Text>
             </View>
           ),
@@ -104,11 +104,11 @@ const Tabs = () => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#990099" : "#748c94",
                 }}
               />
               <Text
-                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
+                style={{ color: focused ? "#990099" : "#748c94", fontSize: 12 }}
               ></Text>
             </View>
           ),
@@ -134,11 +134,11 @@ const Tabs = () => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#990099" : "#748c94",
                 }}
               />
               <Text
-                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
+                style={{ color: focused ? "#990099" : "#748c94", fontSize: 12 }}
               ></Text>
             </View>
           ),

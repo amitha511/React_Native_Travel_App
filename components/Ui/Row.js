@@ -96,8 +96,8 @@ export default Row;
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: "#C0C0C0",
+    // borderWidth: 1,
+    // borderColor: "#C0C0C0",
     padding: 10,
     backgroundColor: "#ffffff",
   },

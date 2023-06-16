@@ -69,16 +69,16 @@ function ChangeMobility() {
       daysKeyArrays = [];
     }
 
-    //print the map to the terminal:
+    // //print the map to the terminal:
 
-    for (let i = 0; i < dates.length + 1; i++) {
-      console.log("day " + i + ":");
-      for (let j = 0; j < 3; j++) {
-        console.log("attra " + j + ":");
-        const map = mapCalender.get(i)[j];
-        console.log(mapCalender.get(i)[j]);
-      }
-    }
+    // for (let i = 0; i < dates.length + 1; i++) {
+    //   console.log("day " + i + ":");
+    //   for (let j = 0; j < 3; j++) {
+    //     console.log("attra " + j + ":");
+    //     const map = mapCalender.get(i)[j];
+    //     console.log(mapCalender.get(i)[j]);
+    //   }
+    // }
 
     let tempData = [];
     let attractions = {};
@@ -86,6 +86,7 @@ function ChangeMobility() {
     for (let i = 0; i < mapCalender.size; i++) {
       attractions[`day${i + 1}`] = { dailyAttractions: mapCalender.get(i) };
     }
+    console.log(newMobility);
     let oneItem = {
       dates: dates,
       attractions: attractions,
@@ -97,7 +98,6 @@ function ChangeMobility() {
     await axios
       .post(`http://${ip}:4000/travel/add`, oneItem)
       .then((response) => {
-        console.log(typeof oneItem.attractions);
         // Reload the screen to see the changes
         navigation.navigate("Schedule", { refresh: true });
       })
@@ -119,7 +119,6 @@ function ChangeMobility() {
       await axios
         .delete(`http://${ip}:4000/travel/delete/${id}`)
         .then((response) => {
-          console.log(`Deleted id: ${id}`);
           //setRefreshData(true);
         })
         .catch((error) => {
@@ -203,9 +202,11 @@ function ChangeMobility() {
     >
       <View style={styles.container}>
         <Text style={styles.currentMobilityText}>
-          Your current mobility is: {mobility}
+          Your current mobility is:
         </Text>
         <Image source={mobilityIcon} style={{ width: 100, height: 100 }} />
+        <Text> {mobility}</Text>
+
         <Text style={styles.chooseOptionText}>
           Please choose another option:
         </Text>

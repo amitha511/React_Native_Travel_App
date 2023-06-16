@@ -7,7 +7,6 @@ import {
   Button,
   Image,
   ImageBackground,
-  TouchableOpacity,
 } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
@@ -295,71 +294,73 @@ export default function BuildTripScreen() {
       source={require("../assets/BackgroundScreens/register.png")}
       style={styles.backgroundImage}
     >
+      <Text style={styles.TitleOut}>Add New Trip</Text>
+
+      <View style={styles.calender}>
+        <DatePicker
+          customStyles={{
+            dateInput: {
+              borderRadius: 10,
+              borderWidth: 0.5,
+              borderColor: "#ffff",
+              backgroundColor: "#ffff",
+              borderColor: "transference",
+            },
+            datePickerCon: {
+              backgroundColor: "#222",
+            },
+            placeholderText: {
+              color: "black",
+            },
+          }}
+          showIcon={false}
+          style={styles.datePicker}
+          androidMode="calendar"
+          date={inboundDate}
+          mode="date"
+          placeholder="Check-in"
+          format="YYYY-MM-DD"
+          minDate={today}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          onDateChange={(date) => setInboundDate(date)}
+        />
+        {console.log(inboundDate + "," + today)}
+        <DatePicker
+          style={styles.datePicker}
+          showIcon={false}
+          customStyles={{
+            dateInput: {
+              borderRadius: 10,
+              borderWidth: 0.5,
+              borderColor: "#ffff",
+              backgroundColor: "#ffff",
+              borderColor: "transference",
+            },
+            datePickerCon: {
+              backgroundColor: "#222",
+            },
+            placeholderText: {
+              color: "black",
+            },
+          }}
+          androidMode="calendar"
+          date={outboundDate}
+          mode="date"
+          placeholder="Check-out"
+          format="YYYY-MM-DD"
+          minDate={inboundDate}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          // maxDate={inboundDat}
+          onDateChange={(date) => setOutboundDate(date)}
+        ></DatePicker>
+      </View>
+
       <ScrollView style={styles.scroll}>
         <View style={styles.container}>
           <Text style={styles.errorMessage}>{message}</Text>
-          <View style={styles.calender}>
-            <DatePicker
-              customStyles={{
-                datePickerCon: {
-                  backgroundColor: "#222",
-                },
-                placeholderText: {
-                  color: "black",
-                },
-              }}
-              showIcon={false}
-              style={styles.datePicker}
-              androidMode="calendar"
-              date={inboundDate}
-              mode="date"
-              placeholder="Check-in"
-              format="YYYY-MM-DD"
-              minDate={today}
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              onDateChange={(date) => setInboundDate(date)}
-            />
-            {console.log(inboundDate + "," + today)}
-            <DatePicker
-              style={styles.datePicker}
-              showIcon={false}
-              customStyles={{
-                datePickerCon: {
-                  backgroundColor: "#222",
-                },
-                placeholderText: {
-                  color: "black",
-                },
-              }}
-              androidMode="calendar"
-              date={outboundDate}
-              mode="date"
-              placeholder="Check-out"
-              format="YYYY-MM-DD"
-              minDate={inboundDate}
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              // maxDate={inboundDat}
-              onDateChange={(date) => setOutboundDate(date)}
-            ></DatePicker>
-            <Image
-              key={"calander"}
-              style={styles.iconCalander}
-              source={require("../assets/iconsNewTrip/calendar.png")}
-            />
-          </View>
-          {outboundDate != null ? (
-            <Text style={{ paddingStart: 10 }}>Number of days: {diff}</Text>
-          ) : (
-            <Text></Text>
-          )}
-          {/* //{" "}
-          <Text>{outboundDate != null ? `Number of days: ${diff}` : ``}</Text> */}
-          {/* {diff <= 7 &&
-            dateRange.map((date) => (
-              <Text key={date}>{date.toISOString().split("T")[0]}</Text>
-            ))} */}
+
           <Text style={styles.text}>Enter Hotel/location:</Text>
           <View style={styles.validHotel}>
             <View style={styles.inputView}>
@@ -374,6 +375,11 @@ export default function BuildTripScreen() {
             </View>
             <Button title="Find Hotel" onPress={() => TextAPI(hotel)} />
           </View>
+          {outboundDate != null ? (
+            <Text style={{ paddingStart: 10 }}>Number of days: {diff}</Text>
+          ) : (
+            outboundDate != null
+          )}
           <View style={styles.separator} />
           <Text style={styles.text}>Select an option:</Text>
           <Menu selectedType={selectedType} setSelectedType={setSelectedType} />
@@ -408,10 +414,20 @@ export default function BuildTripScreen() {
 
 const styles = StyleSheet.create({
   scroll: {
-    marginTop: "42.5%",
+    // marginTop: "0.5%",
+  },
+  TitleOut: {
+    marginTop: 100,
+    fontSize: 30,
+    marginStart: 10,
+    fontWeight: "bold",
+    color: "#ffff",
+    borderRadius: 10,
+    borderColor: "black",
+    textShadowRadius: 10,
+    textShadowColor: "black",
   },
   container: {
-    paddingTop: "-30%",
     flex: 1,
   },
   inputView: {
@@ -456,13 +472,13 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     color: "red",
-    width: "60%",
-    margin: 10,
+    textAlign: "center",
   },
   radioGroupContainer: {
     marginStart: 5,
     flexDirection: "row",
     marginBottom: 16,
+    marginBottom: 50,
   },
   radioButtonItem: {
     marginLeft: 7,
@@ -472,26 +488,22 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   calender: {
-    borderColor: "#ccc",
-    borderWidth: 1,
     flexDirection: "row",
-    borderRadius: 4,
-
-    margin: 10,
+    justifyContent: "center",
+    margin: 5,
   },
   calenderTitle: {
     title: {
       marginRight: 102,
     },
     marginLeft: 15,
-
     flexDirection: "row",
-    width: "50%",
+    // width: "50%",
   },
   datePicker: {
     width: "42%",
     padding: 5,
-    color: "#000",
+    // color: "#000",
   },
   iconCalander: {
     margin: 10,

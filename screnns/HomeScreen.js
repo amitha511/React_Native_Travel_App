@@ -123,8 +123,9 @@ function HomeScreen() {
       {/* <View>
         <Button title="Logout" onPress={logout}></Button>
       </View> */}
+      <Text style={styles.TitleOut}>Explore Your Favorite journey</Text>
+
       <ScrollView style={styles.scroll}>
-        <Text style={styles.title}>Recommendations</Text>
         <View style={styles.recommends}>
           <Text style={styles.text}>Bars Near You:</Text>
           <Recommends dataApi={dataApi} />
@@ -147,14 +148,19 @@ function HomeScreen() {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 30,
-    color: "#000",
-    textAlign: "center",
-    marginBottom: "3%",
+  TitleOut: {
+    marginTop: 140,
+    fontSize: 28,
+    marginStart: 10,
+    fontWeight: "bold",
+    color: "#ffff",
+    borderRadius: 10,
+    borderColor: "black",
+    textShadowRadius: 20,
+    textShadowColor: "black",
   },
   scroll: {
-    marginTop: "40.5%",
+    marginTop: "5.5%",
   },
   container: {
     paddingTop: "-30%",

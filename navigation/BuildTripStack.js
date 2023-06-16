@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 export const BuildTripStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Search" component={BuildTripScreen} />
+      <Stack.Screen name="New Trip" component={BuildTripScreen} />
       {/* <Stack.Screen name="Details" component={DetailsList} />
       <Stack.Screen name="Schedule" component={Schedule} /> */}
     </Stack.Navigator>
