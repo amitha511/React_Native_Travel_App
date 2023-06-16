@@ -142,7 +142,6 @@ const Tabs = () => {
               ></Text>
             </View>
           ),
-          headerShown: false,
         }}
       />
     </Tab.Navigator>

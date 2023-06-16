@@ -73,7 +73,7 @@ function LoginScreen() {
 
   return (
     <ImageBackground
-      source={require("../assets/background/login.png")}
+      source={require("../assets/BackgroundScreens/login.png")}
       resizeMode="cover"
       style={styles.image}
     >
@@ -134,7 +134,7 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   scroll: {
-    marginTop: "20%",
+    marginTop: "30%",
   },
   container: {
     paddingTop: "15%",

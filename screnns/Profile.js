@@ -117,148 +117,166 @@ const Profile = () => {
 
   return (
     <ImageBackground
-      source={require("../assets/background/register.png")}
+      source={require("../assets/BackgroundScreens/profile.png")}
       resizeMode="cover"
       style={styles.image}
     >
-      <View style={styles.container}>
-        <View style={styles.profileInfo}>
-          <Text>Name:</Text>
-          {editName ? (
+      <Text style={styles.TitleOut}>Your Details</Text>
+
+      <ScrollView style={styles.scroll}>
+        <View style={styles.container}>
+          <View style={styles.profileInfo}>
+            <Text>Name:</Text>
+            {editName ? (
+              <TextInput
+                style={styles.input}
+                value={name}
+                onChangeText={(value) => setName(value)}
+              />
+            ) : (
+              <Text>{name}</Text>
+            )}
+            {!editName && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => editField("name")}
+              >
+                <Text>Edit</Text>
+              </TouchableOpacity>
+            )}
+            {editName && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => saveField("name")}
+              >
+                <Text>Save</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <View style={styles.profileInfo}>
+            <Text>Last Name:</Text>
+            {editLastName ? (
+              <TextInput
+                style={styles.input}
+                value={lastName}
+                onChangeText={(value) => setLastName(value)}
+              />
+            ) : (
+              <Text>{lastName}</Text>
+            )}
+            {!editLastName && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => editField("lastName")}
+              >
+                <Text>Edit</Text>
+              </TouchableOpacity>
+            )}
+            {editLastName && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => saveField("lastName")}
+              >
+                <Text>Save</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <View style={styles.profileInfo}>
+            <Text>Age:</Text>
+            {editAge ? (
+              <TextInput
+                style={styles.input}
+                value={age.toString()}
+                onChangeText={(value) => setAge(parseInt(value))}
+              />
+            ) : (
+              <Text>{age}</Text>
+            )}
+            {!editAge && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => editField("age")}
+              >
+                <Text>Edit</Text>
+              </TouchableOpacity>
+            )}
+            {editAge && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => saveField("age")}
+              >
+                <Text>Save</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <View style={styles.profileInfo}>
+            <Text>Email:</Text>
+            {editEmail ? (
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={(value) => setEmail(value)}
+              />
+            ) : (
+              <Text>{email}</Text>
+            )}
+            {!editEmail && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => editField("email")}
+              >
+                <Text>Edit</Text>
+              </TouchableOpacity>
+            )}
+            {editEmail && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => saveField("email")}
+              >
+                <Text>Save</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <View style={styles.profileInfo}>
+            <Text>Password:</Text>
             <TextInput
               style={styles.input}
-              value={name}
-              onChangeText={(value) => setName(value)}
+              value={password}
+              editable={false}
+              secureTextEntry
             />
-          ) : (
-            <Text>{name}</Text>
-          )}
-          {!editName && (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => editField("name")}
-            >
-              <Text>Edit</Text>
-            </TouchableOpacity>
-          )}
-          {editName && (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => saveField("name")}
-            >
-              <Text>Save</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+          </View>
 
-        <View style={styles.profileInfo}>
-          <Text>Last Name:</Text>
-          {editLastName ? (
-            <TextInput
-              style={styles.input}
-              value={lastName}
-              onChangeText={(value) => setLastName(value)}
-            />
-          ) : (
-            <Text>{lastName}</Text>
-          )}
-          {!editLastName && (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => editField("lastName")}
-            >
-              <Text>Edit</Text>
-            </TouchableOpacity>
-          )}
-          {editLastName && (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => saveField("lastName")}
-            >
-              <Text>Save</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+          <View>
+            <Button title="Logout" onPress={logout}></Button>
+          </View>
 
-        <View style={styles.profileInfo}>
-          <Text>Age:</Text>
-          {editAge ? (
-            <TextInput
-              style={styles.input}
-              value={age.toString()}
-              onChangeText={(value) => setAge(parseInt(value))}
-            />
-          ) : (
-            <Text>{age}</Text>
-          )}
-          {!editAge && (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => editField("age")}
-            >
-              <Text>Edit</Text>
-            </TouchableOpacity>
-          )}
-          {editAge && (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => saveField("age")}
-            >
-              <Text>Save</Text>
-            </TouchableOpacity>
-          )}
+          <ScrollView style={styles.scroll} />
         </View>
-
-        <View style={styles.profileInfo}>
-          <Text>Email:</Text>
-          {editEmail ? (
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={(value) => setEmail(value)}
-            />
-          ) : (
-            <Text>{email}</Text>
-          )}
-          {!editEmail && (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => editField("email")}
-            >
-              <Text>Edit</Text>
-            </TouchableOpacity>
-          )}
-          {editEmail && (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => saveField("email")}
-            >
-              <Text>Save</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-
-        <View style={styles.profileInfo}>
-          <Text>Password:</Text>
-          <TextInput
-            style={styles.input}
-            value={password}
-            editable={false}
-            secureTextEntry
-          />
-        </View>
-
-        <View>
-          <Button title="Logout" onPress={logout}></Button>
-        </View>
-
-        <ScrollView style={styles.scroll} />
-      </View>
+      </ScrollView>
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  TitleOut: {
+    marginTop: 120,
+    fontSize: 28,
+    marginStart: 10,
+    fontWeight: "bold",
+    color: "#ffff",
+    borderRadius: 10,
+    borderColor: "black",
+    textShadowRadius: 10,
+    textShadowColor: "black",
+  },
+  scroll: {
+    marginTop: "2.5%",
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -294,9 +312,7 @@ const styles = StyleSheet.create({
   tripText: {
     flex: 1,
   },
-  scroll: {
-    marginTop: "50%",
-  },
+
   image: {
     flex: 1,
     justifyContent: "center",

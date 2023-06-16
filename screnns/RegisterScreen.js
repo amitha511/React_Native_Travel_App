@@ -114,10 +114,12 @@ function RegisterScreen({ navigation }) {
 
   return (
     <ImageBackground
-      source={require("../assets/background/register.png")}
+      source={require("../assets/BackgroundScreens/register.png")}
       resizeMode="cover"
       style={styles.image}
     >
+      <Text style={styles.TitleOut}>Register</Text>
+
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
@@ -125,7 +127,6 @@ function RegisterScreen({ navigation }) {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView style={styles.scroll}>
             <View style={styles.container}>
-              <Text style={styles.title}>Register</Text>
               <Text style={styles.errorMessage}>{message}</Text>
 
               <Text style={styles.box}>Email:</Text>
@@ -212,8 +213,19 @@ function RegisterScreen({ navigation }) {
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
+  TitleOut: {
+    marginTop: 120,
+    fontSize: 28,
+    marginStart: 10,
+    fontWeight: "bold",
+    color: "#ffff",
+    borderRadius: 10,
+    borderColor: "black",
+    textShadowRadius: 20,
+    textShadowColor: "black",
+  },
   scroll: {
-    marginTop: "50%",
+    marginTop: "5%",
   },
   container: {
     paddingTop: "-30%",

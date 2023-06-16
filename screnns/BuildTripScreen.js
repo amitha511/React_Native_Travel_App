@@ -7,6 +7,7 @@ import {
   Button,
   Image,
   ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
@@ -291,7 +292,7 @@ export default function BuildTripScreen() {
 
   return (
     <ImageBackground
-      source={require("../assets/BackgroundScreens/register.png")}
+      source={require("../assets/BackgroundScreens/newTrip.png")}
       style={styles.backgroundImage}
     >
       <Text style={styles.TitleOut}>Add New Trip</Text>
@@ -373,7 +374,13 @@ export default function BuildTripScreen() {
               />
               <Image key={"validation"} style={styles.img} source={icon} />
             </View>
-            <Button title="Find Hotel" onPress={() => TextAPI(hotel)} />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => TextAPI(hotel)}
+            >
+              <Text>Find Hotel</Text>
+            </TouchableOpacity>
+            {/* <Button title="Find Hotel" onPress={() => TextAPI(hotel)} /> */}
           </View>
           {outboundDate != null ? (
             <Text style={{ paddingStart: 10 }}>Number of days: {diff}</Text>
@@ -397,14 +404,24 @@ export default function BuildTripScreen() {
               </View>
             ))}
           </View>
-          <Button
+          <View style={{ marginStart: 140 }}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                buildTrip(selectedType, location);
+              }}
+            >
+              <Text>Search</Text>
+            </TouchableOpacity>
+          </View>
+          {/* <Button
             style={styles.emphasizedButton}
             titleStyle={styles.buttonTitle}
             title="Search"
             onPress={() => {
               buildTrip(selectedType, location);
             }}
-          />
+          /> */}
           <StatusBar style="auto" />
         </View>
       </ScrollView>
@@ -413,6 +430,16 @@ export default function BuildTripScreen() {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    width: 100,
+    height: 50,
+    marginStart: "5%",
+    alignItems: "center",
+    borderRadius: 20,
+    justifyContent: "center",
+    color: "#ffff",
+    backgroundColor: "#E1E0FB",
+  },
   scroll: {
     // marginTop: "0.5%",
   },
@@ -458,8 +485,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
     padding: 5,
+    marginStart: 5,
+    marginEnd: 5,
   },
   text: {
     fontSize: 15,

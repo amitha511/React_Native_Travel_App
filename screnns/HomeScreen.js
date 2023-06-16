@@ -156,11 +156,12 @@ const styles = StyleSheet.create({
     color: "#ffff",
     borderRadius: 10,
     borderColor: "black",
-    textShadowRadius: 20,
+    textShadowRadius: 10,
     textShadowColor: "black",
   },
+
   scroll: {
-    marginTop: "5.5%",
+    marginTop: "2.5%",
   },
   container: {
     paddingTop: "-30%",
