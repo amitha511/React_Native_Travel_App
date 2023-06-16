@@ -7,6 +7,7 @@ import {
   Button,
   Image,
   ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
@@ -31,11 +32,26 @@ export default function BuildTripScreen() {
   const [outboundDate, setOutboundDate] = useState(null);
   const today = new Date().toISOString().split("T")[0];
   const [dateRange, setDateRange] = useState([]);
-  const [displayData, setDisplayData] = useState([]);
+  const [numberDays, setnumberDays] = useState(0);
   const { userDetails, setUserDetails } = useContext(UserContext);
+  let findHotel = false;
   //search btn
   function buildTrip(selectedType, location) {
-    NearByAPI(selectedType, location);
+    if (
+      outboundDate != null &&
+      inboundDate != null &&
+      location != "" &&
+      selectedOption != "" &&
+      diff <= 7 &&
+      selectedType.length > 0
+    ) {
+      setMessage("");
+      NearByAPI(selectedType, location);
+    } else if (diff > 7) {
+      setMessage("A trip should be a maximum of 7 days");
+    } else {
+      setMessage("Please full all the filed");
+    }
   }
 
   const calculateDateDifference = () => {
@@ -258,12 +274,12 @@ export default function BuildTripScreen() {
     ).value;
     setSelectedOption(newSelectedValue);
   }
-
-  function clickSearchHandel(params) {
-    navigation.navigate("Schedule", {
-      mobility: selectedOption,
-      location: location,
-    });
+  // , {
+  //       mobility: selectedOption,
+  //       location: location,
+  //     }
+  function clickSearchHandel() {
+    navigation.navigate("Schedule");
   }
 
   function changeHotelhandler(event) {
@@ -280,12 +296,8 @@ export default function BuildTripScreen() {
       style={styles.backgroundImage}
     >
       <ScrollView style={styles.scroll}>
-        <Text style={styles.errorMessage}>{message}</Text>
         <View style={styles.container}>
-          <View style={styles.calenderTitle}>
-            <Text style={styles.calenderTitle.title}>Outbound Date:</Text>
-            <Text>Inbound Date:</Text>
-          </View>
+          <Text style={styles.errorMessage}>{message}</Text>
           <View style={styles.calender}>
             <DatePicker
               customStyles={{
@@ -296,6 +308,7 @@ export default function BuildTripScreen() {
                   color: "black",
                 },
               }}
+              showIcon={false}
               style={styles.datePicker}
               androidMode="calendar"
               date={inboundDate}
@@ -310,6 +323,7 @@ export default function BuildTripScreen() {
             {console.log(inboundDate + "," + today)}
             <DatePicker
               style={styles.datePicker}
+              showIcon={false}
               customStyles={{
                 datePickerCon: {
                   backgroundColor: "#222",
@@ -318,7 +332,6 @@ export default function BuildTripScreen() {
                   color: "black",
                 },
               }}
-              iconSource={require("../assets/BackgroundScreens/register.png")}
               androidMode="calendar"
               date={outboundDate}
               mode="date"
@@ -329,34 +342,24 @@ export default function BuildTripScreen() {
               cancelBtnText="Cancel"
               // maxDate={inboundDat}
               onDateChange={(date) => setOutboundDate(date)}
+            ></DatePicker>
+            <Image
+              key={"calander"}
+              style={styles.iconCalander}
+              source={require("../assets/iconsNewTrip/calendar.png")}
             />
-            {console.log(
-              "inboundDate " +
-                inboundDate +
-                "," +
-                " today " +
-                today +
-                " out " +
-                outboundDate
-            )}
           </View>
-
-          <Text>
-            {diff > 7 ? (
-              <Text style={{ color: "red" }}>
-                There are too many days the max is 7
-              </Text>
-            ) : (
-              `Days Difference: ${diff}`
-            )}
-          </Text>
-          {diff <= 7 &&
+          {outboundDate != null ? (
+            <Text style={{ paddingStart: 10 }}>Number of days: {diff}</Text>
+          ) : (
+            <Text></Text>
+          )}
+          {/* //{" "}
+          <Text>{outboundDate != null ? `Number of days: ${diff}` : ``}</Text> */}
+          {/* {diff <= 7 &&
             dateRange.map((date) => (
               <Text key={date}>{date.toISOString().split("T")[0]}</Text>
-            ))}
-          {/* {displayData.map((item, index) => (
-            <Text key={index}>{item}</Text>
-          ))} */}
+            ))} */}
           <Text style={styles.text}>Enter Hotel/location:</Text>
           <View style={styles.validHotel}>
             <View style={styles.inputView}>
@@ -374,9 +377,7 @@ export default function BuildTripScreen() {
           <View style={styles.separator} />
           <Text style={styles.text}>Select an option:</Text>
           <Menu selectedType={selectedType} setSelectedType={setSelectedType} />
-
           <View style={styles.separator} />
-
           <Text style={styles.text}>mobility:</Text>
           <View style={styles.radioGroupContainer}>
             {data.map((item) => (
@@ -390,12 +391,13 @@ export default function BuildTripScreen() {
               </View>
             ))}
           </View>
-
           <Button
             style={styles.emphasizedButton}
             titleStyle={styles.buttonTitle}
             title="Search"
-            onPress={() => buildTrip(selectedType, location)}
+            onPress={() => {
+              buildTrip(selectedType, location);
+            }}
           />
           <StatusBar style="auto" />
         </View>
@@ -406,7 +408,7 @@ export default function BuildTripScreen() {
 
 const styles = StyleSheet.create({
   scroll: {
-    marginTop: "25%",
+    marginTop: "42.5%",
   },
   container: {
     paddingTop: "-30%",
@@ -456,7 +458,6 @@ const styles = StyleSheet.create({
     color: "red",
     width: "60%",
     margin: 10,
-    paddingBottom: "5%",
   },
   radioGroupContainer: {
     marginStart: 5,
@@ -475,6 +476,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     borderRadius: 4,
+
     margin: 10,
   },
   calenderTitle: {
@@ -487,8 +489,13 @@ const styles = StyleSheet.create({
     width: "50%",
   },
   datePicker: {
-    width: "50%",
+    width: "42%",
     padding: 5,
     color: "#000",
+  },
+  iconCalander: {
+    margin: 10,
+    width: 25,
+    height: 25,
   },
 });

@@ -4,6 +4,7 @@ import BuildTripScreen from "../screnns/BuildTripScreen";
 import DetailsList from "../components/Ui/DetailsList";
 import { useState } from "react";
 import Recommends from "../components/Recommends";
+import { ScheduleStack } from "./ScheduleStack";
 const Stack = createStackNavigator();
 
 export const BuildTripStack = () => {
