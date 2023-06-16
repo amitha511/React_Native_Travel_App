@@ -221,7 +221,7 @@ function Schedule() {
           location: locationFrom,
           radius: userRadius,
           type: "tourist_attraction",
-          key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
+          key: "AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E",
         },
       }
     );
@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     position: "absolute",
     width: "100%",
-    marginVertical: "144%",
+    marginVertical: "143%",
   },
   buttonsTop: {
     flexDirection: "row",

@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import { UserContext } from "../UserContext";
 import { register } from "../api-calls";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setGestureState } from "react-native-reanimated/lib/reanimated2/NativeMethods";
 function RegisterScreen({ navigation }) {

@@ -9,11 +9,15 @@ import {
   ImageBackground,
   ScrollView,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../UserContext";
 import axios from "axios";
 import { ip } from "@env";
+
 //const ip = process.env.REACT_APP_IP;
 const Profile = () => {
+  const { userConnect, setUserConnect } = useContext(UserContext);
+
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [name, setName] = useState("Name");
   const [editName, setEditName] = useState(false);
@@ -47,7 +51,13 @@ const Profile = () => {
     fetchData();
   }, [userDetails]);
 
-  function logout() {
+  async function logout() {
+    try {
+      await AsyncStorage.removeItem("email");
+      console.log("local Data removed successfully.");
+    } catch (error) {
+      console.log("Error removing data:", error);
+    }
     setUserConnect(false);
   }
 
@@ -239,7 +249,7 @@ const Profile = () => {
         </View>
 
         <View>
-          <Button title="Logout" onPress={logout} />
+          <Button title="Logout" onPress={logout}></Button>
         </View>
 
         <ScrollView style={styles.scroll} />

@@ -178,7 +178,7 @@ export default function BuildTripScreen() {
                 location: location,
                 radius: userRadius,
                 type: attraction,
-                key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
+                key: "AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E",
               },
             }
           );
@@ -213,7 +213,7 @@ export default function BuildTripScreen() {
       .get("https://maps.googleapis.com/maps/api/geocode/json", {
         params: {
           address: hotel,
-          key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
+          key: "AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E",
         },
       })
       .then(function (response) {
@@ -276,7 +276,7 @@ export default function BuildTripScreen() {
 
   return (
     <ImageBackground
-      source={require("../assets/background/vecation.png")}
+      source={require("../assets/BackgroundScreens/register.png")}
       style={styles.backgroundImage}
     >
       <ScrollView style={styles.scroll}>
@@ -288,30 +288,57 @@ export default function BuildTripScreen() {
           </View>
           <View style={styles.calender}>
             <DatePicker
+              customStyles={{
+                datePickerCon: {
+                  backgroundColor: "#222",
+                },
+                placeholderText: {
+                  color: "black",
+                },
+              }}
               style={styles.datePicker}
+              androidMode="calendar"
               date={inboundDate}
               mode="date"
-              placeholder="Select Inbound Date"
+              placeholder="Check-in"
               format="YYYY-MM-DD"
               minDate={today}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
-              maxDate="2023-12-31"
               onDateChange={(date) => setInboundDate(date)}
             />
+            {console.log(inboundDate + "," + today)}
             <DatePicker
               style={styles.datePicker}
+              customStyles={{
+                datePickerCon: {
+                  backgroundColor: "#222",
+                },
+                placeholderText: {
+                  color: "black",
+                },
+              }}
+              iconSource={require("../assets/BackgroundScreens/register.png")}
+              androidMode="calendar"
               date={outboundDate}
               mode="date"
-              placeholder="Select Outbound Date"
+              placeholder="Check-out"
               format="YYYY-MM-DD"
-              minDate={today}
+              minDate={inboundDate}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
-              maxDate="2023-12-31"
+              // maxDate={inboundDat}
               onDateChange={(date) => setOutboundDate(date)}
-              locale="en"
             />
+            {console.log(
+              "inboundDate " +
+                inboundDate +
+                "," +
+                " today " +
+                today +
+                " out " +
+                outboundDate
+            )}
           </View>
 
           <Text>
@@ -462,5 +489,6 @@ const styles = StyleSheet.create({
   datePicker: {
     width: "50%",
     padding: 5,
+    color: "#000",
   },
 });

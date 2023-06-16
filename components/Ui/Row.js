@@ -44,7 +44,7 @@ function Row(props) {
     if (props.image && props.image.length > 0) {
       let photoReference = props.image[0].photo_reference;
       updatedImages = {
-        uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0`,
+        uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E`,
       };
     }
     if (updatedImages.uri !== undefined) {

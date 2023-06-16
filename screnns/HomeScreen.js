@@ -76,7 +76,7 @@ function HomeScreen() {
               location: `${latitude},${longitude}`,
               radius: radius,
               type: type,
-              key: "AIzaSyDOI5owICVszKfksbNqLRRwHFh-RFQbeV0",
+              key: "AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E",
             },
           }
         );
