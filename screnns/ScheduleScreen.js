@@ -22,7 +22,7 @@ import { UserContext } from "../UserContext";
 import { ip } from "@env";
 
 function Schedule() {
-  console.log("this is the ip :" + ip);
+  console.log("this is the ip :" + process.env.ip);
   const route = useRoute();
   //const { mobility, location } = route.params;
   const navigation = useNavigation();
@@ -42,14 +42,14 @@ function Schedule() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://${ip}:4000/travel/get/${userDetails}`
+          `http://${process.env.ip}:4000/travel/get/${userDetails}`
         );
 
         // setCurrentId(response.data[0]._id);
         if (flag != 1) {
           for (let i = 0; i < response.data.length; i++) {
             idArr.push(response.data[i]._id);
-            console.log(idArr[i]);
+            //console.log(idArr[i]);
           }
         }
         setFlag(1);
@@ -67,7 +67,7 @@ function Schedule() {
   let { refresh } = route.params || {};
   // Check if refresh flag is true and trigger refresh
   useEffect(() => {
-    console.log(refresh + " refreshhhhhhhhhhhhhhhhhhhhhhhh");
+    //console.log(refresh + " refreshhhhhhhhhhhhhhhhhhhhhhhh");
     if (refresh) {
       handleRefresh();
     }
@@ -88,7 +88,7 @@ function Schedule() {
     //   )
     // );
     for (let i = 0; i < responseData[currentTrip].dates.length; i++) {
-      console.log("Dates2!!!!!!!! " + responseData[currentTrip].dates[i]);
+      //console.log("Dates2!!!!!!!! " + responseData[currentTrip].dates[i]);
       newDays.push(new Date(responseData[currentTrip].dates[i]));
     }
 
@@ -100,8 +100,8 @@ function Schedule() {
   const dataMap = new Map();
   if (responseData && Array.isArray(responseData) && responseData.length > 0) {
     for (let i = 0; i < newDays.length; i++) {
-      console.log(newDays.length);
-      console.log(responseData[currentTrip].dates[i] + "  Dates!!!!!!");
+      //console.log(newDays.length);
+      //console.log(responseData[currentTrip].dates[i] + "  Dates!!!!!!");
       dataMap.set(
         responseData[currentTrip].dates[i],
         Object.values(responseData[currentTrip].attractions)
@@ -147,8 +147,8 @@ function Schedule() {
     let currentDayAttractions = dataMap.get(responseData[currentTrip].dates[i])[
       i
     ]?.dailyAttractions;
-    console.log(currentDayAttractions + " Current day attraction");
-    console.log(responseData[currentTrip].dates[i] + " Dates@@@");
+    //console.log(currentDayAttractions + " Current day attraction");
+    //console.log(responseData[currentTrip].dates[i] + " Dates@@@");
     if (currentDayAttractions) {
       for (let j = 0; j < currentDayAttractions.length; j++) {
         if (currentDayAttractions[j]) {
@@ -158,7 +158,7 @@ function Schedule() {
             photos: currentDayAttractions[j].photos,
             rating: currentDayAttractions[j].rating,
             openingHours: currentDayAttractions[j].opening_hours,
-            subtitle: `Location is: ${currentDayAttractions[j].vicinity}`,
+            subtitle: `Location is: ${currentDayAttractions[j].types}`,
             date: dateAndHour,
           });
           dateAndHour = dateAndHour + 7200000;
@@ -172,9 +172,9 @@ function Schedule() {
     });
   }
   const handleButtonClick = () => {
-    console.log("index is:" + currentTrip);
-    console.log(responseData[currentTrip]._id);
-    console.log(responseData[currentTrip]);
+    //console.log("index is:" + currentTrip);
+    //console.log(responseData[currentTrip]._id);
+    //console.log(responseData[currentTrip]);
     navigation.navigate("Change", {
       data: data,
       id: responseData[currentTrip]._id,
@@ -211,7 +211,7 @@ function Schedule() {
       responseData[currentTrip].attractions.day1.dailyAttractions[0].geometry;
     const cordinates = searchFrom.location;
     let locationFrom = cordinates.lat + "," + cordinates.lng;
-    console.log(locationFrom);
+    //console.log(locationFrom);
     const responseArray = [];
 
     const response = await axios.get(
