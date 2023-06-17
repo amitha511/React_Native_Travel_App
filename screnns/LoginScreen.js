@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   Button,
   Image,
   ImageBackground,
@@ -15,6 +14,8 @@ import {
 import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 import { login } from "../api-calls";
+import { TextInput, IconButton } from "@react-native-material/core";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 function LoginScreen() {
   const navigation = useNavigation();
@@ -90,6 +91,8 @@ function LoginScreen() {
                 <TextInput
                   style={styles.TextInput}
                   value={email}
+                  variant="outlined"
+                  leading={(props) => <Icon name="account" {...props} />}
                   placeholder="Enter your email"
                   placeholderTextColor="#003f5c"
                   onChangeText={setEmail}
@@ -99,6 +102,7 @@ function LoginScreen() {
               <View style={styles.inputView}>
                 <TextInput
                   style={styles.TextInput}
+                  variant="outlined"
                   placeholder="Enter your password"
                   placeholderTextColor="#003f5c"
                   secureTextEntry={true}
@@ -148,7 +152,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: "black",
     textAlign: "center",
-    paddingBottom: "5%",
+    paddingBottom: "2%",
   },
   errorMessage: {
     color: "red",
@@ -156,11 +160,8 @@ const styles = StyleSheet.create({
     paddingBottom: "5%",
   },
   inputView: {
-    alignItems: "center",
     marginStart: "15%",
-    backgroundColor: "#F0EDED",
     borderRadius: 30,
-    width: "70%",
     height: 55,
     marginBottom: 20,
   },
@@ -168,7 +169,6 @@ const styles = StyleSheet.create({
     height: "50%",
     width: "70%",
     flex: 1,
-    padding: "2%",
     marginLeft: 20,
   },
   loginBtn: {
