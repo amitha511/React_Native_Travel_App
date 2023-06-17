@@ -148,6 +148,12 @@ function HomeScreen() {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  text: {
+    fontSize: 20,
+    color: "black",
+    borderRadius: 10,
+    borderColor: "black",
+  },
   TitleOut: {
     marginTop: 140,
     fontSize: 28,
@@ -161,7 +167,7 @@ const styles = StyleSheet.create({
   },
 
   scroll: {
-    marginTop: "2.5%",
+    marginTop: "4.5%",
   },
   container: {
     paddingTop: "-30%",

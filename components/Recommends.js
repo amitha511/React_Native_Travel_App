@@ -6,7 +6,7 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-import Row from "./Ui/Row";
+import RowHome from "./Ui/RowHome";
 
 function Recommends(props) {
   const recommends = props.dataApi;
@@ -21,7 +21,7 @@ function Recommends(props) {
       >
         {recommends.map((item) => {
           return (
-            <Row
+            <RowHome
               key={item.place_id}
               title={item.name}
               image={item.photos}
@@ -29,7 +29,7 @@ function Recommends(props) {
               rating={item.rating}
               openingHours={item.opening_hours}
               type={item.types[0]}
-            ></Row>
+            ></RowHome>
           );
         })}
       </ScrollView>
@@ -42,21 +42,18 @@ export default Recommends;
 const styles = StyleSheet.create({
   container: {
     margin: 5,
-
     shadowColor: "black",
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     elevation: 5,
     borderRadius: 10,
-    backgroundColor: "white",
+    backgroundColor: "transparent",
   },
   scrollView: {
     margin: 5,
   },
   content: {
-    width: 70,
-    height: 60,
     backgroundColor: "#FEEEFF",
     marginRight: 10,
     alignItems: "center",
