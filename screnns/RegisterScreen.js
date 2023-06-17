@@ -241,8 +241,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   TitleOut: {
-    marginTop: 200,
-    fontSize: 28,
+    textAlign: "center",
+
+    marginTop: 170,
+    fontSize: 50,
     marginStart: 10,
     fontWeight: "bold",
     color: "#ffff",
