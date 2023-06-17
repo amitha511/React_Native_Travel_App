@@ -28,6 +28,7 @@ export default function BuildTripScreen() {
   const [selectedType, setSelectedType] = useState([]);
   const [icon, setIcon] = useState(require("../assets/markIcon/question.png"));
   const [message, setMessage] = useState("");
+  const [message1, setMessage1] = useState("");
   const [inboundDate, setInboundDate] = useState(null);
   const [outboundDate, setOutboundDate] = useState(null);
   const today = new Date().toISOString().split("T")[0];
@@ -90,7 +91,9 @@ export default function BuildTripScreen() {
     let attractionTypesCounter = new Array(selectedType.length).fill(1);
     let extraAttractionArr = [];
     let filteredDataList = filteredDataList1;
-
+    if (filteredDataList.length == 0) {
+      return;
+    }
     for (let i = 0; i < numDays + 1; i++) {
       daysKeyArrays = [];
       attractionTypesCounter = new Array(selectedType.length).fill(1);
@@ -98,42 +101,42 @@ export default function BuildTripScreen() {
       for (let j = 0; j < 5; j++) {
         let allZero = attractionTypesCounter.every((count) => count === 0);
         let attractionAddingChecker = false;
+        if (filteredDataList.length != 0)
+          if (!allZero) {
+            let flag = 0;
+            while (!attractionAddingChecker) {
+              maxItem = findMaxItem(filteredDataList);
+              let objItem = Object.values(maxItem)[2]; // Get the object
+              console.log(objItem.types + " !!!!!!!!!!!!!!!!!!!!!!!!!!");
+              for (let i = 0; i < selectedType.length; i++) {
+                if (objItem.types.includes(selectedType[i]) && attractionTypesCounter[i] !== 0) {
+                  attractionTypesCounter[i] = 0;
+                  daysKeyArrays.push(objItem);
+                  console.log(`Attraction Adding Type is: ${objItem.name} on index number ${j}`);
+                  attractionAddingChecker = true;
+                  flag = 1;
+                  break;
+                }
+              }
 
-        if (!allZero) {
-          let flag = 0;
-          while (!attractionAddingChecker) {
-            maxItem = findMaxItem(filteredDataList);
-            let objItem = Object.values(maxItem)[2]; // Get the object
-
-            for (let i = 0; i < selectedType.length; i++) {
-              if (objItem.types.includes(selectedType[i]) && attractionTypesCounter[i] !== 0) {
-                attractionTypesCounter[i] = 0;
-                daysKeyArrays.push(objItem);
-                console.log(`Attraction Adding Type is: ${objItem.name} on index number ${j}`);
-                attractionAddingChecker = true;
-                flag = 1;
-                break;
+              if (flag === 0) {
+                console.log(`${objItem.name} Adding to Extra on index number ${j}`);
+                extraAttractionArr.push(objItem);
+                filteredDataList = filteredDataList.filter((item) => item.place_id !== objItem.place_id);
               }
             }
-
-            if (flag === 0) {
-              console.log(`${objItem.name} Adding to Extra on index number ${j}`);
-              extraAttractionArr.push(objItem);
-              filteredDataList = filteredDataList.filter((item) => item.place_id !== objItem.place_id);
+          } else {
+            if (extraAttractionArr.length !== 0) {
+              let variable = extraAttractionArr.pop();
+              daysKeyArrays.push(variable);
+              console.log(`Extra Adding Type from the if is: ${variable.types}`);
+            } else {
+              maxItem = findMaxItem(filteredDataList);
+              let objItem = Object.values(maxItem)[2];
+              daysKeyArrays.push(objItem);
+              console.log(`Extra Adding Type from the else is: ${objItem.types}`);
             }
           }
-        } else {
-          if (extraAttractionArr.length !== 0) {
-            let variable = extraAttractionArr.pop();
-            daysKeyArrays.push(variable);
-            console.log(`Extra Adding Type from the if is: ${variable.types}`);
-          } else {
-            maxItem = findMaxItem(filteredDataList);
-            let objItem = Object.values(maxItem)[2];
-            daysKeyArrays.push(objItem);
-            console.log(`Extra Adding Type from the else is: ${objItem.types}`);
-          }
-        }
 
         const updatedDataList = filteredDataList.filter((item) => item.place_id !== daysKeyArrays[j].place_id);
         filteredDataList = updatedDataList;
@@ -231,8 +234,23 @@ export default function BuildTripScreen() {
         const filteredDataList = allData.filter(
           (item) => item.rating !== undefined
         );
-        startingAttraction(filteredDataList);
-        clickSearchHandel(filteredDataList);
+        if (filteredDataList.length != 0) {
+          let amount = 5 * (diff + 1);
+          if (amount > filteredDataList.length) {
+            setMessage1("There are no enough results to your search, please try again");
+          }
+          else {
+            setMessage1("");
+            setMessage("");
+            startingAttraction(filteredDataList);
+            clickSearchHandel(filteredDataList);
+          }
+
+        }
+        else {
+          setMessage1("There are no results to your search, please try again");
+        }
+
         // setHotel("");
         setSelectedOption("");
         setSelectedType([]);
@@ -425,6 +443,7 @@ export default function BuildTripScreen() {
               </View>
             ))}
           </View>
+          <Text style={styles.errorMessage}>{message1}</Text>
           <View style={{ marginStart: 140 }}>
             <TouchableOpacity
               style={styles.button}
