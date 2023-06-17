@@ -35,7 +35,7 @@ const Profile = () => {
       if (userDetails !== undefined) {
         try {
           const response = await axios.get(
-            `http://${ip}:4000/user/Details/${userDetails}`
+            `http://${process.env.ip}:4000/user/Details/${userDetails}`
           );
           setId(response.data[0]._id);
           setEmail(response.data[0].email);
