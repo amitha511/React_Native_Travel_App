@@ -78,58 +78,56 @@ function LoginScreen() {
       resizeMode="cover"
       style={styles.image}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView style={styles.scroll}>
-            <View style={styles.container}>
-              <Text style={styles.title}>Welcome</Text>
-              <Text style={styles.errorMessage}>{message}</Text>
-              <View style={styles.inputView}>
-                <TextInput
-                  style={styles.TextInput}
-                  value={email}
-                  variant="outlined"
-                  leading={(props) => <Icon name="account" {...props} />}
-                  placeholder="Enter your email"
-                  placeholderTextColor="#003f5c"
-                  onChangeText={setEmail}
-                />
-              </View>
+      <Text style={styles.TitleOut}>Travel & Go </Text>
+      <ScrollView style={styles.scroll}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Welcome!</Text>
 
-              <View style={styles.inputView}>
-                <TextInput
-                  style={styles.TextInput}
-                  variant="outlined"
-                  placeholder="Enter your password"
-                  placeholderTextColor="#003f5c"
-                  secureTextEntry={true}
-                  value={password}
-                  onChangeText={setPassword}
-                />
-              </View>
+          <Text style={styles.errorMessage}>{message}</Text>
+          <Text style={styles.nameInput}>Email</Text>
 
-              <Button
-                style={styles.loginBtn}
-                title="Login"
-                onPress={handleSubmit}
-              />
+          <View style={styles.inputView}>
+            <TextInput
+              style={styles.TextInput}
+              value={email}
+              variant="outlined"
+              leading={(props) => <Icon name="account" {...props} />}
+              placeholder="Enter your email"
+              placeholderTextColor="#003f5c"
+              onChangeText={setEmail}
+            />
+          </View>
+          <Text style={styles.nameInput}>Password</Text>
 
-              <View style={styles.separator} />
-              <Text style={styles.text}>Need an account?</Text>
+          <View style={styles.inputView}>
+            <TextInput
+              style={styles.TextInput}
+              variant="outlined"
+              placeholder="Enter your password"
+              placeholderTextColor="#003f5c"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
 
-              <Button
-                style={styles.loginBtn}
-                title="Register now"
-                onPress={clickRegisterHandler}
-              />
-              <Text style={styles.end}></Text>
-            </View>
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          <Button
+            style={styles.loginBtn}
+            title="Login"
+            onPress={handleSubmit}
+          />
+
+          <View style={styles.separator} />
+          <Text style={styles.text}>Need an account?</Text>
+
+          <Button
+            style={styles.loginBtn}
+            title="Register now"
+            onPress={clickRegisterHandler}
+          />
+          <Text style={styles.end}></Text>
+        </View>
+      </ScrollView>
     </ImageBackground>
   );
 }
@@ -137,22 +135,43 @@ function LoginScreen() {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  nameInput: {
+    marginStart: 65,
+    marginBottom: 7,
+  },
+  TitleOut: {
+    marginTop: 130,
+    fontSize: 50,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#ffff",
+    borderRadius: 10,
+    borderColor: "black",
+    textShadowRadius: 10,
+    textShadowColor: "black",
+  },
   scroll: {
-    marginTop: "30%",
+    marginTop: "7%",
   },
-  container: {
-    paddingTop: "15%",
-    flex: 1,
-  },
+
   image: {
     flex: 1,
     justifyContent: "center",
   },
   title: {
-    fontSize: 32,
-    color: "black",
+    fontSize: 30,
     textAlign: "center",
-    paddingBottom: "2%",
+    fontWeight: "bold",
+    color: "#ffff",
+    borderRadius: 10,
+    borderColor: "black",
+    textShadowRadius: 5,
+    textShadowColor: "black",
+
+    // fontSize: 32,
+    // color: "black",
+    // textAlign: "center",
+    // paddingBottom: "2%",
   },
   errorMessage: {
     color: "red",
@@ -167,9 +186,9 @@ const styles = StyleSheet.create({
   },
   TextInput: {
     height: "50%",
-    width: "70%",
+    width: "80%",
+    justifyContent: "center",
     flex: 1,
-    marginLeft: 20,
   },
   loginBtn: {
     width: "80%",

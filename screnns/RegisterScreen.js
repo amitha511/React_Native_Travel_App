@@ -126,8 +126,8 @@ function RegisterScreen({ navigation }) {
           <Text style={styles.errorMessage}>{message}</Text>
 
           <View style={styles.rowInput}>
-            <Text style={styles.box}>Name:</Text>
-            <Text style={{ marginStart: 165 }}>Last Name:</Text>
+            <Text style={styles.box}>First Name:</Text>
+            <Text style={{ marginStart: 130 }}>Last Name:</Text>
           </View>
           <View style={styles.rowInput}>
             <View style={styles.inputViewName}>
