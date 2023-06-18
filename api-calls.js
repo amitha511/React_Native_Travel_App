@@ -1,7 +1,6 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const API_KEY = "AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E";
-import { ip } from "@env";
 
 export async function authenticateLogin(
   mode,
@@ -10,10 +9,8 @@ export async function authenticateLogin(
   setUserConnect,
   setUserDetails
 ) {
-  console.log("ip is : " + ip);
-
   console.log("process.env.ip is : " + process.env.ip);
-  const url = `http://${ip}:4000/auth/${mode}`;
+  const url = `http://${process.env.ip}:4000/auth/${mode}`;
 
   await axios
     .post(url, {
@@ -52,7 +49,7 @@ export async function authenticateRegister(
   setUserConnect,
   setUserDetails
 ) {
-  const url = `http://${ip}:4000/auth/${mode}`;
+  const url = `http://${process.env.ip}:4000/auth/${mode}`;
 
   await axios
     .post(url, {

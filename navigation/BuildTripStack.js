@@ -12,7 +12,7 @@ export const BuildTripStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="NewTrip" component={BuildTripScreen} />
-      <Stack.Screen name="Schedule" component={Schedule} />
+      {/* ` <Stack.Screen name="Schedule" component={Schedule} />` */}
     </Stack.Navigator>
   );
 };

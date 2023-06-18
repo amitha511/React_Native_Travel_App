@@ -190,6 +190,7 @@ export default function BuildTripScreen() {
       hotelLocation: location,
       mobility: selectedOption,
     };
+    console.log(process.env.ip + " ip from the build trip");
     await axios
       .post(`http://${process.env.ip}:4000/travel/add`, oneItem)
       .then(console.log(typeof oneItem.attractions))
@@ -238,7 +239,7 @@ export default function BuildTripScreen() {
                 location: location,
                 radius: userRadius,
                 type: attraction,
-                key: "AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E",
+                key: process.env.key,
               },
             }
           );
@@ -287,7 +288,7 @@ export default function BuildTripScreen() {
       .get("https://maps.googleapis.com/maps/api/geocode/json", {
         params: {
           address: hotel,
-          key: "AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E",
+          key: process.env.key,
         },
       })
       .then(function (response) {

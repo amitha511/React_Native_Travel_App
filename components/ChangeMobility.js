@@ -29,7 +29,7 @@ function ChangeMobility() {
               location: location,
               radius: userRadius,
               type: attraction,
-              key: "AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E",
+              key: process.env.key,
             },
           }
         );
@@ -134,7 +134,7 @@ function ChangeMobility() {
       mobility: newMobility,
     };
     await axios
-      .post(`http://${ip}:4000/travel/add`, oneItem)
+      .post(`http://${process.env.ip}:4000/travel/add`, oneItem)
       .then((response) => {
         // Reload the screen to see the changes
         navigation.navigate("Schedule", { refresh: true });
@@ -155,7 +155,7 @@ function ChangeMobility() {
   const deleteAttraction = async () => {
     try {
       await axios
-        .delete(`http://${ip}:4000/travel/delete/${id}`)
+        .delete(`http://${process.env.ip}:4000/travel/delete/${id}`)
         .then((response) => {
           //setRefreshData(true);
         })

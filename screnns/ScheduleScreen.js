@@ -19,10 +19,8 @@ import { useRoute } from "@react-navigation/native";
 import ChangeAttraction from "../components/ChangeAttraction";
 import { UserContext } from "../UserContext";
 // import { ip } from "../App";
-import { ip } from "@env";
 
 function Schedule() {
-  console.log("this ip :" + ip);
   console.log("this is the ip :" + process.env.ip);
   const route = useRoute();
   //const { mobility, location } = route.params;
@@ -157,7 +155,7 @@ function Schedule() {
             photos: currentDayAttractions[j].photos,
             rating: currentDayAttractions[j].rating,
             openingHours: currentDayAttractions[j].opening_hours,
-            subtitle: `Location is: ${currentDayAttractions[j].types}`,
+            subtitle: `Location is: ${currentDayAttractions[j].vicinity}`,
             date: dateAndHour,
           });
           dateAndHour = dateAndHour + 7200000;
@@ -220,7 +218,7 @@ function Schedule() {
           location: locationFrom,
           radius: userRadius,
           type: "tourist_attraction",
-          key: "AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E",
+          key: process.env.key,
         },
       }
     );

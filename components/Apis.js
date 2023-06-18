@@ -22,7 +22,7 @@ export default async function NearByAPI(attractions, location) {
               location: "32.109333,34.855499",
               radius: 10000,
               type: "bar",
-              key: "AIzaSyBfiFw1fsLgQZ9a3JB_XplnxgO5eeK9b2E",
+              key: process.env.key,
             },
           }
         );

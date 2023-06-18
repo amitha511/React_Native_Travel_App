@@ -18,6 +18,7 @@ import { ip } from "@env";
 
 //const ip = process.env.REACT_APP_IP;
 const Profile = () => {
+  console.log(process.env.ip);
   const { userConnect, setUserConnect } = useContext(UserContext);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [name, setName] = useState("Name");
