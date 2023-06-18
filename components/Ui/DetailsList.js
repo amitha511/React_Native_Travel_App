@@ -1,18 +1,15 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 import {
   Text,
   ScrollView,
   StyleSheet,
   View,
   TouchableOpacity,
-  Image,
-  Button,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
 import Row from "./Row";
-import { ip } from "@env";
 export default function DetailsList() {
   const route = useRoute();
   const navigation = useNavigation();
@@ -30,20 +27,17 @@ export default function DetailsList() {
     console.log(id);
     try {
       await axios
-        .post(`http://${ip}:4000/travel/update`, oneItem)
+        .post(`http://${process.env.ip}:4000/travel/update`, oneItem)
         .then((response) => {
           console.log(`updated!`);
         });
     } catch (error) {
       if (error.response) {
-        // The request was made and the server responded with a status code
         console.log(error.response.status);
         console.log(error.response.data);
       } else if (error.request) {
-        // The request was made but no response was received
         console.log(error.request);
       } else {
-        // Something happened in setting up the request that triggered an error
         console.log("Error", error.message);
       }
     }

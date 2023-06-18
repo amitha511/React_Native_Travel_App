@@ -31,7 +31,7 @@ export async function authenticateLogin(
     .catch(async (error) => {
       if (error.response && error.response.status === 400) {
         console.log("test400");
-        if (setUserConnect) setUserConnect(false); // Update context
+        if (setUserConnect) setUserConnect(false);
         console.log(error.response.status);
         throw error.response.status;
       }
@@ -73,7 +73,7 @@ export async function authenticateRegister(
     .catch(async (error) => {
       if (error.response && error.response.status === 400) {
         console.log(error.response.status);
-        if (setUserConnect) setUserConnect(false); // Update context
+        if (setUserConnect) setUserConnect(false);
         throw error.response.status;
       }
     });
@@ -113,7 +113,6 @@ export async function register(
 }
 
 const saveData = async (key, value) => {
-  //key "email" , value email
   try {
     await AsyncStorage.setItem(key, value);
     console.log("Data saved successfully in the local memory .");

@@ -1,10 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screnns/HomeScreen";
 import { StyleSheet, Text, View, Image } from "react-native";
-import { LoginStack } from "./LoginStack";
-import { useState } from "react";
 import { BuildTripStack } from "./BuildTripStack";
-import ScheduleScreen from "../screnns/ScheduleScreen";
 import { ProfileStack } from "./ProfileStack";
 import { ScheduleStack } from "./ScheduleStack";
 const Tab = createBottomTabNavigator();

@@ -1,4 +1,3 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "../screnns/LoginScreen";
 import RegisterScreen from "../screnns/RegisterScreen";

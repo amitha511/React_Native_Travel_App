@@ -10,7 +10,6 @@ import RowHome from "./Ui/RowHome";
 
 function Recommends(props) {
   const recommends = props.dataApi;
-  //row => props - image, title , phone, website
 
   return (
     <View style={styles.container}>

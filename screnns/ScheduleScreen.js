@@ -3,27 +3,20 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   StyleSheet,
-  ScrollView,
   ActivityIndicator,
-  Button,
   TouchableOpacity,
   Image,
   Text,
   ImageBackground,
-  Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Timeline from "react-native-beautiful-timeline";
 import * as Animatable from "react-native-animatable";
 import { useRoute } from "@react-navigation/native";
-import ChangeAttraction from "../components/ChangeAttraction";
 import { UserContext } from "../UserContext";
-// import { ip } from "../App";
-
 function Schedule() {
   console.log("this is the ip :" + process.env.ip);
   const route = useRoute();
-  //const { mobility, location } = route.params;
   const navigation = useNavigation();
   const [receiveData, setReceiveData] = useState(0);
   const [responseData, setResponseData] = useState(null);
@@ -44,11 +37,10 @@ function Schedule() {
           `http://${process.env.ip}:4000/travel/get/${userDetails}`
         );
 
-        // setCurrentId(response.data[0]._id);
+
         if (flag != 1) {
           for (let i = 0; i < response.data.length; i++) {
             idArr.push(response.data[i]._id);
-            //console.log(idArr[i]);
           }
         }
         setFlag(1);
@@ -61,12 +53,11 @@ function Schedule() {
     };
 
     fetchData();
-    setRefreshData(false); // Reset the refresh state after fetching
+    setRefreshData(false);
   }, [refreshData]);
   let { refresh } = route.params || {};
-  // Check if refresh flag is true and trigger refresh
+
   useEffect(() => {
-    //console.log(refresh + " refreshhhhhhhhhhhhhhhhhhhhhhhh");
     if (refresh) {
       handleRefresh();
     }
@@ -81,34 +72,27 @@ function Schedule() {
     responseData.length > 0
   ) {
     let date = new Date(responseData[currentTrip].dates[1]);
-    // console.log(
-    //   Object.values(
-    //     responseData[currentTrip].attractions.day1.dailyAttractions[0]
-    //   )
-    // );
+
     for (let i = 0; i < responseData[currentTrip].dates.length; i++) {
-      //console.log("Dates2!!!!!!!! " + responseData[currentTrip].dates[i]);
+
       newDays.push(new Date(responseData[currentTrip].dates[i]));
     }
 
     unixTimestamp = date.getTime();
   }
-  //console.log(responseData[currentTrip]._id); // the id of the attraction
+
   let data = [];
 
   const dataMap = new Map();
   if (responseData && Array.isArray(responseData) && responseData.length > 0) {
     for (let i = 0; i < newDays.length; i++) {
-      //console.log(newDays.length);
-      //console.log(responseData[currentTrip].dates[i] + "  Dates!!!!!!");
+
       dataMap.set(
         responseData[currentTrip].dates[i],
         Object.values(responseData[currentTrip].attractions)
       );
     }
-    // for (let i = 0; i < dataMap.size; i++) {
-    //   const map = dataMap.get(responseData[currentTrip].dates[i]);
-    // }
+
   }
 
   const deleteAttraction = async () => {
@@ -169,14 +153,11 @@ function Schedule() {
     });
   }
   const handleButtonClick = () => {
-    //console.log("index is:" + currentTrip);
-    //console.log(responseData[currentTrip]._id);
-    //console.log(responseData[currentTrip]);
+
     navigation.navigate("Change", {
       data: data,
       id: responseData[currentTrip]._id,
       NearByAPI: NearByAPI,
-      // type: typearr
     });
   };
   const handleMobilityClick = () => {
@@ -208,7 +189,6 @@ function Schedule() {
       responseData[currentTrip].attractions.day1.dailyAttractions[0].geometry;
     const cordinates = searchFrom.location;
     let locationFrom = cordinates.lat + "," + cordinates.lng;
-    //console.log(locationFrom);
     const responseArray = [];
 
     const response = await axios.get(
@@ -225,7 +205,7 @@ function Schedule() {
 
     responseArray.push(response.data);
     return responseArray;
-    // Do something with the responseArray
+
   }
   if (receiveData === 1) {
     return (
@@ -235,10 +215,6 @@ function Schedule() {
         style={styles.image}
       >
         <View style={styles.scroll}>
-          {/* <View Style={styles.container}> */}
-          {/* <Text>
-            page number {currentTrip + 1} of {responseData.length}
-          </Text> */}
           <View style={styles.buttonsTop}>
             <View style={{ flexDirection: "column" }}>
               <TouchableOpacity
@@ -288,7 +264,6 @@ function Schedule() {
                 }}
                 onPress={() => handleMobilityClick()}
               >
-                {/* <Text>Edit</Text> */}
                 <Text>edit</Text>
                 <Text>Mobility</Text>
                 <Image

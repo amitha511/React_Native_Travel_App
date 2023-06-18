@@ -1,21 +1,11 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
-  View,
-  TextInput,
-  Button,
-  Image,
   ImageBackground,
-  ScrollView,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
   TouchableOpacity,
 } from "react-native";
-import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
-import { login } from "../api-calls";
 
 function WelcomeScreen() {
   const navigation = useNavigation();

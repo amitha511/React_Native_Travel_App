@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import {
   View,
   StyleSheet,
-  ScrollView,
-  ActivityIndicator,
   Button,
   Text,
   Image,
@@ -12,12 +10,10 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
-import { ip } from "@env";
 function ChangeMobility() {
   const route = useRoute();
   const navigation = useNavigation();
   const { location, mobility, id, dates, type, userDetails } = route.params;
-  //----------------------------------
   async function NearByAPI(location, userRadius, newMobility) {
     deleteAttraction();
     try {
@@ -47,12 +43,11 @@ function ChangeMobility() {
       console.error(error);
     }
   }
-  //-----------------------------------------------------------------
   async function startingAttraction(filteredDataList1, newMobility) {
-    const mapCalender = new Map(); //map => (numday , [attractionArray])
+    const mapCalender = new Map();
     let daysKeyArrays = [];
-    let maxItem; //item with max rating
-    let numDays = dates.length; // number days
+    let maxItem;
+    let numDays = dates.length;
     let attractionTypesCounter = new Array(type.length).fill(1);
     let extraAttractionArr = [];
     let filteredDataList = filteredDataList1;
@@ -68,7 +63,7 @@ function ChangeMobility() {
           let flag = 0;
           while (!attractionAddingChecker) {
             maxItem = findMaxItem(filteredDataList);
-            let objItem = Object.values(maxItem)[2]; // Get the object
+            let objItem = Object.values(maxItem)[2];
 
             for (let i = 0; i < type.length; i++) {
               if (
@@ -136,7 +131,6 @@ function ChangeMobility() {
     await axios
       .post(`http://${process.env.ip}:4000/travel/add`, oneItem)
       .then((response) => {
-        // Reload the screen to see the changes
         navigation.navigate("Schedule", { refresh: true });
       })
       .catch((error) => {
@@ -151,14 +145,11 @@ function ChangeMobility() {
         }
       });
   }
-  //-----------------------------------------------
   const deleteAttraction = async () => {
     try {
       await axios
         .delete(`http://${process.env.ip}:4000/travel/delete/${id}`)
-        .then((response) => {
-          //setRefreshData(true);
-        })
+        .then((response) => {})
         .catch((error) => {
           if (error.response) {
             console.log("Server responded with an error:", error.response.data);
@@ -172,7 +163,6 @@ function ChangeMobility() {
       console.error(`Error: ${error}`);
     }
   };
-  //-----------------------------------------------
   async function findMaxItem(ItemList) {
     const maxRatingItem = ItemList.reduce((maxItem, currentItem) => {
       if (currentItem.rating > maxItem.rating) {
@@ -182,7 +172,6 @@ function ChangeMobility() {
     });
     return maxRatingItem;
   }
-  // Conditional rendering based on `mobility` value
   let buttons = null;
   if (mobility === "walking") {
     buttons = (

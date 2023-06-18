@@ -1,11 +1,4 @@
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
+import { Text, View, Image, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 
 function Row(props) {
@@ -96,8 +89,6 @@ export default Row;
 
 const styles = StyleSheet.create({
   container: {
-    // borderWidth: 1,
-    // borderColor: "#C0C0C0",
     padding: 10,
     backgroundColor: "#ffffff",
   },

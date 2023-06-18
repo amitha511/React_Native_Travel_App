@@ -9,12 +9,10 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Button,
-  TouchableOpacity,
 } from "react-native";
 import { UserContext } from "../UserContext";
 import { register } from "../api-calls";
 import { TextInput } from "@react-native-material/core";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Picker } from "@react-native-picker/picker";
 function RegisterScreen({ navigation }) {
   const { userConnect, setUserConnect } = useContext(UserContext);

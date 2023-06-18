@@ -1,4 +1,3 @@
-//props = attractions, location,
 import axios from "axios";
 
 export default async function NearByAPI(attractions, location) {

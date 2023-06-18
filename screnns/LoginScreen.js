@@ -4,7 +4,6 @@ import {
   Text,
   View,
   Button,
-  Image,
   ImageBackground,
   ScrollView,
   KeyboardAvoidingView,
@@ -14,7 +13,7 @@ import {
 import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 import { login } from "../api-calls";
-import { TextInput, IconButton } from "@react-native-material/core";
+import { TextInput } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 function LoginScreen() {

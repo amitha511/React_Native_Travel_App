@@ -3,8 +3,6 @@ import {
   View,
   Image,
   StyleSheet,
-  TouchableOpacity,
-  Linking,
 } from "react-native";
 import { useEffect, useState } from "react";
 
@@ -78,7 +76,6 @@ function RowHome(props) {
                 marginRight: 2,
               }}
             />
-            {/* Rating: */}
             {props.rating ? (
               props.rating
             ) : (
@@ -148,7 +145,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     title: { fontWeight: "bold", textAlign: "center" },
     fontSize: 15,
-    // width: 270,
   },
   img: {
     justifyContent: "center",

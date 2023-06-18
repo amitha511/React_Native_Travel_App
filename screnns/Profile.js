@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
-  // TextInput,
-  Button,
   TouchableOpacity,
   StyleSheet,
   ImageBackground,
@@ -12,11 +10,9 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../UserContext";
-import { TextInput, IconButton } from "@react-native-material/core";
+import { TextInput } from "@react-native-material/core";
 import axios from "axios";
-import { ip } from "@env";
 
-//const ip = process.env.REACT_APP_IP;
 const Profile = () => {
   console.log(process.env.ip);
   const { userConnect, setUserConnect } = useContext(UserContext);

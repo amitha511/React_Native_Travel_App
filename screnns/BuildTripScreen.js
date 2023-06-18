@@ -4,7 +4,6 @@ import {
   Text,
   TextInput,
   View,
-  Button,
   Image,
   ImageBackground,
   TouchableOpacity,
@@ -15,11 +14,9 @@ import { ScrollView } from "react-native";
 import Menu from "../components/Menu";
 import { useNavigation } from "@react-navigation/native";
 import DatePicker from "react-native-datepicker";
-import { Calendar } from "react-native-calendars";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../UserContext";
 import axios from "axios";
-import { ip } from "@env";
 import { LogBox } from "react-native";
 export default function BuildTripScreen() {
   const navigation = useNavigation();
@@ -34,10 +31,8 @@ export default function BuildTripScreen() {
   const [outboundDate, setOutboundDate] = useState(null);
   const today = new Date().toISOString().split("T")[0];
   const [dateRange, setDateRange] = useState([]);
-  const [numberDays, setnumberDays] = useState(0);
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   let findHotel = false;
-  //search btn
   LogBox.ignoreLogs(["Warning: ..."]);
   LogBox.ignoreAllLogs();
   function buildTrip(selectedType, location) {
@@ -89,10 +84,10 @@ export default function BuildTripScreen() {
 
   async function startingAttraction(filteredDataList1) {
     console.log(filteredDataList1.length + "11111111111111111");
-    const mapCalender = new Map(); // Map => (numday , [attractionArray])
+    const mapCalender = new Map();
     let daysKeyArrays = [];
-    let maxItem; // Item with max rating
-    let numDays = calculateDateDifference(); // Number of days
+    let maxItem;
+    let numDays = calculateDateDifference();
     let attractionTypesCounter = new Array(selectedType.length).fill(1);
     let extraAttractionArr = [];
     let filteredDataList = filteredDataList1;
@@ -114,8 +109,7 @@ export default function BuildTripScreen() {
               console.log(
                 "filter data list length is: " + filteredDataList.length
               );
-              let objItem = Object.values(maxItem)[2]; // Get the object
-              // console.log(objItem.types + " !!!!!!!!!!!!!!!!!!!!!!!!!!");
+              let objItem = Object.values(maxItem)[2];
               for (let i = 0; i < selectedType.length; i++) {
                 if (
                   objItem.types.includes(selectedType[i]) &&
@@ -123,9 +117,6 @@ export default function BuildTripScreen() {
                 ) {
                   attractionTypesCounter[i] = 0;
                   daysKeyArrays.push(objItem);
-                  // console.log(
-                  //   `Attraction Adding Type is: ${objItem.name} on index number ${j}`
-                  // );
                   attractionAddingChecker = true;
                   flag = 1;
                   break;
@@ -153,16 +144,10 @@ export default function BuildTripScreen() {
           if (extraAttractionArr.length !== 0) {
             let variable = extraAttractionArr.pop();
             daysKeyArrays.push(variable);
-            // console.log(
-            //   `Extra Adding Type from the if is: ${variable.types}`
-            // );
           } else {
             maxItem = findMaxItem(filteredDataList);
             let objItem = Object.values(maxItem)[2];
             daysKeyArrays.push(objItem);
-            // console.log(
-            //   `Extra Adding Type from the else is: ${objItem.types}`
-            // );
           }
         }
 
@@ -248,10 +233,6 @@ export default function BuildTripScreen() {
         const responses = await Promise.all(requests);
         const data = responses.map((response) => response.data.results);
         const allData = data.flat();
-        //console.log(allData); //all the data that is send to the details components
-        //console.log(allData.map((item) => item.rating)); // all the data that is send to the details components
-        //console.log(selectedType); // an array of type's the user selected
-        //console.log(dateRange); // an array of dates , //<Text key={date}>{date.toISOString().split("T")[0]}</Text>
         const filteredDataList = allData.filter(
           (item) => item.rating !== undefined
         );
@@ -271,7 +252,6 @@ export default function BuildTripScreen() {
           setMessage1("There are no results to your search, please try again");
         }
 
-        // setHotel("");
         setSelectedOption("");
         setSelectedType([]);
         findHotel = false;
@@ -412,7 +392,6 @@ export default function BuildTripScreen() {
           minDate={inboundDate}
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
-          // maxDate={inboundDat}
           onDateChange={(date) => setOutboundDate(date)}
         ></DatePicker>
       </View>
@@ -439,7 +418,6 @@ export default function BuildTripScreen() {
             >
               <Text>Find Hotel</Text>
             </TouchableOpacity>
-            {/* <Button title="Find Hotel" onPress={() => TextAPI(hotel)} /> */}
           </View>
           {outboundDate != null ? (
             <Text style={{ paddingStart: 10 }}>Number of days: {diff + 1}</Text>
@@ -474,14 +452,6 @@ export default function BuildTripScreen() {
               <Text>Search</Text>
             </TouchableOpacity>
           </View>
-          {/* <Button
-            style={styles.emphasizedButton}
-            titleStyle={styles.buttonTitle}
-            title="Search"
-            onPress={() => {
-              buildTrip(selectedType, location);
-            }}
-          /> */}
           <StatusBar style="auto" />
         </View>
       </ScrollView>
@@ -500,9 +470,7 @@ const styles = StyleSheet.create({
     color: "#ffff",
     backgroundColor: "#E1E0FB",
   },
-  scroll: {
-    // marginTop: "0.5%",
-  },
+  scroll: {},
   TitleOut: {
     marginTop: 100,
     fontSize: 30,
@@ -586,12 +554,10 @@ const styles = StyleSheet.create({
     },
     marginLeft: 15,
     flexDirection: "row",
-    // width: "50%",
   },
   datePicker: {
     width: "42%",
     padding: 5,
-    // color: "#000",
   },
   iconCalander: {
     margin: 10,
