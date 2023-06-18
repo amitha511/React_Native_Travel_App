@@ -45,11 +45,11 @@ const Tabs = () => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#990099" : "#748c94",
+                  tintColor: focused ? "#6D71F5" : "#748c94",
                 }}
               />
               <Text
-                style={{ color: focused ? "#990099" : "#748c94", fontSize: 12 }}
+                style={{ color: focused ? "#6D71F5" : "#748c94", fontSize: 12 }}
               ></Text>
             </View>
           ),
@@ -74,11 +74,11 @@ const Tabs = () => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#990099" : "#748c94",
+                  tintColor: focused ? "#6D71F5" : "#748c94",
                 }}
               />
               <Text
-                style={{ color: focused ? "#990099" : "#748c94", fontSize: 12 }}
+                style={{ color: focused ? "#6D71F5" : "#748c94", fontSize: 12 }}
               ></Text>
             </View>
           ),
@@ -104,11 +104,11 @@ const Tabs = () => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#990099" : "#748c94",
+                  tintColor: focused ? "#6D71F5" : "#748c94",
                 }}
               />
               <Text
-                style={{ color: focused ? "#990099" : "#748c94", fontSize: 12 }}
+                style={{ color: focused ? "#6D71F5" : "#748c94", fontSize: 12 }}
               ></Text>
             </View>
           ),
@@ -134,11 +134,11 @@ const Tabs = () => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#990099" : "#748c94",
+                  tintColor: focused ? "#6D71F5" : "#748c94",
                 }}
               />
               <Text
-                style={{ color: focused ? "#990099" : "#748c94", fontSize: 12 }}
+                style={{ color: focused ? "#6D71F5" : "#748c94", fontSize: 12 }}
               ></Text>
             </View>
           ),
@@ -150,7 +150,7 @@ const Tabs = () => {
 
 const style = StyleSheet.create({
   shadow: {
-    shadowColor: "#7F5DF0",
+    shadowColor: "#6D71F5",
     shadowOffset: {
       width: 0,
       height: 10,
