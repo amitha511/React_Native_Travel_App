@@ -18,6 +18,7 @@ import * as Animatable from "react-native-animatable";
 import { useRoute } from "@react-navigation/native";
 import ChangeAttraction from "../components/ChangeAttraction";
 import { UserContext } from "../UserContext";
+import { LogBox } from "react-native";
 // import { ip } from "../App";
 import { ip } from "@env";
 
@@ -43,12 +44,9 @@ function Schedule() {
         const response = await axios.get(
           `http://${ip}:4000/travel/get/${userDetails}`
         );
-
-        // setCurrentId(response.data[0]._id);
         if (flag != 1) {
           for (let i = 0; i < response.data.length; i++) {
             idArr.push(response.data[i]._id);
-            //console.log(idArr[i]);
           }
         }
         setFlag(1);
@@ -61,12 +59,11 @@ function Schedule() {
     };
 
     fetchData();
-    setRefreshData(false); // Reset the refresh state after fetching
+    setRefreshData(false);
   }, [refreshData]);
   let { refresh } = route.params || {};
-  // Check if refresh flag is true and trigger refresh
+
   useEffect(() => {
-    //console.log(refresh + " refreshhhhhhhhhhhhhhhhhhhhhhhh");
     if (refresh) {
       handleRefresh();
     }
@@ -157,7 +154,7 @@ function Schedule() {
             photos: currentDayAttractions[j].photos,
             rating: currentDayAttractions[j].rating,
             openingHours: currentDayAttractions[j].opening_hours,
-            subtitle: `Location is: ${currentDayAttractions[j].types}`,
+            subtitle: `Location is: ${currentDayAttractions[j].vicinity}`,
             date: dateAndHour,
           });
           dateAndHour = dateAndHour + 7200000;
