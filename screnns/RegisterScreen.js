@@ -120,106 +120,109 @@ function RegisterScreen({ navigation }) {
       style={styles.image}
     >
       <Text style={styles.TitleOut}>Register</Text>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView style={styles.scroll}>
+            <View style={styles.container}>
+              <Text style={styles.errorMessage}>{message}</Text>
 
-      <ScrollView style={styles.scroll}>
-        <View style={styles.container}>
-          <Text style={styles.errorMessage}>{message}</Text>
+              <View style={styles.rowInput}>
+                <Text style={styles.box}>First Name:</Text>
+                <Text style={{ marginStart: 130 }}>Last Name:</Text>
+              </View>
+              <View style={styles.rowInput}>
+                <View style={styles.inputViewName}>
+                  <TextInput
+                    style={styles.TextInput}
+                    value={name}
+                    variant="outlined"
+                    placeholder="First Name"
+                    placeholderTextColor="#003f5c"
+                    onChangeText={setName}
+                  />
+                </View>
 
-          <View style={styles.rowInput}>
-            <Text style={styles.box}>First Name:</Text>
-            <Text style={{ marginStart: 130 }}>Last Name:</Text>
-          </View>
-          <View style={styles.rowInput}>
-            <View style={styles.inputViewName}>
-              <TextInput
-                style={styles.TextInput}
-                value={name}
-                variant="outlined"
-                placeholder="First Name"
-                placeholderTextColor="#003f5c"
-                onChangeText={setName}
-              />
+                <View style={styles.inputViewName}>
+                  <TextInput
+                    style={styles.TextInput}
+                    value={lastname}
+                    variant="outlined"
+                    placeholder="Last Name"
+                    placeholderTextColor="#003f5c"
+                    onChangeText={setLastName}
+                  />
+                </View>
+              </View>
+
+              <Text style={styles.box}>Email:</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={email}
+                  variant="outlined"
+                  placeholder="Email"
+                  placeholderTextColor="#003f5c"
+                  n
+                  onChangeText={setEmail}
+                />
+              </View>
+              <View style={styles.rowInput}>
+                <Text style={styles.box}>Password:</Text>
+                <Text style={{ marginStart: 140 }}>Age:</Text>
+              </View>
+              <View style={styles.rowInput}>
+                <View style={styles.inputViewName}>
+                  <TextInput
+                    style={styles.TextInput}
+                    value={password}
+                    variant="outlined"
+                    secureTextEntry={true}
+                    placeholder="Password"
+                    placeholderTextColor="#003f5c"
+                    onChangeText={setPassword}
+                  />
+                </View>
+                <View
+                  style={{
+                    borderRadius: 30,
+                    width: "20%",
+                    height: 55,
+                    marginBottom: 20,
+                  }}
+                >
+                  <TextInput
+                    keyboardType="numeric"
+                    style={styles.TextInput}
+                    value={age}
+                    variant="outlined"
+                    placeholder="-"
+                    placeholderTextColor="#003f5c"
+                    onChangeText={setAge}
+                  />
+                </View>
+
+                <Picker
+                  placeholder="dd"
+                  numberOfLines={1}
+                  style={styles.selector}
+                  selectedValue={gender}
+                  onValueChange={(itemValue) => setGender(itemValue)}
+                >
+                  <Picker.Item label="Gender" value="Gender" />
+                  <Picker.Item label="Female" value="Female" />
+                  <Picker.Item label="Male" value="Male" />
+                </Picker>
+              </View>
+
+              <View style={styles.rowInput}></View>
+
+              <View style={styles.signupBtn}>
+                <Button title="Sign up" onPress={handleSubmit} />
+              </View>
             </View>
-
-            <View style={styles.inputViewName}>
-              <TextInput
-                style={styles.TextInput}
-                value={lastname}
-                variant="outlined"
-                placeholder="Last Name"
-                placeholderTextColor="#003f5c"
-                onChangeText={setLastName}
-              />
-            </View>
-          </View>
-
-          <Text style={styles.box}>Email:</Text>
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.TextInput}
-              value={email}
-              variant="outlined"
-              placeholder="Email"
-              placeholderTextColor="#003f5c"
-              n
-              onChangeText={setEmail}
-            />
-          </View>
-          <View style={styles.rowInput}>
-            <Text style={styles.box}>Password:</Text>
-            <Text style={{ marginStart: 140 }}>Age:</Text>
-          </View>
-          <View style={styles.rowInput}>
-            <View style={styles.inputViewName}>
-              <TextInput
-                style={styles.TextInput}
-                value={password}
-                variant="outlined"
-                secureTextEntry={true}
-                placeholder="Password"
-                placeholderTextColor="#003f5c"
-                onChangeText={setPassword}
-              />
-            </View>
-            <View
-              style={{
-                borderRadius: 30,
-                width: "15%",
-                height: 55,
-                marginBottom: 20,
-              }}
-            >
-              <TextInput
-                keyboardType="numeric"
-                style={styles.TextInput}
-                value={age}
-                variant="outlined"
-                placeholder="-"
-                placeholderTextColor="#003f5c"
-                onChangeText={setAge}
-              />
-            </View>
-
-            <Picker
-              placeholder="dd"
-              numberOfLines={1}
-              style={styles.selector}
-              selectedValue={gender}
-              onValueChange={(itemValue) => setGender(itemValue)}
-            >
-              <Picker.Item label="Gender" value="Gender" />
-              <Picker.Item label="Female" value="Female" />
-              <Picker.Item label="Male" value="Male" />
-            </Picker>
-          </View>
-
-          <View style={styles.rowInput}></View>
-
-          <View style={styles.signupBtn}>
-            <Button title="Sign up" onPress={handleSubmit} />
-          </View>
-        </View>
-      </ScrollView>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 }
@@ -242,7 +245,6 @@ const styles = StyleSheet.create({
   },
   TitleOut: {
     textAlign: "center",
-
     marginTop: 170,
     fontSize: 50,
     marginStart: 10,

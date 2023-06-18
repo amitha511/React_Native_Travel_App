@@ -22,7 +22,6 @@ import { UserContext } from "../UserContext";
 import { ip } from "@env";
 
 function Schedule() {
-  console.log("this is the ip :" + process.env.ip);
   const route = useRoute();
   //const { mobility, location } = route.params;
   const navigation = useNavigation();
@@ -42,7 +41,7 @@ function Schedule() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://${process.env.ip}:4000/travel/get/${userDetails}`
+          `http://${ip}:4000/travel/get/${userDetails}`
         );
 
         // setCurrentId(response.data[0]._id);

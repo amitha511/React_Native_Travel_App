@@ -71,10 +71,15 @@ function ChangeMobility() {
             let objItem = Object.values(maxItem)[2]; // Get the object
 
             for (let i = 0; i < type.length; i++) {
-              if (objItem.types.includes(type[i]) && attractionTypesCounter[i] !== 0) {
+              if (
+                objItem.types.includes(type[i]) &&
+                attractionTypesCounter[i] !== 0
+              ) {
                 attractionTypesCounter[i] = 0;
                 daysKeyArrays.push(objItem);
-                console.log(`Attraction Adding Type is: ${objItem.name} on index number ${j}`);
+                console.log(
+                  `Attraction Adding Type is: ${objItem.name} on index number ${j}`
+                );
                 attractionAddingChecker = true;
                 flag = 1;
                 break;
@@ -82,9 +87,13 @@ function ChangeMobility() {
             }
 
             if (flag === 0) {
-              console.log(`${objItem.name} Adding to Extra on index number ${j}`);
+              console.log(
+                `${objItem.name} Adding to Extra on index number ${j}`
+              );
               extraAttractionArr.push(objItem);
-              filteredDataList = filteredDataList.filter((item) => item.place_id !== objItem.place_id);
+              filteredDataList = filteredDataList.filter(
+                (item) => item.place_id !== objItem.place_id
+              );
             }
           }
         } else {
@@ -100,7 +109,9 @@ function ChangeMobility() {
           }
         }
 
-        const updatedDataList = filteredDataList.filter((item) => item.place_id !== daysKeyArrays[j].place_id);
+        const updatedDataList = filteredDataList.filter(
+          (item) => item.place_id !== daysKeyArrays[j].place_id
+        );
         filteredDataList = updatedDataList;
       }
 

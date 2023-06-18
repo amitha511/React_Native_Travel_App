@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
   scroll: {
     marginTop: "4.5%",
   },
+
   container: {
     paddingTop: "-30%",
     flex: 1,

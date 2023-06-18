@@ -79,55 +79,59 @@ function LoginScreen() {
       style={styles.image}
     >
       <Text style={styles.TitleOut}>Travel & Go </Text>
-      <ScrollView style={styles.scroll}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Welcome!</Text>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView style={styles.scroll}>
+            <View style={styles.container}>
+              <Text style={styles.title}>Welcome!</Text>
 
-          <Text style={styles.errorMessage}>{message}</Text>
-          <Text style={styles.nameInput}>Email</Text>
+              <Text style={styles.errorMessage}>{message}</Text>
+              <Text style={styles.nameInput}>Email</Text>
 
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.TextInput}
-              value={email}
-              variant="outlined"
-              leading={(props) => <Icon name="account" {...props} />}
-              placeholder="Enter your email"
-              placeholderTextColor="#003f5c"
-              onChangeText={setEmail}
-            />
-          </View>
-          <Text style={styles.nameInput}>Password</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  value={email}
+                  variant="outlined"
+                  leading={(props) => <Icon name="account" {...props} />}
+                  placeholder="Enter your email"
+                  placeholderTextColor="#003f5c"
+                  onChangeText={setEmail}
+                />
+              </View>
+              <Text style={styles.nameInput}>Password</Text>
 
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.TextInput}
-              variant="outlined"
-              placeholder="Enter your password"
-              placeholderTextColor="#003f5c"
-              secureTextEntry={true}
-              value={password}
-              onChangeText={setPassword}
-            />
-          </View>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.TextInput}
+                  variant="outlined"
+                  placeholder="Enter your password"
+                  placeholderTextColor="#003f5c"
+                  secureTextEntry={true}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+              </View>
 
-          <Button
-            style={styles.loginBtn}
-            title="Login"
-            onPress={handleSubmit}
-          />
+              <Button
+                style={styles.loginBtn}
+                title="Login"
+                onPress={handleSubmit}
+              />
 
-          <View style={styles.separator} />
-          <Text style={styles.text}>Need an account?</Text>
+              <View style={styles.separator} />
+              <Text style={styles.text}>Need an account?</Text>
 
-          <Button
-            style={styles.loginBtn}
-            title="Register now"
-            onPress={clickRegisterHandler}
-          />
-          <Text style={styles.end}></Text>
-        </View>
-      </ScrollView>
+              <Button
+                style={styles.loginBtn}
+                title="Register now"
+                onPress={clickRegisterHandler}
+              />
+              <Text style={styles.end}></Text>
+            </View>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 }
