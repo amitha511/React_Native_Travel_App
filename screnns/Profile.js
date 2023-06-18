@@ -25,6 +25,7 @@ const Profile = () => {
   const [age, setAge] = useState(0);
   const [email, setEmail] = useState("@example1.com");
   const [id, setId] = useState(null);
+  const [gender, setGender] = useState(require("../assets/markIcon/male.png"));
   const [onEdit, setonEdit] = useState(false);
 
   useEffect(() => {
@@ -32,13 +33,18 @@ const Profile = () => {
       if (userDetails !== undefined) {
         try {
           const response = await axios.get(
-            `http://${ip}:4000/user/Details/${userDetails}`
+            `http://${process.env.ip}:4000/user/Details/${userDetails}`
           );
           setId(response.data[0]._id);
           setEmail(response.data[0].email);
           setName(response.data[0].name);
           setLastName(response.data[0].lastname);
           setAge(response.data[0].age);
+          if (response.data[0].gender == "Male")
+            setGender(require("../assets/markIcon/male.png"));
+          else {
+            setGender(require("../assets/markIcon/female.png"));
+          }
         } catch (error) {
           console.error(`Error${error} !`);
         }
@@ -60,11 +66,14 @@ const Profile = () => {
 
   const saveField = async () => {
     try {
-      const response = await axios.put(`http://${ip}:4000/user/update/${id}`, {
-        firstName: name,
-        lastName: lastName,
-        age: age,
-      });
+      const response = await axios.put(
+        `http://${process.env.ip}:4000/user/update/${id}`,
+        {
+          firstName: name,
+          lastName: lastName,
+          age: age,
+        }
+      );
       setonEdit(false);
       console.log(response.data);
     } catch (error) {
@@ -192,27 +201,40 @@ const Profile = () => {
         </View>
 
         <ScrollView style={styles.scroll}>
-          <View
-            style={{
-              start: "30%",
-            }}
-          >
-            <View style={styles.rowInput}>
-              <Text style={styles.box}>Full Name:</Text>
+          <View style={styles.rowInput}>
+            <View>
+              <Image
+                source={gender}
+                style={{
+                  marginTop: 2,
+                  marginLeft: 10,
+                  width: 150,
+                  height: 150,
+                }}
+              />
             </View>
-            <View style={styles.rowInput}>
+            <View
+              style={{
+                start: "30%",
+              }}
+            >
+              <View style={styles.rowInput}>
+                <Text style={styles.box}>Full Name:</Text>
+              </View>
+              <View style={styles.rowInput}>
+                <Text style={{ fontSize: 18, padding: 5, marginLeft: 20 }}>
+                  {name} {lastName}
+                </Text>
+              </View>
+              <Text style={styles.box}>Age:</Text>
               <Text style={{ fontSize: 18, padding: 5, marginLeft: 20 }}>
-                {name} {lastName}
+                {age}
+              </Text>
+              <Text style={styles.box}>Email:</Text>
+              <Text style={{ fontSize: 18, padding: 5, marginLeft: 20 }}>
+                {email}
               </Text>
             </View>
-            <Text style={styles.box}>Age:</Text>
-            <Text style={{ fontSize: 18, padding: 5, marginLeft: 20 }}>
-              {age}
-            </Text>
-            <Text style={styles.box}>Email:</Text>
-            <Text style={{ fontSize: 18, padding: 5, marginLeft: 20 }}>
-              {email}
-            </Text>
           </View>
         </ScrollView>
       </ImageBackground>
