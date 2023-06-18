@@ -14,7 +14,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../UserContext";
 import { TextInput, IconButton } from "@react-native-material/core";
 import axios from "axios";
-import { ip } from "@env";
 
 //const ip = process.env.REACT_APP_IP;
 const Profile = () => {
@@ -32,7 +31,7 @@ const Profile = () => {
       if (userDetails !== undefined) {
         try {
           const response = await axios.get(
-            `http://${ip}:4000/user/Details/${userDetails}`
+            `http://${process.env.ip}:4000/user/Details/${userDetails}`
           );
           setId(response.data[0]._id);
           setEmail(response.data[0].email);
@@ -60,11 +59,14 @@ const Profile = () => {
 
   const saveField = async () => {
     try {
-      const response = await axios.put(`http://${ip}:4000/user/update/${id}`, {
-        firstName: name,
-        lastName: lastName,
-        age: age,
-      });
+      const response = await axios.put(
+        `http://${process.env.ip}:4000/user/update/${id}`,
+        {
+          firstName: name,
+          lastName: lastName,
+          age: age,
+        }
+      );
       setonEdit(false);
       console.log(response.data);
     } catch (error) {

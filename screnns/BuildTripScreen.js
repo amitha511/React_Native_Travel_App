@@ -39,9 +39,9 @@ export default function BuildTripScreen() {
 
   let findHotel = false;
   //search btn
+  LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+  LogBox.ignoreAllLogs();
   function buildTrip(selectedType, location) {
-    LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
-    LogBox.ignoreAllLogs();
     console.disableYellowBox = true;
     if (
       outboundDate != null &&
@@ -89,6 +89,7 @@ export default function BuildTripScreen() {
   }
 
   async function startingAttraction(filteredDataList1) {
+    console.log(filteredDataList1.length + "11111111111111111");
     const mapCalender = new Map(); // Map => (numday , [attractionArray])
     let daysKeyArrays = [];
     let maxItem; // Item with max rating
@@ -106,66 +107,65 @@ export default function BuildTripScreen() {
       for (let j = 0; j < 5; j++) {
         let allZero = attractionTypesCounter.every((count) => count === 0);
         let attractionAddingChecker = false;
-        if (filteredDataList.length != 0)
-          if (!allZero) {
-            let flag = 0;
-            while (!attractionAddingChecker) {
-              if (filteredDataList.length != 0) {
-                maxItem = findMaxItem(filteredDataList);
-                console.log(
-                  "filter data list length is: " + filteredDataList.length
-                );
-                let objItem = Object.values(maxItem)[2]; // Get the object
-                // console.log(objItem.types + " !!!!!!!!!!!!!!!!!!!!!!!!!!");
-                for (let i = 0; i < selectedType.length; i++) {
-                  if (
-                    objItem.types.includes(selectedType[i]) &&
-                    attractionTypesCounter[i] !== 0
-                  ) {
-                    attractionTypesCounter[i] = 0;
-                    daysKeyArrays.push(objItem);
-                    // console.log(
-                    //   `Attraction Adding Type is: ${objItem.name} on index number ${j}`
-                    // );
-                    attractionAddingChecker = true;
-                    flag = 1;
-                    break;
-                  }
-                }
-
-                if (flag === 0) {
-                  console.log(
-                    `${objItem.name} Adding to Extra on index number ${j}`
-                  );
-                  extraAttractionArr.push(objItem);
-                  filteredDataList = filteredDataList.filter(
-                    (item) => item.place_id !== objItem.place_id
-                  );
-                }
-              } else {
-                if (extraAttractionArr.length !== 0) {
-                  let variable = extraAttractionArr.pop();
-                  daysKeyArrays.push(variable);
+        if (!allZero) {
+          let flag = 0;
+          while (!attractionAddingChecker) {
+            if (filteredDataList.length != 0) {
+              maxItem = findMaxItem(filteredDataList);
+              console.log(
+                "filter data list length is: " + filteredDataList.length
+              );
+              let objItem = Object.values(maxItem)[2]; // Get the object
+              // console.log(objItem.types + " !!!!!!!!!!!!!!!!!!!!!!!!!!");
+              for (let i = 0; i < selectedType.length; i++) {
+                if (
+                  objItem.types.includes(selectedType[i]) &&
+                  attractionTypesCounter[i] !== 0
+                ) {
+                  attractionTypesCounter[i] = 0;
+                  daysKeyArrays.push(objItem);
+                  // console.log(
+                  //   `Attraction Adding Type is: ${objItem.name} on index number ${j}`
+                  // );
                   attractionAddingChecker = true;
+                  flag = 1;
+                  break;
                 }
               }
-            }
-          } else {
-            if (extraAttractionArr.length !== 0) {
-              let variable = extraAttractionArr.pop();
-              daysKeyArrays.push(variable);
-              // console.log(
-              //   `Extra Adding Type from the if is: ${variable.types}`
-              // );
+
+              if (flag === 0) {
+                console.log(
+                  `${objItem.name} Adding to Extra on index number ${j}`
+                );
+                extraAttractionArr.push(objItem);
+                filteredDataList = filteredDataList.filter(
+                  (item) => item.place_id !== objItem.place_id
+                );
+              }
             } else {
-              maxItem = findMaxItem(filteredDataList);
-              let objItem = Object.values(maxItem)[2];
-              daysKeyArrays.push(objItem);
-              // console.log(
-              //   `Extra Adding Type from the else is: ${objItem.types}`
-              // );
+              if (extraAttractionArr.length !== 0) {
+                let variable = extraAttractionArr.pop();
+                daysKeyArrays.push(variable);
+                attractionAddingChecker = true;
+              }
             }
           }
+        } else {
+          if (extraAttractionArr.length !== 0) {
+            let variable = extraAttractionArr.pop();
+            daysKeyArrays.push(variable);
+            // console.log(
+            //   `Extra Adding Type from the if is: ${variable.types}`
+            // );
+          } else {
+            maxItem = findMaxItem(filteredDataList);
+            let objItem = Object.values(maxItem)[2];
+            daysKeyArrays.push(objItem);
+            // console.log(
+            //   `Extra Adding Type from the else is: ${objItem.types}`
+            // );
+          }
+        }
 
         const updatedDataList = filteredDataList.filter(
           (item) => item.place_id !== daysKeyArrays[j].place_id
@@ -177,16 +177,6 @@ export default function BuildTripScreen() {
       daysKeyArrays = [];
     }
 
-    //print the map to the terminal:
-
-    for (let i = 0; i < diff + 1; i++) {
-      //console.log("day " + i + ":");
-      for (let j = 0; j < 3; j++) {
-        // console.log("attra " + j + ":");
-        const map = mapCalender.get(i)[j];
-        //console.log(mapCalender.get(i)[j]);
-      }
-    }
     let attractions = {};
 
     for (let i = 0; i < mapCalender.size; i++) {
@@ -452,7 +442,7 @@ export default function BuildTripScreen() {
             {/* <Button title="Find Hotel" onPress={() => TextAPI(hotel)} /> */}
           </View>
           {outboundDate != null ? (
-            <Text style={{ paddingStart: 10 }}>Number of days: {diff}</Text>
+            <Text style={{ paddingStart: 10 }}>Number of days: {diff + 1}</Text>
           ) : (
             outboundDate != null
           )}
