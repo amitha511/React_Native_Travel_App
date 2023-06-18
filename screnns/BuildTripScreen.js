@@ -36,7 +36,6 @@ export default function BuildTripScreen() {
   const [dateRange, setDateRange] = useState([]);
   const [numberDays, setnumberDays] = useState(0);
   const { userDetails, setUserDetails } = useContext(UserContext);
-
   let findHotel = false;
   //search btn
   function buildTrip(selectedType, location) {
