@@ -213,9 +213,6 @@ function RegisterScreen({ navigation }) {
                   <Picker.Item label="Male" value="Male" />
                 </Picker>
               </View>
-
-              <View style={styles.rowInput}></View>
-
               <View style={styles.signupBtn}>
                 <Button title="Sign up" onPress={handleSubmit} />
               </View>

@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ImageBackground,
   ScrollView,
+  Image,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../UserContext";
@@ -18,19 +19,14 @@ import { ip } from "@env";
 //const ip = process.env.REACT_APP_IP;
 const Profile = () => {
   const { userConnect, setUserConnect } = useContext(UserContext);
-
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [name, setName] = useState("Name");
-  const [editName, setEditName] = useState(false);
   const [lastName, setLastName] = useState("Last Name");
-  const [editLastName, setEditLastName] = useState(false);
   const [age, setAge] = useState(0);
-  const [editAge, setEditAge] = useState(false);
   const [email, setEmail] = useState("@example1.com");
-  const [editEmail, setEditEmail] = useState(false);
-  const [password, setPassword] = useState("*******");
-  const [trips, setTrips] = useState(["Trip 1", "Trip 2", "Trip 3"]);
   const [id, setId] = useState(null);
+  const [onEdit, setonEdit] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
       if (userDetails !== undefined) {
@@ -50,7 +46,7 @@ const Profile = () => {
     }
 
     fetchData();
-  }, [userDetails]);
+  }, [userDetails, onEdit]);
 
   async function logout() {
     try {
@@ -62,198 +58,213 @@ const Profile = () => {
     setUserConnect(false);
   }
 
-  const editField = (field) => {
-    switch (field) {
-      case "name":
-        setEditName(true);
-        break;
-      case "lastName":
-        setEditLastName(true);
-        break;
-      case "age":
-        setEditAge(true);
-        break;
-      case "email":
-        setEditEmail(true);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const saveField = async (field) => {
-    let updatedValue;
-    switch (field) {
-      case "name":
-        setEditName(false);
-        updatedValue = name;
-        break;
-      case "lastName":
-        setEditLastName(false);
-        updatedValue = lastName;
-        break;
-      case "age":
-        setEditAge(false);
-        updatedValue = age;
-        break;
-      case "email":
-        setEditEmail(false);
-        updatedValue = email;
-        break;
-      default:
-        break;
-    }
-
+  const saveField = async () => {
     try {
       const response = await axios.put(`http://${ip}:4000/user/update/${id}`, {
-        field,
-        value: updatedValue,
-        userDetails,
+        firstName: name,
+        lastName: lastName,
+        age: age,
       });
+      setonEdit(false);
       console.log(response.data);
     } catch (error) {
       console.error(`Error updating user details: ${error}`);
     }
   };
 
-  return (
-    <ImageBackground
-      source={require("../assets/BackgroundScreens/profile.png")}
-      resizeMode="cover"
-      style={styles.image}
-    >
-      <Text style={styles.TitleOut}>Your Details</Text>
+  if (onEdit == true) {
+    return (
+      <ImageBackground
+        source={require("../assets/BackgroundScreens/profile.png")}
+        resizeMode="cover"
+        style={styles.image}
+      >
+        <Text style={styles.TitleOut}>Your Details</Text>
 
-      <ScrollView style={styles.scroll}>
-        <View style={styles.container}>
-          <View style={styles.profileInfo}>
-            <Text>Name:</Text>
-            {editName ? (
+        <ScrollView style={styles.scroll}>
+          <View style={styles.rowInput}>
+            <Text style={styles.box}>First Name:</Text>
+            <Text style={{ marginStart: 130 }}>Last Name:</Text>
+          </View>
+          <View style={styles.rowInput}>
+            <View style={styles.inputViewName}>
               <TextInput
-                style={styles.input}
+                style={styles.TextInput}
                 value={name}
-                onChangeText={(value) => setName(value)}
+                variant="outlined"
+                placeholder={name}
+                placeholderTextColor="#003f5c"
+                onChangeText={setName}
               />
-            ) : (
-              <Text>{name}</Text>
-            )}
-            {!editName && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => editField("name")}
-              >
-                <Text>Edit</Text>
-              </TouchableOpacity>
-            )}
-            {editName && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => saveField("name")}
-              >
-                <Text>Save</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+            </View>
 
-          <View style={styles.profileInfo}>
-            <Text>Last Name:</Text>
-            {editLastName ? (
+            <View style={styles.inputViewName}>
               <TextInput
-                style={styles.input}
+                style={styles.TextInput}
                 value={lastName}
-                onChangeText={(value) => setLastName(value)}
+                variant="outlined"
+                placeholder={lastName}
+                placeholderTextColor="#003f5c"
+                onChangeText={setLastName}
               />
-            ) : (
-              <Text>{lastName}</Text>
-            )}
-            {!editLastName && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => editField("lastName")}
-              >
-                <Text>Edit</Text>
-              </TouchableOpacity>
-            )}
-            {editLastName && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => saveField("lastName")}
-              >
-                <Text>Save</Text>
-              </TouchableOpacity>
-            )}
+            </View>
           </View>
-
-          <View style={styles.profileInfo}>
-            <Text>Age:</Text>
-            {editAge ? (
-              <TextInput
-                style={styles.input}
-                value={age.toString()}
-                onChangeText={(value) => setAge(parseInt(value))}
-              />
-            ) : (
-              <Text>{age}</Text>
-            )}
-            {!editAge && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => editField("age")}
-              >
-                <Text>Edit</Text>
-              </TouchableOpacity>
-            )}
-            {editAge && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => saveField("age")}
-              >
-                <Text>Save</Text>
-              </TouchableOpacity>
-            )}
+          <View style={styles.rowInput}>
+            <Text style={styles.box}>Email:</Text>
+            <Text style={{ marginStart: 255 }}>Age:</Text>
           </View>
-
-          <View style={styles.profileInfo}>
-            <Text>Email:</Text>
-            {editEmail ? (
+          <View style={styles.rowInput}>
+            <View style={styles.inputView}>
               <TextInput
-                style={styles.input}
+                style={styles.TextInput}
                 value={email}
-                onChangeText={(value) => setEmail(value)}
+                helperText="Can't Change Email"
+                editable={false}
+                variant="outlined"
+                placeholder="Email"
+                placeholderTextColor="#003f5c"
+                n
+                onChangeText={setEmail}
               />
-            ) : (
-              <Text>{email}</Text>
-            )}
-            {!editEmail && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => editField("email")}
-              >
-                <Text>Edit</Text>
-              </TouchableOpacity>
-            )}
-            {editEmail && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => saveField("email")}
-              >
-                <Text>Save</Text>
-              </TouchableOpacity>
-            )}
+            </View>
+            <View
+              style={{
+                borderRadius: 30,
+                width: "20%",
+                height: 55,
+                marginBottom: 20,
+              }}
+            >
+              <TextInput
+                keyboardType="numeric"
+                style={styles.TextInput}
+                value={age}
+                variant="outlined"
+                placeholder="-"
+                placeholderTextColor="#003f5c"
+                onChangeText={setAge}
+              />
+            </View>
           </View>
-
-          <View>
-            <Button title="Logout" onPress={logout}></Button>
+          <View style={styles.rowInput}>
+            <TouchableOpacity style={styles.button} onPress={saveField}>
+              <Text>Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setonEdit((onEdit) => !onEdit)}
+            >
+              <Text>Cancel</Text>
+            </TouchableOpacity>
           </View>
+        </ScrollView>
+      </ImageBackground>
+    );
+  }
+  if (onEdit == false) {
+    return (
+      <ImageBackground
+        source={require("../assets/BackgroundScreens/profile.png")}
+        resizeMode="cover"
+        style={styles.image}
+      >
+        <View style={styles.rowInput}>
+          <Text style={styles.TitleOut}>Your Details</Text>
+          <TouchableOpacity
+            style={styles.edit}
+            onPress={() => setonEdit((onEdit) => !onEdit)}
+          >
+            <Text>Edit</Text>
 
-          <ScrollView style={styles.scroll} />
+            <Image
+              source={require("../assets/markIcon/edit.png")}
+              style={{ marginTop: 2, width: 30, height: 30 }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.logout} onPress={logout}>
+            <Text>Logout</Text>
+
+            <Image
+              source={require("../assets/markIcon/logout.png")}
+              style={{ marginTop: 2, width: 30, height: 30 }}
+            />
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-    </ImageBackground>
-  );
+
+        <ScrollView style={styles.scroll}>
+          <View
+            style={{
+              start: "30%",
+            }}
+          >
+            <View style={styles.rowInput}>
+              <Text style={styles.box}>Full Name:</Text>
+            </View>
+            <View style={styles.rowInput}>
+              <Text style={{ fontSize: 18, padding: 5, marginLeft: 20 }}>
+                {name} {lastName}
+              </Text>
+            </View>
+            <Text style={styles.box}>Age:</Text>
+            <Text style={{ fontSize: 18, padding: 5, marginLeft: 20 }}>
+              {age}
+            </Text>
+            <Text style={styles.box}>Email:</Text>
+            <Text style={{ fontSize: 18, padding: 5, marginLeft: 20 }}>
+              {email}
+            </Text>
+          </View>
+        </ScrollView>
+      </ImageBackground>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
+  logout: {
+    backgroundColor: "#ffffff",
+    justifyContent: "center",
+    marginTop: 90,
+    fontSize: 28,
+    width: 80,
+    height: 60,
+    fontWeight: "bold",
+    marginStart: 10,
+    borderTopEndRadius: 20,
+    borderTopStartRadius: 20,
+    alignItems: "center",
+  },
+  edit: {
+    backgroundColor: "#ffffff",
+    justifyContent: "center",
+    marginTop: 90,
+    fontSize: 28,
+    width: 80,
+    height: 60,
+    fontWeight: "bold",
+    marginStart: 50,
+    borderTopEndRadius: 20,
+    borderTopStartRadius: 20,
+    alignItems: "center",
+  },
+  button: {
+    width: 100,
+    height: 50,
+    marginTop: 30,
+    marginStart: "5%",
+    alignItems: "center",
+    borderRadius: 20,
+    justifyContent: "center",
+    color: "#ffff",
+    backgroundColor: "#E1E0FB",
+  },
+  rowInput: {
+    flexDirection: "row",
+  },
+  box: {
+    marginStart: 5,
+    marginTop: 10,
+  },
   TitleOut: {
     marginTop: 120,
     fontSize: 28,
@@ -264,6 +275,27 @@ const styles = StyleSheet.create({
     borderColor: "black",
     textShadowRadius: 10,
     textShadowColor: "black",
+  },
+  inputView: {
+    marginStart: 2,
+    borderRadius: 30,
+    width: "70%",
+    height: 55,
+    marginBottom: 20,
+  },
+  inputViewName: {
+    marginStart: 2,
+    marginEnd: 2,
+    borderRadius: 30,
+    width: "48%",
+    height: 55,
+    marginBottom: 20,
+  },
+  TextInput: {
+    fontSize: 12,
+    flex: 1,
+    padding: 5,
+    marginLeft: 2,
   },
   scroll: {
     marginTop: "2.5%",
@@ -283,13 +315,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
-  button: {
-    backgroundColor: "mediumpurple",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginLeft: 10,
-    borderRadius: 5,
-  },
+
   heading: {
     fontSize: 20,
     fontWeight: "bold",
