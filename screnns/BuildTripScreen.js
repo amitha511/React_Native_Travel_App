@@ -20,6 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../UserContext";
 import axios from "axios";
 import { ip } from "@env";
+import { LogBox } from "react-native";
 export default function BuildTripScreen() {
   const navigation = useNavigation();
   const [hotel, setHotel] = useState("");
@@ -35,9 +36,13 @@ export default function BuildTripScreen() {
   const [dateRange, setDateRange] = useState([]);
   const [numberDays, setnumberDays] = useState(0);
   const { userDetails, setUserDetails } = useContext(UserContext);
+
   let findHotel = false;
   //search btn
   function buildTrip(selectedType, location) {
+    LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+    LogBox.ignoreAllLogs();
+    console.disableYellowBox = true;
     if (
       outboundDate != null &&
       inboundDate != null &&
@@ -97,7 +102,7 @@ export default function BuildTripScreen() {
     for (let i = 0; i < numDays + 1; i++) {
       daysKeyArrays = [];
       attractionTypesCounter = new Array(selectedType.length).fill(1);
-
+      console.log("--------Day Number: " + i);
       for (let j = 0; j < 5; j++) {
         let allZero = attractionTypesCounter.every((count) => count === 0);
         let attractionAddingChecker = false;
@@ -105,49 +110,60 @@ export default function BuildTripScreen() {
           if (!allZero) {
             let flag = 0;
             while (!attractionAddingChecker) {
-              maxItem = findMaxItem(filteredDataList);
-              let objItem = Object.values(maxItem)[2]; // Get the object
-              console.log(objItem.types + " !!!!!!!!!!!!!!!!!!!!!!!!!!");
-              for (let i = 0; i < selectedType.length; i++) {
-                if (
-                  objItem.types.includes(selectedType[i]) &&
-                  attractionTypesCounter[i] !== 0
-                ) {
-                  attractionTypesCounter[i] = 0;
-                  daysKeyArrays.push(objItem);
-                  console.log(
-                    `Attraction Adding Type is: ${objItem.name} on index number ${j}`
-                  );
-                  attractionAddingChecker = true;
-                  flag = 1;
-                  break;
-                }
-              }
-
-              if (flag === 0) {
+              if (filteredDataList.length != 0) {
+                maxItem = findMaxItem(filteredDataList);
                 console.log(
-                  `${objItem.name} Adding to Extra on index number ${j}`
+                  "filter data list length is: " + filteredDataList.length
                 );
-                extraAttractionArr.push(objItem);
-                filteredDataList = filteredDataList.filter(
-                  (item) => item.place_id !== objItem.place_id
-                );
+                let objItem = Object.values(maxItem)[2]; // Get the object
+                // console.log(objItem.types + " !!!!!!!!!!!!!!!!!!!!!!!!!!");
+                for (let i = 0; i < selectedType.length; i++) {
+                  if (
+                    objItem.types.includes(selectedType[i]) &&
+                    attractionTypesCounter[i] !== 0
+                  ) {
+                    attractionTypesCounter[i] = 0;
+                    daysKeyArrays.push(objItem);
+                    // console.log(
+                    //   `Attraction Adding Type is: ${objItem.name} on index number ${j}`
+                    // );
+                    attractionAddingChecker = true;
+                    flag = 1;
+                    break;
+                  }
+                }
+
+                if (flag === 0) {
+                  console.log(
+                    `${objItem.name} Adding to Extra on index number ${j}`
+                  );
+                  extraAttractionArr.push(objItem);
+                  filteredDataList = filteredDataList.filter(
+                    (item) => item.place_id !== objItem.place_id
+                  );
+                }
+              } else {
+                if (extraAttractionArr.length !== 0) {
+                  let variable = extraAttractionArr.pop();
+                  daysKeyArrays.push(variable);
+                  attractionAddingChecker = true;
+                }
               }
             }
           } else {
             if (extraAttractionArr.length !== 0) {
               let variable = extraAttractionArr.pop();
               daysKeyArrays.push(variable);
-              console.log(
-                `Extra Adding Type from the if is: ${variable.types}`
-              );
+              // console.log(
+              //   `Extra Adding Type from the if is: ${variable.types}`
+              // );
             } else {
               maxItem = findMaxItem(filteredDataList);
               let objItem = Object.values(maxItem)[2];
               daysKeyArrays.push(objItem);
-              console.log(
-                `Extra Adding Type from the else is: ${objItem.types}`
-              );
+              // console.log(
+              //   `Extra Adding Type from the else is: ${objItem.types}`
+              // );
             }
           }
 
