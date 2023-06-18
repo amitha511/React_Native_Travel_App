@@ -39,7 +39,7 @@ export default function BuildTripScreen() {
 
   let findHotel = false;
   //search btn
-  LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+  LogBox.ignoreLogs(["Warning: ..."]);
   LogBox.ignoreAllLogs();
   function buildTrip(selectedType, location) {
     console.disableYellowBox = true;

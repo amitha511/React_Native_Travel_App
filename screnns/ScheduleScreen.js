@@ -42,7 +42,7 @@ function Schedule() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://${ip}:4000/travel/get/${userDetails}`
+          `http://${process.env.ip}:4000/travel/get/${userDetails}`
         );
         if (flag != 1) {
           for (let i = 0; i < response.data.length; i++) {
@@ -112,7 +112,7 @@ function Schedule() {
     let id = responseData[currentTrip]._id;
     try {
       await axios
-        .delete(`http://${ip}:4000/travel/delete/${id}`)
+        .delete(`http://${process.env.ip}:4000/travel/delete/${id}`)
         .then((response) => {
           console.log(`Deleted id: ${id}`);
 
@@ -143,8 +143,6 @@ function Schedule() {
     let currentDayAttractions = dataMap.get(responseData[currentTrip].dates[i])[
       i
     ]?.dailyAttractions;
-    //console.log(currentDayAttractions + " Current day attraction");
-    //console.log(responseData[currentTrip].dates[i] + " Dates@@@");
     if (currentDayAttractions) {
       for (let j = 0; j < currentDayAttractions.length; j++) {
         if (currentDayAttractions[j]) {
