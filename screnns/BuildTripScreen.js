@@ -6,11 +6,8 @@ import {
   View,
   Button,
   Image,
-  Keyboard,
   ImageBackground,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import RadioGroup from "react-native-radio-buttons-group";
@@ -31,6 +28,7 @@ export default function BuildTripScreen() {
   const [selectedType, setSelectedType] = useState([]);
   const [icon, setIcon] = useState(require("../assets/markIcon/question.png"));
   const [message, setMessage] = useState("");
+  const [message1, setMessage1] = useState("");
   const [inboundDate, setInboundDate] = useState(null);
   const [outboundDate, setOutboundDate] = useState(null);
   const today = new Date().toISOString().split("T")[0];
@@ -93,7 +91,9 @@ export default function BuildTripScreen() {
     let attractionTypesCounter = new Array(selectedType.length).fill(1);
     let extraAttractionArr = [];
     let filteredDataList = filteredDataList1;
-
+    if (filteredDataList.length == 0) {
+      return;
+    }
     for (let i = 0; i < numDays + 1; i++) {
       daysKeyArrays = [];
       attractionTypesCounter = new Array(selectedType.length).fill(1);
@@ -101,51 +101,55 @@ export default function BuildTripScreen() {
       for (let j = 0; j < 5; j++) {
         let allZero = attractionTypesCounter.every((count) => count === 0);
         let attractionAddingChecker = false;
+        if (filteredDataList.length != 0)
+          if (!allZero) {
+            let flag = 0;
+            while (!attractionAddingChecker) {
+              maxItem = findMaxItem(filteredDataList);
+              let objItem = Object.values(maxItem)[2]; // Get the object
+              console.log(objItem.types + " !!!!!!!!!!!!!!!!!!!!!!!!!!");
+              for (let i = 0; i < selectedType.length; i++) {
+                if (
+                  objItem.types.includes(selectedType[i]) &&
+                  attractionTypesCounter[i] !== 0
+                ) {
+                  attractionTypesCounter[i] = 0;
+                  daysKeyArrays.push(objItem);
+                  console.log(
+                    `Attraction Adding Type is: ${objItem.name} on index number ${j}`
+                  );
+                  attractionAddingChecker = true;
+                  flag = 1;
+                  break;
+                }
+              }
 
-        if (!allZero) {
-          let flag = 0;
-          while (!attractionAddingChecker) {
-            maxItem = findMaxItem(filteredDataList);
-            let objItem = Object.values(maxItem)[2]; // Get the object
-
-            for (let i = 0; i < selectedType.length; i++) {
-              if (
-                objItem.types.includes(selectedType[i]) &&
-                attractionTypesCounter[i] !== 0
-              ) {
-                attractionTypesCounter[i] = 0;
-                daysKeyArrays.push(objItem);
+              if (flag === 0) {
                 console.log(
-                  `Attraction Adding Type is: ${objItem.name} on index number ${j}`
+                  `${objItem.name} Adding to Extra on index number ${j}`
                 );
-                attractionAddingChecker = true;
-                flag = 1;
-                break;
+                extraAttractionArr.push(objItem);
+                filteredDataList = filteredDataList.filter(
+                  (item) => item.place_id !== objItem.place_id
+                );
               }
             }
-
-            if (flag === 0) {
+          } else {
+            if (extraAttractionArr.length !== 0) {
+              let variable = extraAttractionArr.pop();
+              daysKeyArrays.push(variable);
               console.log(
-                `${objItem.name} Adding to Extra on index number ${j}`
+                `Extra Adding Type from the if is: ${variable.types}`
               );
-              extraAttractionArr.push(objItem);
-              filteredDataList = filteredDataList.filter(
-                (item) => item.place_id !== objItem.place_id
+            } else {
+              maxItem = findMaxItem(filteredDataList);
+              let objItem = Object.values(maxItem)[2];
+              daysKeyArrays.push(objItem);
+              console.log(
+                `Extra Adding Type from the else is: ${objItem.types}`
               );
             }
           }
-        } else {
-          if (extraAttractionArr.length !== 0) {
-            let variable = extraAttractionArr.pop();
-            daysKeyArrays.push(variable);
-            console.log(`Extra Adding Type from the if is: ${variable.types}`);
-          } else {
-            maxItem = findMaxItem(filteredDataList);
-            let objItem = Object.values(maxItem)[2];
-            daysKeyArrays.push(objItem);
-            console.log(`Extra Adding Type from the else is: ${objItem.types}`);
-          }
-        }
 
         const updatedDataList = filteredDataList.filter(
           (item) => item.place_id !== daysKeyArrays[j].place_id
@@ -182,7 +186,7 @@ export default function BuildTripScreen() {
       mobility: selectedOption,
     };
     await axios
-      .post(`http://${ip}:4000/travel/add`, oneItem)
+      .post(`http://${process.env.ip}:4000/travel/add`, oneItem)
       .then(console.log(typeof oneItem.attractions))
       .catch((error) => {
         if (error.response) {
@@ -245,8 +249,22 @@ export default function BuildTripScreen() {
         const filteredDataList = allData.filter(
           (item) => item.rating !== undefined
         );
-        startingAttraction(filteredDataList);
-        clickSearchHandel(filteredDataList);
+        if (filteredDataList.length != 0) {
+          let amount = 5 * (diff + 1);
+          if (amount > filteredDataList.length) {
+            setMessage1(
+              "There are no enough results to your search, please try again"
+            );
+          } else {
+            setMessage1("");
+            setMessage("");
+            startingAttraction(filteredDataList);
+            clickSearchHandel(filteredDataList);
+          }
+        } else {
+          setMessage1("There are no results to your search, please try again");
+        }
+
         // setHotel("");
         setSelectedOption("");
         setSelectedType([]);
@@ -392,68 +410,65 @@ export default function BuildTripScreen() {
           onDateChange={(date) => setOutboundDate(date)}
         ></DatePicker>
       </View>
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView style={styles.scroll}>
-            <View style={styles.container}>
-              <Text style={styles.errorMessage}>{message}</Text>
 
-              <Text style={styles.text}>Enter Hotel/location:</Text>
-              <View style={styles.validHotel}>
-                <View style={styles.inputView}>
-                  <TextInput
-                    placeholder="Enter hotel name"
-                    style={styles.TextInput}
-                    value={hotel}
-                    placeholderTextColor="#003f5c"
-                    onChangeText={changeHotelhandler}
-                  />
-                  <Image key={"validation"} style={styles.img} source={icon} />
-                </View>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => TextAPI(hotel)}
-                >
-                  <Text>Find Hotel</Text>
-                </TouchableOpacity>
-                {/* <Button title="Find Hotel" onPress={() => TextAPI(hotel)} /> */}
-              </View>
-              {outboundDate != null ? (
-                <Text style={{ paddingStart: 10 }}>Number of days: {diff}</Text>
-              ) : (
-                outboundDate != null
-              )}
-              <View style={styles.separator} />
-              <Text style={styles.text}>Select an option:</Text>
-              <Menu
-                selectedType={selectedType}
-                setSelectedType={setSelectedType}
+      <ScrollView style={styles.scroll}>
+        <View style={styles.container}>
+          <Text style={styles.errorMessage}>{message}</Text>
+
+          <Text style={styles.text}>Enter Hotel/location:</Text>
+          <View style={styles.validHotel}>
+            <View style={styles.inputView}>
+              <TextInput
+                placeholder="Enter hotel name"
+                style={styles.TextInput}
+                value={hotel}
+                placeholderTextColor="#003f5c"
+                onChangeText={changeHotelhandler}
               />
-              <View style={styles.separator} />
-              <Text style={styles.text}>mobility:</Text>
-              <View style={styles.radioGroupContainer}>
-                {data.map((item) => (
-                  <View key={item.value} style={styles.radioButtonItem}>
-                    <RadioGroup
-                      radioButtons={[item]}
-                      onPress={handleOptionSelect}
-                      selectedButton={selectedOption === item.value}
-                      layout="row"
-                    />
-                  </View>
-                ))}
+              <Image key={"validation"} style={styles.img} source={icon} />
+            </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => TextAPI(hotel)}
+            >
+              <Text>Find Hotel</Text>
+            </TouchableOpacity>
+            {/* <Button title="Find Hotel" onPress={() => TextAPI(hotel)} /> */}
+          </View>
+          {outboundDate != null ? (
+            <Text style={{ paddingStart: 10 }}>Number of days: {diff}</Text>
+          ) : (
+            outboundDate != null
+          )}
+          <View style={styles.separator} />
+          <Text style={styles.text}>Select an option:</Text>
+          <Menu selectedType={selectedType} setSelectedType={setSelectedType} />
+          <View style={styles.separator} />
+          <Text style={styles.text}>mobility:</Text>
+          <View style={styles.radioGroupContainer}>
+            {data.map((item) => (
+              <View key={item.value} style={styles.radioButtonItem}>
+                <RadioGroup
+                  radioButtons={[item]}
+                  onPress={handleOptionSelect}
+                  selectedButton={selectedOption === item.value}
+                  layout="row"
+                />
               </View>
-              <View style={{ marginStart: 140 }}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    buildTrip(selectedType, location);
-                  }}
-                >
-                  <Text>Search</Text>
-                </TouchableOpacity>
-              </View>
-              {/* <Button
+            ))}
+          </View>
+          <Text style={styles.errorMessage}>{message1}</Text>
+          <View style={{ marginStart: 140 }}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                buildTrip(selectedType, location);
+              }}
+            >
+              <Text>Search</Text>
+            </TouchableOpacity>
+          </View>
+          {/* <Button
             style={styles.emphasizedButton}
             titleStyle={styles.buttonTitle}
             title="Search"
@@ -461,11 +476,9 @@ export default function BuildTripScreen() {
               buildTrip(selectedType, location);
             }}
           /> */}
-              <StatusBar style="auto" />
-            </View>
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          <StatusBar style="auto" />
+        </View>
+      </ScrollView>
     </ImageBackground>
   );
 }
