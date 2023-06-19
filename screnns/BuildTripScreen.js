@@ -82,92 +82,112 @@ export default function BuildTripScreen() {
     return maxRatingItem;
   }
 
-  async function startingAttraction(filteredDataList1) {
-    console.log(filteredDataList1.length + "11111111111111111");
-    const mapCalender = new Map();
-    let daysKeyArrays = [];
-    let maxItem;
-    let numDays = calculateDateDifference();
-    let attractionTypesCounter = new Array(selectedType.length).fill(1);
-    let extraAttractionArr = [];
-    let filteredDataList = filteredDataList1;
-    if (filteredDataList.length == 0) {
-      return;
-    }
-    for (let i = 0; i < numDays + 1; i++) {
-      daysKeyArrays = [];
-      attractionTypesCounter = new Array(selectedType.length).fill(1);
-      console.log("--------Day Number: " + i);
-      for (let j = 0; j < 5; j++) {
-        let allZero = attractionTypesCounter.every((count) => count === 0);
-        let attractionAddingChecker = false;
-        if (!allZero) {
-          let flag = 0;
-          while (!attractionAddingChecker) {
-            if (filteredDataList.length != 0) {
-              maxItem = findMaxItem(filteredDataList);
-              console.log(
-                "filter data list length is: " + filteredDataList.length
-              );
-              let objItem = Object.values(maxItem)[2];
-              for (let i = 0; i < selectedType.length; i++) {
-                if (
-                  objItem.types.includes(selectedType[i]) &&
-                  attractionTypesCounter[i] !== 0
-                ) {
-                  attractionTypesCounter[i] = 0;
-                  daysKeyArrays.push(objItem);
-                  attractionAddingChecker = true;
-                  flag = 1;
-                  break;
-                }
-              }
+  async function startingAttraction(filteredAttractions) {
+    const tripCalendar = new Map();
+    let dailyAttractions = [];
+    const numDays = calculateDateDifference();
+    let attractionTypeAvailability = new Array(selectedType.length).fill(1);
+    let additionalAttractions = [];
 
-              if (flag === 0) {
-                console.log(
-                  `${objItem.name} Adding to Extra on index number ${j}`
-                );
-                extraAttractionArr.push(objItem);
-                filteredDataList = filteredDataList.filter(
-                  (item) => item.place_id !== objItem.place_id
-                );
-              }
-            } else {
-              if (extraAttractionArr.length !== 0) {
-                let variable = extraAttractionArr.pop();
-                daysKeyArrays.push(variable);
-                attractionAddingChecker = true;
-              }
-            }
-          }
+    for (let day = 0; day < numDays + 1; day++) {
+      dailyAttractions = [];
+      attractionTypeAvailability.fill(1);
+      for (let count = 0; count < 5; count++) {
+        if (attractionTypeAvailability.some((val) => val === 1)) {
+          const attractionInfo = addAttraction(
+            filteredAttractions,
+            additionalAttractions,
+            attractionTypeAvailability
+          );
+          dailyAttractions.push(attractionInfo);
         } else {
-          if (extraAttractionArr.length !== 0) {
-            let variable = extraAttractionArr.pop();
-            daysKeyArrays.push(variable);
-          } else {
-            maxItem = findMaxItem(filteredDataList);
-            let objItem = Object.values(maxItem)[2];
-            daysKeyArrays.push(objItem);
-          }
+          dailyAttractions.push(
+            popOrFindAttraction(filteredAttractions, additionalAttractions)
+          );
         }
-
-        const updatedDataList = filteredDataList.filter(
-          (item) => item.place_id !== daysKeyArrays[j].place_id
+        filteredAttractions = removeAddedAttraction(
+          filteredAttractions,
+          dailyAttractions[count].place_id
         );
-        filteredDataList = updatedDataList;
       }
-
-      mapCalender.set(i, daysKeyArrays);
-      daysKeyArrays = [];
+      tripCalendar.set(day, dailyAttractions);
     }
 
+    await postTripDetails(tripCalendar);
+  }
+
+  function addAttraction(
+    filteredAttractions,
+    additionalAttractions,
+    attractionTypeAvailability
+  ) {
+    const maxRatingAttraction = findMaxItem(filteredAttractions);
+    let attractionInfo;
+    if (filteredAttractions.length !== 0) {
+      attractionInfo = validateAttraction(
+        maxRatingAttraction,
+        filteredAttractions,
+        additionalAttractions,
+        attractionTypeAvailability
+      );
+    } else {
+      attractionInfo = popOrFindAttraction(
+        filteredAttractions,
+        additionalAttractions
+      );
+    }
+    return attractionInfo;
+  }
+
+  function validateAttraction(
+    maxRatingAttraction,
+    filteredAttractions,
+    additionalAttractions,
+    attractionTypeAvailability
+  ) {
+    const attractionInfo = Object.values(maxRatingAttraction)[2];
+    for (let i = 0; i < selectedType.length; i++) {
+      if (
+        attractionInfo.types.includes(selectedType[i]) &&
+        attractionTypeAvailability[i] !== 0
+      ) {
+        attractionTypeAvailability[i] = 0;
+        return attractionInfo;
+      }
+    }
+    additionalAttractions.push(attractionInfo);
+    filteredAttractions = removeAddedAttraction(
+      filteredAttractions,
+      attractionInfo.place_id
+    );
+    return addAttraction(
+      filteredAttractions,
+      additionalAttractions,
+      attractionTypeAvailability
+    );
+  }
+
+  function popOrFindAttraction(filteredAttractions, additionalAttractions) {
+    let attractionInfo;
+    if (additionalAttractions.length !== 0) {
+      attractionInfo = additionalAttractions.pop();
+    } else {
+      const maxRatingAttraction = findMaxItem(filteredAttractions);
+      attractionInfo = Object.values(maxRatingAttraction)[2];
+    }
+    return attractionInfo;
+  }
+
+  function removeAddedAttraction(filteredAttractions, place_id) {
+    return filteredAttractions.filter((item) => item.place_id !== place_id);
+  }
+
+  async function postTripDetails(tripCalendar) {
     let attractions = {};
-
-    for (let i = 0; i < mapCalender.size; i++) {
-      attractions[`day${i + 1}`] = { dailyAttractions: mapCalender.get(i) };
+    for (let i = 0; i < tripCalendar.size; i++) {
+      attractions[`day${i + 1}`] = { dailyAttractions: tripCalendar.get(i) };
     }
-
-    let oneItem = {
+    const tripDetails = {
       dates: dateRange,
       attractions: attractions,
       author: userDetails,
@@ -175,21 +195,27 @@ export default function BuildTripScreen() {
       hotelLocation: location,
       mobility: selectedOption,
     };
-    console.log(process.env.ip + " ip from the build trip");
-    await axios
-      .post(`http://${process.env.ip}:4000/travel/add`, oneItem)
-      .then(console.log(typeof oneItem.attractions))
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log("Error", error.message);
-        }
-      });
+    try {
+      const response = await axios.post(
+        `http://${process.env.ip}:4000/travel/add`,
+        tripDetails
+      );
+      console.log(typeof tripDetails.attractions);
+    } catch (error) {
+      handlePostError(error);
+    }
+  }
+
+  function handlePostError(error) {
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log("Error", error.message);
+    }
   }
 
   const getDatesBetween = (start, end) => {
@@ -208,9 +234,9 @@ export default function BuildTripScreen() {
     let userRadius = 100;
     if (selectedOption !== null) {
       if (selectedOption === "walking") {
-        userRadius = 1000;
+        userRadius = 500;
       } else if (selectedOption === "public") {
-        userRadius = 5000;
+        userRadius = 2500;
       } else if (selectedOption === "car") {
         userRadius = 10000;
       }
@@ -236,6 +262,7 @@ export default function BuildTripScreen() {
         const filteredDataList = allData.filter(
           (item) => item.rating !== undefined
         );
+        console.log(filteredDataList);
         if (filteredDataList.length != 0) {
           let amount = 5 * (diff + 1);
           if (amount > filteredDataList.length) {

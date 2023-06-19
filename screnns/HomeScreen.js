@@ -4,6 +4,7 @@ import {
   Text,
   ImageBackground,
   StyleSheet,
+  Button,
   ScrollView,
 } from "react-native";
 import axios from "axios";
@@ -119,6 +120,9 @@ function HomeScreen() {
       resizeMode="cover"
       style={styles.image}
     >
+      {/* <View>
+        <Button title="Logout" onPress={logout}></Button>
+      </View> */}
       <Text style={styles.TitleOut}>Explore Your Favorite journey</Text>
 
       <ScrollView style={styles.scroll}>
